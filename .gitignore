@@ -1,0 +1,19 @@
+# Ignore git backups
+.git_backup_proj1/
+.git_backup_proj2/
+Project1/.git_backup_proj1/
+project2/.git_backup_proj2/
+Project2/.git_backup_proj2/
+
+# Ignore local dependencies and builds
+**/node_modules/
+**/.next/
+node_modules/
+.next/
+out/
+build/
+.env*.local
+
+# OS files
+.DS_Store
+Thumbs.db
