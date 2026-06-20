@@ -37,18 +37,37 @@ export default function HeroSequenceCanvas({ scrollProgress }: HeroSequenceCanva
   const cacheRef = useRef<Map<number, HTMLImageElement>>(new Map());
   const lastBufferedFrameRef = useRef(-999);
 
+  // Interpolated focal points for mobile panning to center cacao pod and storytelling elements
+  const getFocalPoint = (idx: number): { fx: number; fy: number } => {
+    if (idx <= 40) {
+      const t = idx / 40;
+      return { fx: 0.4 + t * 0.08, fy: 0.5 };
+    } else if (idx <= 100) {
+      const t = (idx - 40) / 60;
+      return { fx: 0.48 + t * 0.10, fy: 0.5 };
+    } else if (idx <= 160) {
+      const t = (idx - 100) / 60;
+      return { fx: 0.58 - t * 0.06, fy: 0.55 };
+    } else {
+      const t = Math.min(1, (idx - 160) / 40);
+      return { fx: 0.52 - t * 0.02, fy: 0.5 };
+    }
+  };
+
   // Manage sliding window frame buffer
   const manageFrameBuffer = (centerFrame: number) => {
     const cache = cacheRef.current;
     const totalFrames = 240;
     
     // Virtual window configurations (Ahead-look priority for down scroll)
-    const bufferAhead = 25;   
-    const bufferBehind = 10;  
+    // Reduce buffer and unload window size on mobile to optimize performance and save bandwidth
+    const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+    const bufferAhead = isMobileDevice ? 12 : 25;   
+    const bufferBehind = isMobileDevice ? 6 : 10;  
     
     // Retention window thresholds
-    const unloadAhead = 45;   
-    const unloadBehind = 20;  
+    const unloadAhead = isMobileDevice ? 20 : 45;   
+    const unloadBehind = isMobileDevice ? 10 : 20;  
 
     const start = Math.max(0, centerFrame - bufferBehind);
     const end = Math.min(totalFrames - 1, centerFrame + bufferAhead);
@@ -104,9 +123,11 @@ export default function HeroSequenceCanvas({ scrollProgress }: HeroSequenceCanva
       cache.set(i, img);
     }
 
-    // Initialize 2D canvas dust particles (approx 60 dots)
+    // Initialize 2D canvas dust particles (approx 60 dots on desktop, 25 on mobile)
+    const isMobileDevice = typeof window !== 'undefined' && window.innerWidth < 768;
+    const particlesCount = isMobileDevice ? 25 : 60;
     const particles: DustParticle[] = [];
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < particlesCount; i++) {
       particles.push({
         x: Math.random() * 1920,
         y: Math.random() * 1080,
@@ -169,7 +190,11 @@ export default function HeroSequenceCanvas({ scrollProgress }: HeroSequenceCanva
       // Optimize canvas dimensions dynamically
       const width = window.innerWidth;
       const height = window.innerHeight;
-      const dpr = window.devicePixelRatio || 1;
+      const isMobile = width < 768;
+      
+      // Cap device pixel ratio on mobile to optimize GPU and improve FPS
+      const rawDpr = window.devicePixelRatio || 1;
+      const dpr = isMobile ? Math.min(1.5, rawDpr) : rawDpr;
       
       if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
         canvas.width = width * dpr;
@@ -242,12 +267,36 @@ export default function HeroSequenceCanvas({ scrollProgress }: HeroSequenceCanva
           dHeight = width / imgRatio;
         }
 
-        const offsetScale = 1.06;
-        const panX = -mouse.x * 45;
-        const panY = -mouse.y * 45;
+        // Dynamic focal point calculations on mobile
+        let focalX = 0.5;
+        let focalY = 0.5;
+        if (isMobile) {
+          const fp = getFocalPoint(frameIndex);
+          focalX = fp.fx;
+          focalY = fp.fy;
+        }
+
+        // Calculate rendering position based on focal point
+        let renderX = width / 2 - focalX * dWidth;
+        let renderY = height / 2 - focalY * dHeight;
+
+        // Clamp to avoid black margins
+        if (imgRatio > canvasRatio) {
+          renderX = Math.max(width - dWidth, Math.min(0, renderX));
+          renderY = 0;
+        } else {
+          renderY = Math.max(height - dHeight, Math.min(0, renderY));
+          renderX = 0;
+        }
+
+        // Scale and pan values (reduced values on mobile to avoid motion sickness and fit cropped area)
+        const offsetScale = isMobile ? 1.02 : 1.06;
+        const panMax = isMobile ? 20 : 45;
+        const panX = -mouse.x * panMax;
+        const panY = -mouse.y * panMax;
 
         ctx.save();
-        ctx.translate(width / 2 + panX, height / 2 + panY);
+        ctx.translate(renderX + dWidth / 2 + panX, renderY + dHeight / 2 + panY);
         ctx.scale(offsetScale, offsetScale);
         ctx.drawImage(img, -dWidth / 2, -dHeight / 2, dWidth, dHeight);
         ctx.restore();
@@ -268,8 +317,13 @@ export default function HeroSequenceCanvas({ scrollProgress }: HeroSequenceCanva
           ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
           
           ctx.fillStyle = `rgba(198, 124, 78, ${p.opacity})`;
-          ctx.shadowBlur = 4;
-          ctx.shadowColor = "#C67C4E";
+          
+          // Disable canvas shadows on mobile to increase rendering speed and prevent lag
+          if (!isMobile) {
+            ctx.shadowBlur = 4;
+            ctx.shadowColor = "#C67C4E";
+          }
+          
           ctx.fill();
         });
         ctx.restore();
@@ -317,7 +371,7 @@ export default function HeroSequenceCanvas({ scrollProgress }: HeroSequenceCanva
       <div 
         className="absolute inset-0 pointer-events-none" 
         style={{
-          background: "radial-gradient(circle, transparent 20%, rgba(11, 11, 11, 0.65) 70%, #0B0B0B 100%)",
+          background: "radial-gradient(circle, transparent 20%, rgba(40, 24, 17, 0.65) 70%, #24150E 100%)",
         }}
       />
 

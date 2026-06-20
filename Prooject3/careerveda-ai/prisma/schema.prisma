@@ -1,0 +1,648 @@
+// CareerVeda AI OS — Full ERP Database Schema
+// Stack: PostgreSQL + Prisma ORM + Supabase
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// AUTH & USERS
+// ============================================================
+
+enum Role {
+  STUDENT
+  MENTOR
+  RECRUITER
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  avatar        String?
+  role          Role      @default(STUDENT)
+  status        Status    @default(ACTIVE)
+  googleId      String?   @unique
+  githubId      String?   @unique
+  linkedinId    String?   @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  student       Student?
+  mentor        Mentor?
+  recruiter     Recruiter?
+  notifications Notification[]
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// STUDENT ERP
+// ============================================================
+
+enum PlacementStatus {
+  NOT_STARTED
+  PREPARING
+  APPLYING
+  INTERVIEWING
+  PLACED
+  OFFER_RECEIVED
+}
+
+model Student {
+  id               String          @id @default(cuid())
+  userId           String          @unique
+  careerGoal       String?
+  currentLevel     String          @default("Beginner")
+  xp               Int             @default(0)
+  level            Int             @default(1)
+  streak           Int             @default(0)
+  longestStreak    Int             @default(0)
+  lastActiveAt     DateTime?
+  placementStatus  PlacementStatus @default(NOT_STARTED)
+  careerScore      Float           @default(0)
+  resumeScore      Float           @default(0)
+  interviewScore   Float           @default(0)
+  placementScore   Float           @default(0)
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills           StudentSkill[]
+  enrollments      Enrollment[]
+  projects         Project[]
+  resumes          Resume[]
+  applications     Application[]
+  xpLogs           XPLog[]
+  badges           StudentBadge[]
+  mockInterviews   MockInterview[]
+  mentorSessions   MentorSession[]
+  certificates     Certificate[]
+  roadmapProgress  RoadmapProgress[]
+  aiAnalyses       AIAnalysis[]
+}
+
+// ============================================================
+// SKILLS
+// ============================================================
+
+model Skill {
+  id           String         @id @default(cuid())
+  name         String         @unique
+  category     String
+  description  String?
+  icon         String?
+  createdAt    DateTime       @default(now())
+
+  studentSkills StudentSkill[]
+  jobSkills     JobSkill[]
+  roadmapSkills RoadmapSkill[]
+}
+
+model StudentSkill {
+  id          String   @id @default(cuid())
+  studentId   String
+  skillId     String
+  proficiency Int      @default(0) // 0-100
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  skill       Skill    @relation(fields: [skillId], references: [id])
+
+  @@unique([studentId, skillId])
+}
+
+// ============================================================
+// LEARNING ERP (LMS)
+// ============================================================
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+model Course {
+  id           String       @id @default(cuid())
+  title        String
+  slug         String       @unique
+  description  String
+  thumbnail    String?
+  difficulty   Difficulty
+  duration     Int          // in minutes
+  price        Float        @default(0)
+  isPremium    Boolean      @default(false)
+  isPublished  Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  modules      Module[]
+  enrollments  Enrollment[]
+}
+
+model Module {
+  id          String   @id @default(cuid())
+  courseId    String
+  title       String
+  description String?
+  order       Int
+  createdAt   DateTime @default(now())
+
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id           String   @id @default(cuid())
+  moduleId     String
+  title        String
+  content      String?
+  videoUrl     String?
+  duration     Int?     // in minutes
+  order        Int
+  isPreview    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  module       Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  studentId   String
+  courseId    String
+  progress    Float    @default(0) // 0-100
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id])
+
+  @@unique([studentId, courseId])
+}
+
+// ============================================================
+// ROADMAP ENGINE
+// ============================================================
+
+model Roadmap {
+  id           String          @id @default(cuid())
+  title        String
+  targetRole   String
+  description  String
+  difficulty   Difficulty
+  duration     Int             // months
+  isPublished  Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+
+  steps        RoadmapStep[]
+  skills       RoadmapSkill[]
+  progress     RoadmapProgress[]
+}
+
+model RoadmapStep {
+  id          String   @id @default(cuid())
+  roadmapId   String
+  title       String
+  description String?
+  order       Int
+  duration    String?  // e.g. "2 weeks"
+  resources   String[] // URLs
+  createdAt   DateTime @default(now())
+
+  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+}
+
+model RoadmapSkill {
+  roadmapId String
+  skillId   String
+
+  roadmap   Roadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  skill     Skill   @relation(fields: [skillId], references: [id])
+
+  @@id([roadmapId, skillId])
+}
+
+model RoadmapProgress {
+  id         String   @id @default(cuid())
+  studentId  String
+  roadmapId  String
+  progress   Float    @default(0)
+  currentStep Int     @default(0)
+  startedAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  student    Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  roadmap    Roadmap  @relation(fields: [roadmapId], references: [id])
+
+  @@unique([studentId, roadmapId])
+}
+
+// ============================================================
+// ASSESSMENT ERP
+// ============================================================
+
+enum QuestionType {
+  MCQ
+  CODING
+  SUBJECTIVE
+  BEHAVIORAL
+}
+
+model Assessment {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  difficulty  Difficulty
+  duration    Int          // in minutes
+  xpReward    Int          @default(100)
+  isAIGenerated Boolean   @default(false)
+  createdAt   DateTime     @default(now())
+
+  questions   Question[]
+  attempts    AssessmentAttempt[]
+}
+
+model Question {
+  id           String       @id @default(cuid())
+  assessmentId String
+  type         QuestionType
+  text         String
+  options      String[]     // for MCQ
+  correctIndex Int?         // for MCQ
+  points       Int          @default(10)
+  createdAt    DateTime     @default(now())
+
+  assessment   Assessment   @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+}
+
+model AssessmentAttempt {
+  id           String     @id @default(cuid())
+  studentId    String
+  assessmentId String
+  score        Float
+  timeTaken    Int
+  answers      Json
+  completedAt  DateTime   @default(now())
+
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+}
+
+// ============================================================
+// RESUME ERP
+// ============================================================
+
+model Resume {
+  id          String   @id @default(cuid())
+  studentId   String
+  fileUrl     String
+  fileName    String
+  atsScore    Float?
+  keywordScore Float?
+  roleMatch   Float?
+  feedback    Json?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// PROJECT ERP
+// ============================================================
+
+model Project {
+  id          String   @id @default(cuid())
+  studentId   String
+  title       String
+  description String?
+  techStack   String[]
+  githubUrl   String?
+  demoUrl     String?
+  thumbnail   String?
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// JOB & PLACEMENT ERP
+// ============================================================
+
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  CONTRACT
+  REMOTE
+}
+
+enum ApplicationStatus {
+  APPLIED
+  SHORTLISTED
+  ASSESSMENT
+  INTERVIEW
+  OFFER
+  HIRED
+  REJECTED
+  WITHDRAWN
+}
+
+model Company {
+  id          String    @id @default(cuid())
+  name        String
+  logo        String?
+  website     String?
+  industry    String?
+  size        String?
+  createdAt   DateTime  @default(now())
+
+  jobs        Job[]
+  recruiters  Recruiter[]
+}
+
+model Job {
+  id           String    @id @default(cuid())
+  companyId    String
+  title        String
+  description  String
+  location     String
+  type         JobType
+  salaryMin    Float?
+  salaryMax    Float?
+  experience   String?
+  isActive     Boolean   @default(true)
+  deadline     DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  company      Company   @relation(fields: [companyId], references: [id])
+  skills       JobSkill[]
+  applications Application[]
+}
+
+model JobSkill {
+  jobId     String
+  skillId   String
+  required  Boolean @default(true)
+
+  job       Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  skill     Skill  @relation(fields: [skillId], references: [id])
+
+  @@id([jobId, skillId])
+}
+
+model Application {
+  id        String            @id @default(cuid())
+  studentId String
+  jobId     String
+  status    ApplicationStatus @default(APPLIED)
+  coverLetter String?
+  resumeUrl  String?
+  appliedAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  student    Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  job        Job              @relation(fields: [jobId], references: [id])
+  interviews Interview[]
+
+  @@unique([studentId, jobId])
+}
+
+model Interview {
+  id            String      @id @default(cuid())
+  applicationId String
+  scheduledAt   DateTime
+  type          String      // Technical, HR, etc.
+  feedback      String?
+  score         Float?
+  status        String      @default("SCHEDULED")
+  createdAt     DateTime    @default(now())
+
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// MENTOR ERP
+// ============================================================
+
+model Mentor {
+  id          String    @id @default(cuid())
+  userId      String    @unique
+  company     String
+  designation String
+  experience  Int       // years
+  bio         String?
+  linkedinUrl String?
+  githubUrl   String?
+  rating      Float     @default(0)
+  totalSessions Int     @default(0)
+  isAvailable Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions    MentorSession[]
+  availability MentorAvailability[]
+}
+
+model MentorAvailability {
+  id        String   @id @default(cuid())
+  mentorId  String
+  dayOfWeek Int      // 0-6
+  startTime String   // HH:MM
+  endTime   String   // HH:MM
+  createdAt DateTime @default(now())
+
+  mentor    Mentor   @relation(fields: [mentorId], references: [id], onDelete: Cascade)
+}
+
+model MentorSession {
+  id          String   @id @default(cuid())
+  mentorId    String
+  studentId   String
+  scheduledAt DateTime
+  duration    Int      // minutes
+  status      String   @default("UPCOMING") // UPCOMING, COMPLETED, CANCELLED
+  notes       String?
+  rating      Float?
+  feedback    String?
+  meetingUrl  String?
+  createdAt   DateTime @default(now())
+
+  mentor      Mentor   @relation(fields: [mentorId], references: [id])
+  student     Student  @relation(fields: [studentId], references: [id])
+}
+
+// ============================================================
+// MOCK INTERVIEW ERP
+// ============================================================
+
+model MockInterview {
+  id              String   @id @default(cuid())
+  studentId       String
+  type            String   // Technical, Behavioral, HR
+  questions       Json[]
+  answers         Json[]
+  overallScore    Float?
+  confidenceScore Float?
+  feedbackReport  Json?
+  completedAt     DateTime?
+  createdAt       DateTime @default(now())
+
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// RECRUITER ERP
+// ============================================================
+
+model Recruiter {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  companyId String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company   Company  @relation(fields: [companyId], references: [id])
+}
+
+// ============================================================
+// GAMIFICATION ERP
+// ============================================================
+
+model XPLog {
+  id        String   @id @default(cuid())
+  studentId String
+  amount    Int
+  reason    String
+  createdAt DateTime @default(now())
+
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+  id          String         @id @default(cuid())
+  name        String         @unique
+  description String
+  icon        String
+  xpRequired  Int            @default(0)
+  createdAt   DateTime       @default(now())
+
+  students    StudentBadge[]
+}
+
+model StudentBadge {
+  studentId String
+  badgeId   String
+  earnedAt  DateTime @default(now())
+
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+
+  @@id([studentId, badgeId])
+}
+
+// ============================================================
+// CERTIFICATION ERP
+// ============================================================
+
+model Certificate {
+  id            String   @id @default(cuid())
+  studentId     String
+  title         String
+  issuer        String   @default("CareerVeda AI OS")
+  verificationId String  @unique @default(cuid())
+  blockchainHash String?
+  issuedAt      DateTime @default(now())
+  expiresAt     DateTime?
+  pdfUrl        String?
+
+  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// AI ANALYSIS ERP
+// ============================================================
+
+model AIAnalysis {
+  id              String   @id @default(cuid())
+  studentId       String
+  type            String   // career_dna, resume, interview, job_match
+  input           Json
+  output          Json
+  model           String   // deepseek, qwen, llama
+  tokensUsed      Int?
+  createdAt       DateTime @default(now())
+
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+// ============================================================
+// CRM ERP
+// ============================================================
+
+enum LeadStatus {
+  LEAD
+  QUALIFIED
+  ENROLLED
+  ACTIVE
+  PLACED
+  ALUMNI
+  CHURNED
+}
+
+model Lead {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  phone     String?
+  source    String?
+  status    LeadStatus @default(LEAD)
+  notes     String?
+  assignedTo String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  body      String
+  type      String
+  isRead    Boolean  @default(false)
+  data      Json?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

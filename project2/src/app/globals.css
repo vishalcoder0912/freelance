@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand-black: #0B0B0B;
-  --color-brand-cocoa: #1A120B;
-  --color-brand-copper: #C67C4E;
-  --color-brand-gold: #D4AF37;
-  --color-brand-cream: #F8F4EF;
+  --color-brand-black: #24150E; /* Richer, warmer dark chocolate base */
+  --color-brand-cocoa: #3E271C; /* Brighter, warm milk cocoa brown */
+  --color-brand-copper: #E59F73; /* Brighter caramel copper highlights */
+  --color-brand-gold: #F2D372; /* Brighter gold highlights */
+  --color-brand-cream: #FFFDF9; /* Brighter milk cream */
   
   --font-serif: 'Cormorant Garamond', serif;
   --font-sans: 'Inter', sans-serif;
@@ -51,7 +51,7 @@
 }
 
 :root {
-  --background: #0B0B0B;
+  --background: #1C0F0A;
   --foreground: #F8F4EF;
 }
 
@@ -69,30 +69,30 @@ html, body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B0B0B;
+  background: #1C0F0A;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C67C4E;
+  background: #E59F73;
   border-radius: 10px;
 }
 
 /* Custom transitions and glassmorphism styling */
 .glass-panel {
-  background: rgba(26, 18, 11, 0.45);
-  border: 1px solid rgba(198, 124, 78, 0.15);
+  background: rgba(45, 30, 22, 0.45);
+  border: 1px solid rgba(229, 159, 115, 0.15);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 .glow-copper:hover {
-  box-shadow: 0 0 25px rgba(198, 124, 78, 0.25);
-  border-color: rgba(198, 124, 78, 0.45);
+  box-shadow: 0 0 25px rgba(229, 159, 115, 0.25);
+  border-color: rgba(229, 159, 115, 0.45);
 }
 
 .glow-gold:hover {
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
-  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: 0 0 25px rgba(242, 211, 114, 0.35);
+  border-color: rgba(242, 211, 114, 0.45);
 }
 
 /* Scroll indicator wheel animation */
@@ -109,4 +109,136 @@ html, body {
 /* SVG Wheel Rotation */
 .flavour-wheel-rotate {
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Premium transition eases */
+.transition-editorial {
+  transition: all 1200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.transition-slow-glow {
+  transition: transform 1500ms cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 1200ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter 1500ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 1500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Continuous scroll progress track */
+.scroll-progress-line {
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom spotlight glow vignette */
+.luxury-spotlight-glow {
+  background: radial-gradient(circle at center, rgba(198, 124, 78, 0.14) 0%, transparent 65%);
+}
+
+/* Magazine image mask hover zoom */
+.editorial-image-frame {
+  overflow: hidden;
+  position: relative;
+}
+
+.editorial-image-frame img {
+  transition: transform 1800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-image-frame:hover img {
+  transform: scale(1.04);
+}
+
+/* Interactive luxury transitions */
+a, button, [role="button"], select, input, .interactive-luxury {
+  cursor: pointer;
+}
+
+/* Subtle border glow transitions for luxury clickables */
+.interactive-border {
+  border: 1px solid rgba(248, 244, 239, 0.1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.interactive-border:hover {
+  border-color: var(--color-brand-copper);
+  box-shadow: 0 0 15px rgba(198, 124, 78, 0.15);
+}
+
+/* Add custom animations for scale transitions */
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.animate-scale-in {
+  animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Fade-in transitions for checkout views */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Print Invoice Styling overrides */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
+  .print\:block {
+    display: block !important;
+  }
+}
+
+/* Warm chocolate background overrides mapping utility classes */
+.bg-brand-black, body, html {
+  background-color: #24150E !important; /* Richer, warmer dark chocolate base */
+}
+
+/* Map grey-blacks to warm cocoa shades */
+.bg-\[\#060606\] {
+  background-color: #2C1D15 !important;
+}
+.bg-\[\#040404\] {
+  background-color: #1E120A !important;
+}
+.bg-\[\#0A0A0A\] {
+  background-color: #362319 !important;
+}
+.bg-\[\#050505\] {
+  background-color: #261710 !important;
+}
+.bg-\[\#070707\] {
+  background-color: #2A1B13 !important;
+}
+.bg-\[\#080808\] {
+  background-color: #2E1E15 !important;
+}
+.bg-\[\#030303\] {
+  background-color: #180F0A !important;
+}
+.bg-\[\#0B0B0B\] {
+  background-color: #322119 !important;
+}
+.bg-\[\#090909\] {
+  background-color: #2D1C14 !important;
+}
+.bg-black {
+  background-color: #180F0A !important;
+}
+.bg-black\/80 {
+  background: rgba(40, 24, 17, 0.8) !important;
+}
+.bg-black\/85 {
+  background: rgba(40, 24, 17, 0.85) !important;
+}
+.bg-black\/90 {
+  background: rgba(40, 24, 17, 0.9) !important;
+}
+.bg-black\/95 {
+  background: rgba(40, 24, 17, 0.95) !important;
 }

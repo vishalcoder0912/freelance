@@ -8,6 +8,7 @@ Project2/.git_backup_proj2/
 # Ignore local dependencies and builds
 **/node_modules/
 **/.next/
+**/dist/
 node_modules/
 .next/
 out/
