@@ -18,7 +18,7 @@ import jwtConfig from '../../config/jwt.config';
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('jwt.secret'),
         signOptions: {
-          expiresIn: configService.get<string>('jwt.accessTokenExpiry') || '15m',
+          expiresIn: (configService.get<string>('jwt.accessTokenExpiry') || '15m') as any,
         },
       }),
       inject: [ConfigService],

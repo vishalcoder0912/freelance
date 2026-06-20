@@ -165,14 +165,14 @@ export class AuthService {
 
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('jwt.secret'),
-      expiresIn: this.configService.get<string>('jwt.accessTokenExpiry') || '15m',
+      expiresIn: (this.configService.get<string>('jwt.accessTokenExpiry') || '15m') as any,
     });
 
     const refreshToken = this.jwtService.sign(
       { ...payload, type: 'refresh' },
       {
         secret: this.configService.get<string>('jwt.secret'),
-        expiresIn: this.configService.get<string>('jwt.refreshTokenExpiry') || '7d',
+        expiresIn: (this.configService.get<string>('jwt.refreshTokenExpiry') || '7d') as any,
       },
     );
 
