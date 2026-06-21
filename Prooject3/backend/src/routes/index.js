@@ -18,6 +18,7 @@ import recruiterRoutes from '../modules/recruiter/routes.js';
 import aiRoutes from '../modules/ai/routes.js';
 import resumeRoutes from '../modules/resume/routes.js';
 import interviewRoutes from '../modules/interview/routes.js';
+import careerAnalysisRoutes from '../modules/career-analysis/routes.js';
 import paymentRoutes from '../modules/payments/routes.js';
 import notificationRoutes from '../modules/notifications/routes.js';
 import uploadRoutes from '../modules/uploads/routes.js';
@@ -73,6 +74,9 @@ router.use('/ai', aiRoutes);
 // Resume & Interview
 router.use('/resume', resumeRoutes);
 router.use('/interview', interviewRoutes);
+
+// Career Analysis
+router.use('/career-analysis', careerAnalysisRoutes);
 
 // Payments
 router.use('/payments', paymentRoutes);
