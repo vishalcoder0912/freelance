@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Check, Sparkles } from 'lucide-react';
+import { ArrowRight, Check, Search, ChevronDown, X } from 'lucide-react';
 
 const PROGRAMS = [
   {
@@ -46,11 +47,54 @@ const PROGRAMS = [
     color: 'from-amber-500 to-orange-600',
     slug: 'investment-banking',
     desc: 'Equip yourself for investment banking, asset management, and equity research roles with certified financial mentors.'
+  },
+  {
+    title: 'PG Program in Cloud Engineering',
+    duration: '6 Months',
+    bullets: ['AWS & Azure cloud mastery', 'DevOps & containerization', 'Real-world cloud projects'],
+    tag: 'Cloud',
+    color: 'from-green-500 to-teal-600',
+    slug: 'cloud-engineering',
+    desc: 'Master cloud infrastructure, DevOps practices, and enterprise-grade cloud solutions with hands-on experience.'
+  },
+  {
+    title: 'PG Program in Cyber Security',
+    duration: '12 Months',
+    bullets: ['Network security & ethical hacking', 'Cloud security & compliance', 'Incident response & forensics'],
+    tag: 'Security',
+    color: 'from-red-500 to-rose-600',
+    slug: 'cyber-security',
+    desc: 'Comprehensive cybersecurity program covering threat analysis, vulnerability assessment, and security architecture.'
   }
 ];
 
+const CATEGORIES = ['All', 'Business Analytics', 'Product Management', 'Data Science', 'Data Analytics', 'Finance', 'Cloud Computing', 'Cybersecurity'];
+const LEVELS = ['All', 'Beginner', 'Intermediate', 'Advanced'];
+const DURATIONS = ['All', '6 Months', '12 Months'];
+
 export default function ProgramsPage() {
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedLevel, setSelectedLevel] = useState('All');
+  const [selectedDuration, setSelectedDuration] = useState('All');
+
+  const filteredPrograms = PROGRAMS.filter(prog => {
+    const matchesSearch = searchTerm === '' || prog.title.toLowerCase().includes(searchTerm.toLowerCase()) || prog.desc.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === 'All' || prog.tag === selectedCategory;
+    const matchesLevel = selectedLevel === 'All' || prog.slug.includes(selectedLevel.toLowerCase());
+    const matchesDuration = selectedDuration === 'All' || prog.duration === selectedDuration;
+    return matchesSearch && matchesCategory && matchesLevel && matchesDuration;
+  });
+
+  const hasActiveFilters = searchTerm || selectedCategory !== 'All' || selectedLevel !== 'All' || selectedDuration !== 'All';
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('All');
+    setSelectedLevel('All');
+    setSelectedDuration('All');
+  };
 
   return (
     <div className="py-16 px-6 max-w-7xl mx-auto space-y-12 text-left bg-[#FAFAFC] grid-bg-light">
@@ -67,28 +111,61 @@ export default function ProgramsPage() {
         </p>
       </div>
 
+      {/* Search & Filters */}
+      <div className="bg-white rounded-3xl border border-slate-100 p-6 shadow-sm space-y-6">
+        <div className="relative max-w-2xl mx-auto">
+          <Search size={18} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400" />
+          <input type="text" placeholder="Search programs by name or keyword..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all text-sm" />
+          {searchTerm && <button onClick={() => setSearchTerm('')} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"><X size={16} /></button>}
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative">
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="appearance-none pl-4 pr-10 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 text-sm font-medium bg-white cursor-pointer min-w-[140px]">
+                {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+            </div>
+            <div className="relative">
+              <select value={selectedLevel} onChange={(e) => setSelectedLevel(e.target.value)} className="appearance-none pl-4 pr-10 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 text-sm font-medium bg-white cursor-pointer min-w-[120px]">
+                {LEVELS.map(level => <option key={level} value={level}>{level}</option>)}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+            </div>
+            <div className="relative">
+              <select value={selectedDuration} onChange={(e) => setSelectedDuration(e.target.value)} className="appearance-none pl-4 pr-10 py-2.5 border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500 text-sm font-medium bg-white cursor-pointer min-w-[120px]">
+                {DURATIONS.map(d => <option key={d} value={d}>{d}</option>)}
+              </select>
+              <ChevronDown size={14} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+            </div>
+          </div>
+          <div className="text-sm text-slate-500">{filteredPrograms.length} programs found</div>
+        </div>
+
+        {hasActiveFilters && (
+          <div className="flex flex-wrap items-center gap-2 pt-4 border-t border-slate-100">
+            <span className="text-xs font-medium text-slate-500">Active filters:</span>
+            {searchTerm && <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-xs font-medium text-indigo-600">Search: {searchTerm} <button onClick={() => setSearchTerm('')} className="ml-1 hover:text-indigo-800"><X size={12} /></button></span>}
+            {selectedCategory !== 'All' && <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-xs font-medium text-indigo-600">Category: {selectedCategory} <button onClick={() => setSelectedCategory('All')} className="ml-1 hover:text-indigo-800"><X size={12} /></button></span>}
+            {selectedLevel !== 'All' && <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-xs font-medium text-indigo-600">Level: {selectedLevel} <button onClick={() => setSelectedLevel('All')} className="ml-1 hover:text-indigo-800"><X size={12} /></button></span>}
+            {selectedDuration !== 'All' && <span className="inline-flex items-center gap-1 px-3 py-1 bg-indigo-50 border border-indigo-100 rounded-full text-xs font-medium text-indigo-600">Duration: {selectedDuration} <button onClick={() => setSelectedDuration('All')} className="ml-1 hover:text-indigo-800"><X size={12} /></button></span>}
+            <button onClick={clearFilters} className="text-xs text-slate-500 hover:text-indigo-600 font-medium underline ml-auto">Clear all</button>
+          </div>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {PROGRAMS.map((prog, i) => (
-          <div 
-            key={i} 
-            className="glass-card rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between group hover:border-indigo-200 transition-all duration-300 min-h-[420px] bg-white shadow-sm"
-          >
+        {filteredPrograms.map((prog, i) => (
+          <div key={i} className="glass-card rounded-3xl p-6 relative overflow-hidden flex flex-col justify-between group hover:border-indigo-200 transition-all duration-300 min-h-[420px] bg-white shadow-sm">
             <div className={`absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r ${prog.color}`} />
-            
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="px-2.5 py-1 rounded-lg bg-indigo-50 border border-indigo-100 text-[10px] font-bold text-indigo-600">
-                  {prog.duration}
-                </span>
+                <span className="px-2.5 py-1 rounded-lg bg-indigo-50 border border-indigo-100 text-[10px] font-bold text-indigo-600">{prog.duration}</span>
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{prog.tag}</span>
               </div>
-
-              <h3 className="text-lg font-bold text-slate-800 tracking-tight leading-snug group-hover:text-indigo-600 transition-colors">
-                {prog.title}
-              </h3>
-
+              <h3 className="text-lg font-bold text-slate-800 tracking-tight leading-snug group-hover:text-indigo-600 transition-colors">{prog.title}</h3>
               <p className="text-slate-500 text-xs leading-relaxed">{prog.desc}</p>
-
               <ul className="space-y-2 pt-4 border-t border-slate-50">
                 {prog.bullets.map((bullet, idx) => (
                   <li key={idx} className="flex items-start gap-2 text-xs text-slate-500">
@@ -98,18 +175,23 @@ export default function ProgramsPage() {
                 ))}
               </ul>
             </div>
-
             <div className="pt-6">
-              <button 
-                onClick={() => navigate(`/program/${prog.slug}`)}
-                className="w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 group-hover:bg-indigo-600 text-slate-700 group-hover:text-white rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer"
-              >
+              <button onClick={() => navigate(`/program/${prog.slug}`)} className="w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 group-hover:bg-indigo-600 text-slate-700 group-hover:text-white rounded-xl text-xs font-bold transition-all duration-300 cursor-pointer">
                 View Syllabus & Enroll <ArrowRight size={14} />
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      {filteredPrograms.length === 0 && (
+        <div className="text-center py-16 space-y-4">
+          <div className="w-16 h-16 mx-auto bg-slate-50 rounded-full flex items-center justify-center"><Search size={24} className="text-slate-400" /></div>
+          <h3 className="text-xl font-bold text-slate-900">No programs found</h3>
+          <p className="text-slate-500 max-w-md mx-auto">Try adjusting your search criteria or filters to find programs that match your interests.</p>
+          <button onClick={clearFilters} className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 transition-colors">Clear all filters</button>
+        </div>
+      )}
 
     </div>
   );
