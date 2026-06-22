@@ -87,7 +87,7 @@ export function createFirestoreMock() {
             return true;
           })
           .map(([id, data]) => ({ id, data: () => data }));
-        return { ...query, `_where` : true, get: async () => createQuerySnapshot(docs) };
+         return { ...query, _where: true, get: async () => createQuerySnapshot(docs) };
       },
       orderBy: () => query,
       limit: () => query,

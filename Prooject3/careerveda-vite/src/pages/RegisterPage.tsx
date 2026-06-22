@@ -5,6 +5,28 @@ import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { Brain, ArrowLeft, Mail, Lock, User, ShieldAlert, Sparkles } from 'lucide-react';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+async function syncUserToPostgres(userData: {
+  firebase_uid: string;
+  name: string;
+  email: string;
+  role?: string;
+  provider?: string;
+  photo_url?: string;
+}) {
+  try {
+    const res = await fetch(`${API_URL}/users/sync`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+    if (!res.ok) console.warn('PostgreSQL sync failed:', await res.text());
+  } catch (err) {
+    console.warn('PostgreSQL sync error:', err);
+  }
+}
+
 export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,6 +50,15 @@ export default function RegisterPage() {
         email: email,
         role: 'STUDENT',
         createdAt: new Date().toISOString()
+      });
+
+      // Sync user to PostgreSQL
+      await syncUserToPostgres({
+        firebase_uid: user.uid,
+        name: name,
+        email: email,
+        role: 'STUDENT',
+        provider: 'email',
       });
 
       // Complete pending purchase
@@ -61,6 +92,16 @@ export default function RegisterPage() {
         role: 'STUDENT',
         createdAt: new Date().toISOString()
       }, { merge: true });
+
+      // Sync user to PostgreSQL
+      await syncUserToPostgres({
+        firebase_uid: user.uid,
+        name: user.displayName || 'Anonymous User',
+        email: user.email || '',
+        role: 'STUDENT',
+        provider: providerName,
+        photo_url: user.photoURL || undefined,
+      });
 
       // Complete pending purchase
       const pending = localStorage.getItem('pending_purchase');

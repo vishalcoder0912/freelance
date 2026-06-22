@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="198" failures="0" errors="0" time="5.2350797">
+    <testsuite name="tests/integration/admin.test.ts" timestamp="2026-06-21T07:54:19.700Z" hostname="DESKTOP-RFPDJ5K" tests="14" failures="0" errors="0" skipped="0" time="0.3950416">
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/analytics &gt; returns dashboard analytics for admin" time="0.0358246">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/analytics &gt; returns 403 for non-admin" time="0.0151103">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/analytics &gt; returns 401 without auth" time="0.0329676">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/users &gt; returns users for admin" time="0.0347814">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/users &gt; filters users by role" time="0.0155737">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/users &gt; returns 403 for non-admin" time="0.0207676">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/revenue &gt; returns revenue analytics for admin" time="0.0182361">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/revenue &gt; returns 403 for non-admin" time="0.0207356">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/enrollments &gt; returns enrollment analytics for admin" time="0.0132474">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/enrollments &gt; returns 403 for non-admin" time="0.0140472">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/placements &gt; returns placement analytics for admin" time="0.0302188">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/placements &gt; returns 403 for non-admin" time="0.0256699">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/programs &gt; returns programs with enrollment counts for admin" time="0.0339014">
+        </testcase>
+        <testcase classname="tests/integration/admin.test.ts" name="Admin Integration Tests &gt; GET /api/admin/programs &gt; returns 403 for non-admin" time="0.07812">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/ai.test.ts" timestamp="2026-06-21T07:54:19.813Z" hostname="DESKTOP-RFPDJ5K" tests="21" failures="0" errors="0" skipped="0" time="0.5417354">
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/chat &gt; responds to resume-related query" time="0.0312525">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/chat &gt; responds to roadmap query" time="0.0267767">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/chat &gt; responds to interview query" time="0.0258874">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/chat &gt; responds to salary query" time="0.0240126">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/chat &gt; returns default response for generic query" time="0.0268526">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/chat &gt; returns 401 without auth" time="0.0253368">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/generate-roadmap &gt; generates beginner roadmap" time="0.0184072">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/generate-roadmap &gt; generates intermediate roadmap" time="0.0123184">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/generate-roadmap &gt; generates advanced roadmap" time="0.0124165">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/generate-roadmap &gt; returns 401 without auth" time="0.0318115">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/course-recommendation &gt; returns recommendations based on skills" time="0.0350654">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/course-recommendation &gt; returns empty recommendations when no match" time="0.0507352">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/skill-gap-analysis &gt; analyzes skill gaps for AI Engineer" time="0.035133">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/skill-gap-analysis &gt; returns high match score for skilled user" time="0.0258292">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/skill-gap-analysis &gt; handles unknown role" time="0.0340282">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/skill-gap-analysis &gt; returns 401 without auth" time="0.014019">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/career-guidance &gt; provides guidance for career switch" time="0.0301958">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/career-guidance &gt; provides guidance for promotion" time="0.0139247">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/career-guidance &gt; provides guidance for role selection" time="0.0276236">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/career-guidance &gt; returns default guidance" time="0.0115419">
+        </testcase>
+        <testcase classname="tests/integration/ai.test.ts" name="AI Integration Tests &gt; POST /api/ai/career-guidance &gt; returns 401 without auth" time="0.0206768">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/assignments.test.ts" timestamp="2026-06-21T07:54:19.916Z" hostname="DESKTOP-RFPDJ5K" tests="13" failures="0" errors="0" skipped="0" time="0.4439293">
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; GET /api/assignments &gt; returns user assignments" time="0.0451666">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; GET /api/assignments &gt; returns all assignments for admin" time="0.0447573">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; GET /api/assignments &gt; returns 401 without auth" time="0.0127104">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; GET /api/assignments/:id &gt; returns assignment by ID" time="0.0227888">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; GET /api/assignments/:id &gt; returns 404 when not found" time="0.0307116">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; POST /api/assignments &gt; creates assignment as admin" time="0.0215772">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; POST /api/assignments &gt; creates assignment as mentor" time="0.0499008">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; POST /api/assignments &gt; returns 403 for student" time="0.040061">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; PATCH /api/assignments/:id &gt; updates assignment when authenticated" time="0.040717">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; PATCH /api/assignments/:id &gt; returns 401 without auth" time="0.0337638">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; POST /api/assignments/submit &gt; submits assignment when authenticated" time="0.0382425">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; POST /api/assignments/submit &gt; returns 401 without auth" time="0.0276904">
+        </testcase>
+        <testcase classname="tests/integration/assignments.test.ts" name="Assignments Integration Tests &gt; GET /api/assignments/submissions (shadowed by :id) &gt; returns 404 because /:id route matches first" time="0.0222885">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/auth.test.ts" timestamp="2026-06-21T07:54:19.961Z" hostname="DESKTOP-RFPDJ5K" tests="19" failures="0" errors="0" skipped="0" time="0.546711">
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/register &gt; registers a new user with all fields" time="0.0714887">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/register &gt; registers with minimal required fields" time="0.0520499">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/register &gt; sets custom claims for role" time="0.0455379">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/login &gt; logs in with valid email" time="0.0214761">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/login &gt; returns user data with name" time="0.0172064">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/google &gt; authenticates with Google ID token" time="0.0345898">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/google &gt; creates new user if not exists" time="0.0313306">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/logout &gt; logs out successfully" time="0.0327557">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/forgot-password &gt; sends password reset email" time="0.0315298">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/reset-password &gt; resets password with valid code" time="0.0274081">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/send-otp &gt; sends OTP to valid phone" time="0.0283329">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/verify-otp &gt; verifies correct OTP" time="0.0298348">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; POST /api/auth/verify-otp &gt; rejects incorrect OTP" time="0.0208984">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; GET /api/auth/me &gt; returns user profile when authenticated" time="0.0248049">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; GET /api/auth/me &gt; returns 401 when not authenticated" time="0.0116773">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; GET /api/auth/me &gt; returns 404 when user not found" time="0.0200698">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; PATCH /api/auth/profile &gt; updates user profile when authenticated" time="0.009788">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; PATCH /api/auth/profile &gt; updates profile with optional fields" time="0.0194996">
+        </testcase>
+        <testcase classname="tests/integration/auth.test.ts" name="Auth Integration Tests &gt; PATCH /api/auth/profile &gt; returns 401 without auth" time="0.0080883">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/career-analysis.test.ts" timestamp="2026-06-21T07:54:20.018Z" hostname="DESKTOP-RFPDJ5K" tests="8" failures="0" errors="0" skipped="0" time="0.195559">
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; POST /api/career-analysis/upload-resume &gt; uploads resume for analysis when authenticated" time="0.0279681">
+        </testcase>
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; POST /api/career-analysis/upload-resume &gt; returns 401 without auth" time="0.0305221">
+        </testcase>
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; POST /api/career-analysis/analyze &gt; analyzes career when authenticated" time="0.0517388">
+        </testcase>
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; POST /api/career-analysis/analyze &gt; analyzes with default role" time="0.0174264">
+        </testcase>
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; POST /api/career-analysis/analyze &gt; returns 401 without auth" time="0.0149857">
+        </testcase>
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; GET /api/career-analysis/report/:id &gt; returns career analysis report" time="0.018388">
+        </testcase>
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; GET /api/career-analysis/report/:id &gt; returns 404 when report not found" time="0.0186474">
+        </testcase>
+        <testcase classname="tests/integration/career-analysis.test.ts" name="Career Analysis Integration Tests &gt; GET /api/career-analysis/report/:id &gt; returns 401 without auth" time="0.0146879">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/certificates.test.ts" timestamp="2026-06-21T07:54:20.042Z" hostname="DESKTOP-RFPDJ5K" tests="12" failures="0" errors="0" skipped="0" time="0.2409652">
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; GET /api/certificates &gt; returns user certificates" time="0.0116787">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; GET /api/certificates &gt; returns all certificates for admin" time="0.0120466">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; GET /api/certificates &gt; returns 401 without auth" time="0.0195176">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; GET /api/certificates/:id &gt; returns certificate by ID" time="0.0192957">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; GET /api/certificates/:id &gt; returns 404 when not found" time="0.0205442">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; POST /api/certificates &gt; creates certificate as admin" time="0.0160668">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; POST /api/certificates &gt; returns 403 for non-admin" time="0.0269573">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; POST /api/certificates &gt; returns 401 without auth" time="0.0300441">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; PATCH /api/certificates/:id &gt; updates certificate as admin" time="0.023783">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; PATCH /api/certificates/:id &gt; returns 403 for non-admin" time="0.0209049">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; GET /api/certificates/download/:id &gt; returns download URL for certificate" time="0.0143079">
+        </testcase>
+        <testcase classname="tests/integration/certificates.test.ts" name="Certificates Integration Tests &gt; GET /api/certificates/download/:id &gt; returns 404 when certificate not found" time="0.0236319">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/enrollments.test.ts" timestamp="2026-06-21T07:54:20.069Z" hostname="DESKTOP-RFPDJ5K" tests="16" failures="0" errors="0" skipped="0" time="0.3618837">
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments/my &gt; returns user enrollments" time="0.0175806">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments/my &gt; returns empty array when no enrollments" time="0.0245177">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments/my &gt; returns 401 without auth" time="0.0103292">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments &gt; returns all enrollments for admin" time="0.0132465">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments &gt; returns all enrollments for mentor" time="0.0210954">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments &gt; returns 403 for student" time="0.0338341">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments/:id &gt; returns enrollment by ID for owner" time="0.0159098">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments/:id &gt; returns enrollment by ID for admin" time="0.0119884">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments/:id &gt; returns 403 when accessing other user enrollment" time="0.0401839">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; GET /api/enrollments/:id &gt; returns 404 when enrollment not found" time="0.0495429">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; POST /api/enrollments &gt; creates enrollment when authenticated" time="0.0255955">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; POST /api/enrollments &gt; returns 401 without auth" time="0.0134296">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; PATCH /api/enrollments/:id &gt; updates enrollment when authenticated" time="0.0262374">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; PATCH /api/enrollments/:id &gt; returns 401 without auth" time="0.0175313">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; DELETE /api/enrollments/:id &gt; deletes enrollment as admin" time="0.0183863">
+        </testcase>
+        <testcase classname="tests/integration/enrollments.test.ts" name="Enrollments Integration Tests &gt; DELETE /api/enrollments/:id &gt; returns 403 for non-admin" time="0.0189383">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/interview.test.ts" timestamp="2026-06-21T07:54:20.115Z" hostname="DESKTOP-RFPDJ5K" tests="15" failures="0" errors="0" skipped="0" time="0.3071827">
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/start &gt; starts interview session for AI Engineer" time="0.0350535">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/start &gt; starts interview session for Product Manager" time="0.014485">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/start &gt; starts interview session for Data Scientist" time="0.0138162">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/start &gt; defaults to AI Engineer question" time="0.0174387">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/start &gt; returns 401 without auth" time="0.0111989">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/question &gt; returns question for specified role" time="0.0383031">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/question &gt; returns alternative question based on index" time="0.0300011">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/question &gt; returns 401 without auth" time="0.0210368">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/evaluate &gt; evaluates answer and returns score" time="0.0257539">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/evaluate &gt; handles brief answer" time="0.0240085">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/evaluate &gt; handles empty answer" time="0.0141139">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; POST /api/interview/evaluate &gt; returns 401 without auth" time="0.0189137">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; GET /api/interview/report/:id &gt; returns interview report" time="0.0104507">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; GET /api/interview/report/:id &gt; returns 404 when report not found" time="0.0093554">
+        </testcase>
+        <testcase classname="tests/integration/interview.test.ts" name="Interview Integration Tests &gt; GET /api/interview/report/:id &gt; returns 401 without auth" time="0.0188108">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/payments.test.ts" timestamp="2026-06-21T07:54:20.131Z" hostname="DESKTOP-RFPDJ5K" tests="10" failures="0" errors="0" skipped="0" time="0.2076217">
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; POST /api/payments/create-order &gt; creates payment order when authenticated" time="0.0184102">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; POST /api/payments/create-order &gt; defaults currency to INR" time="0.0131378">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; POST /api/payments/create-order &gt; returns 401 without auth" time="0.0210108">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; POST /api/payments/verify &gt; verifies payment when authenticated" time="0.0154197">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; POST /api/payments/verify &gt; returns 401 without auth" time="0.0164296">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; GET /api/payments/history &gt; returns payment history for user" time="0.01445">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; GET /api/payments/history &gt; returns empty array when no payments" time="0.018125">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; GET /api/payments/history &gt; returns 401 without auth" time="0.0196204">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; GET /api/payments/invoices &gt; returns completed payments as invoices" time="0.0348464">
+        </testcase>
+        <testcase classname="tests/integration/payments.test.ts" name="Payments Integration Tests &gt; GET /api/payments/invoices &gt; returns 401 without auth" time="0.0293386">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/placements.test.ts" timestamp="2026-06-21T07:54:20.151Z" hostname="DESKTOP-RFPDJ5K" tests="16" failures="0" errors="0" skipped="0" time="0.1774772">
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs &gt; returns all jobs (public)" time="0.0127806">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs &gt; filters jobs by type" time="0.0092515">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs &gt; filters jobs by location" time="0.0115724">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs &gt; searches jobs by title" time="0.0093662">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs/:id &gt; returns job by ID" time="0.0088954">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs/:id &gt; returns 404 when not found" time="0.0118011">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; POST /api/jobs &gt; creates job as admin" time="0.0123528">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; POST /api/jobs &gt; creates job as recruiter" time="0.0121069">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; POST /api/jobs &gt; returns 403 for student" time="0.011552">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; POST /api/jobs/apply &gt; applies for job when authenticated" time="0.0121138">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; POST /api/jobs/apply &gt; returns 401 without auth" time="0.0151088">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs/applications (shadowed by :id) &gt; returns 404 because /:id route matches first" time="0.0096676">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; PATCH /api/jobs/applications/:id &gt; updates application status as admin" time="0.0086321">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; PATCH /api/jobs/applications/:id &gt; updates application status as recruiter" time="0.0125494">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; PATCH /api/jobs/applications/:id &gt; returns 403 for student" time="0.0099305">
+        </testcase>
+        <testcase classname="tests/integration/placements.test.ts" name="Placements Integration Tests &gt; GET /api/jobs/placement-stats (shadowed by :id) &gt; returns 404 because /:id route matches first" time="0.00807">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/programs.test.ts" timestamp="2026-06-21T07:54:20.181Z" hostname="DESKTOP-RFPDJ5K" tests="17" failures="0" errors="0" skipped="0" time="0.5099449">
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs &gt; returns all programs (public)" time="0.0355288">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs &gt; filters programs by category" time="0.0138181">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs &gt; filters programs by level" time="0.021415">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs &gt; searches programs by title" time="0.0353909">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs/search &gt; searches programs by query" time="0.0265017">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs/search &gt; searches by skills" time="0.0214595">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs/search &gt; returns empty array when no query" time="0.047842">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs/categories &gt; returns unique categories" time="0.0312431">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs/:slug &gt; returns program by slug" time="0.0204797">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; GET /api/programs/:slug &gt; returns 404 for non-existent slug" time="0.0235915">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; POST /api/programs &gt; creates program as admin" time="0.0324086">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; POST /api/programs &gt; returns 403 for non-admin" time="0.0449009">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; POST /api/programs &gt; returns 401 without auth" time="0.0269339">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; PATCH /api/programs/:id &gt; updates program as admin" time="0.0196576">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; PATCH /api/programs/:id &gt; returns 403 for non-admin" time="0.0289342">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; DELETE /api/programs/:id &gt; deletes program as admin" time="0.0479475">
+        </testcase>
+        <testcase classname="tests/integration/programs.test.ts" name="Programs Integration Tests &gt; DELETE /api/programs/:id &gt; returns 403 for non-admin" time="0.0249345">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/projects.test.ts" timestamp="2026-06-21T07:54:20.225Z" hostname="DESKTOP-RFPDJ5K" tests="12" failures="0" errors="0" skipped="0" time="0.1865697">
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; GET /api/projects &gt; returns user projects" time="0.0229152">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; GET /api/projects &gt; returns all projects for admin" time="0.0420854">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; GET /api/projects &gt; returns 401 without auth" time="0.0105728">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; GET /api/projects/:id &gt; returns project by ID" time="0.0107431">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; GET /api/projects/:id &gt; returns 404 when not found" time="0.0119912">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; POST /api/projects &gt; creates project when authenticated" time="0.0132361">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; POST /api/projects &gt; returns 401 without auth" time="0.0087757">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; PATCH /api/projects/:id &gt; updates project when authenticated" time="0.0097149">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; PATCH /api/projects/:id &gt; returns 401 without auth" time="0.0123959">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; POST /api/projects/submit &gt; submits project when authenticated" time="0.0177281">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; POST /api/projects/submit &gt; returns 401 without auth" time="0.0150491">
+        </testcase>
+        <testcase classname="tests/integration/projects.test.ts" name="Projects Integration Tests &gt; GET /api/projects/review (shadowed by :id) &gt; returns 404 because /:id route matches first" time="0.0098132">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/resume.test.ts" timestamp="2026-06-21T07:54:20.254Z" hostname="DESKTOP-RFPDJ5K" tests="10" failures="0" errors="0" skipped="0" time="0.3056026">
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; GET /api/resume/upload-resume &gt; returns upload instructions" time="0.0226256">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; GET /api/resume/upload-resume &gt; returns 401 without auth" time="0.0290676">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; POST /api/resume/upload-resume &gt; uploads resume when authenticated" time="0.0356255">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; POST /api/resume/upload-resume &gt; returns 401 without auth" time="0.0367183">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; POST /api/resume/analyze &gt; analyzes resume when authenticated" time="0.0344977">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; POST /api/resume/analyze &gt; analyzes with default role" time="0.0332684">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; POST /api/resume/analyze &gt; returns 401 without auth" time="0.0241877">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; GET /api/resume/report/:id &gt; returns resume analysis report" time="0.0239562">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; GET /api/resume/report/:id &gt; returns 404 when report not found" time="0.0334669">
+        </testcase>
+        <testcase classname="tests/integration/resume.test.ts" name="Resume Integration Tests &gt; GET /api/resume/report/:id &gt; returns 401 without auth" time="0.0278878">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/integration/users.test.ts" timestamp="2026-06-21T07:54:20.265Z" hostname="DESKTOP-RFPDJ5K" tests="15" failures="0" errors="0" skipped="0" time="0.8148557">
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users &gt; returns all users for admin" time="0.1233606">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users &gt; filters users by role" time="0.0527783">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users &gt; returns 401 without auth" time="0.0358174">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users &gt; returns 403 for non-admin" time="0.0298643">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users/:id &gt; returns user by ID for admin" time="0.0260744">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users/:id &gt; returns user by ID for self" time="0.0226987">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users/:id &gt; returns 403 when accessing other user profile" time="0.0156616">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users/:id &gt; returns 404 when user not found" time="0.0161774">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; PATCH /api/users/:id &gt; updates user as admin" time="0.3179714">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; PATCH /api/users/:id &gt; returns 403 for non-admin" time="0.074105">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; DELETE /api/users/:id &gt; deletes user as admin" time="0.0279714">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; DELETE /api/users/:id &gt; returns 403 for non-admin" time="0.0224887">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users/student (shadowed by :id) &gt; returns 404 because /:id route matches first" time="0.0111132">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users/mentor (shadowed by :id) &gt; returns 404 because /:id route matches first" time="0.0145762">
+        </testcase>
+        <testcase classname="tests/integration/users.test.ts" name="Users Integration Tests &gt; GET /api/users/recruiter (shadowed by :id) &gt; returns 404 because /:id route matches first" time="0.0119738">
+        </testcase>
+    </testsuite>
+</testsuites>
