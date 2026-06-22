@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-// Firebase imports are commented out – using localStorage auth instead.
-// import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
-// import { doc, setDoc } from 'firebase/firestore';
-// import { auth, db } from '@/lib/firebase';
-import { Brain, ArrowLeft, Mail, Lock, User, ShieldAlert, Sparkles } from 'lucide-react';
+import { Brain, ArrowLeft, Mail, Lock, User, ShieldAlert, Sparkles, GraduationCap, Users, Briefcase, ChevronDown } from 'lucide-react';
+import { register, getRoleRedirect, type UserRole } from '@/lib/auth';
 import { initStudentData } from '@/lib/studentData';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<UserRole>('student');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,70 +18,56 @@ export default function RegisterPage() {
     setError('');
     setLoading(true);
     try {
-      // Simulate network delay
       await new Promise((r) => setTimeout(r, 800));
-
-      // Default role is student
-      const role = 'student';
-
-      // Store user in localStorage
-      localStorage.setItem('careerveda_user', JSON.stringify({
-        name,
-        email,
-        role,
-        photoURL: null,
-      }));
-
-      // Initialize student progress data (defaults to all zeros)
+      register(name, email, password, role);
       initStudentData();
-
-      // Complete pending purchase
       const pending = localStorage.getItem('pending_purchase');
       if (pending) {
         localStorage.setItem('purchased_program', pending);
         localStorage.removeItem('pending_purchase');
       }
-
-      navigate('/dashboard');
+      navigate(getRoleRedirect(role));
     } catch (err: any) {
-      setError(err.message || 'Failed to register account. Please check inputs.');
+      setError(err.message || 'Failed to register.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Social login handlers are disabled when Firebase is commented out
   const handleProviderLogin = async (_providerName: 'google' | 'github') => {
     setError('Social registration is unavailable in offline mode. Please use email/password.');
   };
 
+  const roleOptions: { value: UserRole; label: string; icon: any; desc: string }[] = [
+    { value: 'student', label: 'Student', icon: GraduationCap, desc: 'I want to learn and upskill' },
+    { value: 'mentor', label: 'Mentor', icon: Users, desc: 'I want to mentor students' },
+    { value: 'recruiter', label: 'Recruiter', icon: Briefcase, desc: 'I want to hire talent' },
+  ];
+
+  const SelectedIcon = roleOptions.find(o => o.value === role)?.icon || GraduationCap;
+
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-[#FAFAFC] grid-bg-light">
-      
-      {/* Left Back Arrow */}
-      <button 
+      <button
         onClick={() => navigate('/')}
         className="absolute top-6 left-6 p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1.5 text-xs font-bold shadow-sm cursor-pointer z-50"
       >
         <ArrowLeft size={14} /> Back
       </button>
 
-      {/* Left Columns: Register Form */}
       <div className="lg:col-span-5 flex flex-col justify-center px-8 md:px-16 lg:px-20 py-12 relative z-10">
-        
         <div className="max-w-md w-full mx-auto space-y-6">
-          
           <div className="space-y-3">
             <Link to="/" className="flex items-center gap-2 group inline-block">
-              <div className="w-9 h-9 flex items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-600/10">
+              <div className="w-9 h-9 flex items-center justify-center rounded-xl bg-[#6D28D9] text-white shadow-md shadow-[#6D28D9]/20">
                 <Brain size={18} />
               </div>
               <span className="font-bold text-base text-slate-800">
-                Career<span className="text-indigo-600">Veda</span>
+                Career<span className="text-[#6D28D9]">Veda</span>
               </span>
             </Link>
             <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h1>
-            <p className="text-slate-500 text-xs">Unlock your personalized career analysis dashboard.</p>
+            <p className="text-slate-500 text-xs">Choose your role and unlock your personalized experience.</p>
           </div>
 
           {error && (
@@ -94,17 +78,42 @@ export default function RegisterPage() {
           )}
 
           <form onSubmit={handleRegister} className="space-y-4">
-            
+            {/* Role Selector */}
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">I am a</label>
+              <div className="grid grid-cols-3 gap-2">
+                {roleOptions.map((opt) => {
+                  const Icon = opt.icon;
+                  const selected = role === opt.value;
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => setRole(opt.value)}
+                      className={`flex flex-col items-center gap-1.5 p-3 rounded-xl border transition-all cursor-pointer ${
+                        selected
+                          ? 'bg-[#6D28D9]/5 border-[#6D28D9]/30 text-[#6D28D9]'
+                          : 'bg-white border-slate-200 text-slate-500 hover:border-slate-300'
+                      }`}
+                    >
+                      <Icon size={18} className={selected ? 'text-[#6D28D9]' : 'text-slate-400'} />
+                      <span className={`text-[10px] font-bold ${selected ? 'text-[#6D28D9]' : 'text-slate-600'}`}>{opt.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="space-y-1">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Full Name</label>
               <div className="relative">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
                   placeholder="Rohan Sharma"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-xs"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#6D28D9] focus:ring-1 focus:ring-[#6D28D9]/10 text-xs"
                 />
                 <User size={14} className="text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               </div>
@@ -113,13 +122,13 @@ export default function RegisterPage() {
             <div className="space-y-1">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Email Address</label>
               <div className="relative">
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="rohan@domain.com"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-xs"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#6D28D9] focus:ring-1 focus:ring-[#6D28D9]/10 text-xs"
                 />
                 <Mail size={14} className="text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               </div>
@@ -128,38 +137,35 @@ export default function RegisterPage() {
             <div className="space-y-1">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Password</label>
               <div className="relative">
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="Create a strong password"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 text-xs"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#6D28D9] focus:ring-1 focus:ring-[#6D28D9]/10 text-xs"
                 />
                 <Lock size={14} className="text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               </div>
             </div>
 
-            <button 
+            <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 active:scale-[0.98] transition-all shadow-md shadow-indigo-600/10 disabled:opacity-50 cursor-pointer"
+              className="w-full py-3 bg-[#6D28D9] hover:bg-[#5B21B6] active:bg-[#4C1D95] text-white rounded-xl text-xs font-bold transition-all shadow-lg shadow-[#6D28D9]/20 disabled:opacity-50 cursor-pointer"
             >
-              {loading ? 'Creating Account...' : 'Get Started'}
+              {loading ? 'Creating Account...' : 'Create Account'}
             </button>
-
           </form>
 
-          {/* Divider */}
           <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             <span className="w-1/3 h-px bg-slate-100" />
             <span>Or register with</span>
             <span className="w-1/3 h-px bg-slate-100" />
           </div>
 
-          {/* Social Logins */}
           <div className="grid grid-cols-2 gap-3">
-            <button 
+            <button
               type="button"
               onClick={() => handleProviderLogin('google')}
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer"
@@ -172,7 +178,7 @@ export default function RegisterPage() {
               </svg>
               Google
             </button>
-            <button 
+            <button
               type="button"
               onClick={() => handleProviderLogin('github')}
               className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold cursor-pointer"
@@ -185,43 +191,54 @@ export default function RegisterPage() {
           </div>
 
           <p className="text-center text-xs text-slate-500 font-medium">
-            Already have an account? <Link to="/login" className="text-indigo-600 font-bold hover:underline">Sign In</Link>
+            Already have an account? <Link to="/login" className="text-[#6D28D9] font-bold hover:underline">Sign In</Link>
           </p>
-
         </div>
       </div>
 
-      {/* Right Column: Visual Panel */}
-      <div className="hidden lg:col-span-7 bg-indigo-900 text-white relative lg:flex flex-col justify-between p-20 overflow-hidden">
-        
-        {/* Glow */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/20 rounded-full blur-[100px] pointer-events-none" />
-        
+      <div className="hidden lg:col-span-7 bg-[#020617] text-white relative lg:flex flex-col justify-between p-20 overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#6D28D9]/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-[#10B981]/10 rounded-full blur-[100px]" />
+
         <div className="space-y-4 max-w-md relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-bold tracking-widest text-indigo-300 uppercase">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-bold tracking-widest text-[#8B5CF6] uppercase">
             <Sparkles size={11} /> AI Career OS Ecosystem
           </div>
           <h2 className="text-4xl font-extrabold tracking-tight">Become Irreplaceable.</h2>
-          <p className="text-indigo-200 text-xs leading-relaxed">
-            Register today to benchmark your ATS Score, unlock 100+ roadmap steps, coordinate with top industry experts, and match with the top company listings.
+          <p className="text-slate-400 text-xs leading-relaxed">
+            Register today to benchmark your ATS Score, unlock 100+ roadmap steps, coordinate with top industry experts, and match with top company listings.
           </p>
         </div>
 
+        {/* Role Preview */}
         <div className="relative z-10 p-6 bg-white/5 border border-white/10 rounded-2xl max-w-sm">
-          <p className="text-indigo-200 text-xs italic">
-            "We built this platform to provide high-fidelity curriculum resources and dynamic AI tools for ambitious professionals looking to pivot."
-          </p>
-          <div className="mt-4 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-indigo-300/30 flex items-center justify-center font-bold text-xs">CV</div>
+          <div className="flex items-center gap-3 mb-4">
+            <SelectedIcon size={20} className="text-[#8B5CF6]" />
             <div>
-              <p className="text-xs font-bold">CareerVeda Faculty</p>
-              <p className="text-[9px] text-indigo-300">Curriculum Advisory Board</p>
+              <p className="text-sm font-bold text-white">
+                {role === 'student' ? 'Personalized Learning Path' : role === 'mentor' ? 'Mentor Control Center' : 'Talent Acquisition Hub'}
+              </p>
+              <p className="text-[10px] text-slate-400">
+                {role === 'student' && 'AI-powered curriculum, real projects, placement support'}
+                {role === 'mentor' && 'Track progress, review work, schedule 1:1 sessions'}
+                {role === 'recruiter' && 'Post jobs, match candidates, close hires faster'}
+              </p>
             </div>
           </div>
+          <div className="space-y-2">
+            {[
+              { student: '📊 Dashboard Analytics', mentor: '👥 Student Roster', recruiter: '📋 Job Postings' },
+              { student: '🤖 AI Career Coach', mentor: '📝 Assignment Review', recruiter: '🔍 Candidate Search' },
+              { student: '📈 Placement Tracking', mentor: '📈 Performance Reports', recruiter: '📅 Interview Scheduler' },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-2 text-xs text-slate-300">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#6D28D9]/50" />
+                {role === 'student' ? item.student : role === 'mentor' ? item.mentor : item.recruiter}
+              </div>
+            ))}
+          </div>
         </div>
-
       </div>
-
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, BookOpen, FolderKanban, Award, Briefcase, 
@@ -6,6 +6,7 @@ import {
   Menu, X, Brain, User, GraduationCap, Sparkles, Settings,
   BarChart3, FileText, Video, Calendar
 } from 'lucide-react';
+import { logout, getCurrentUser } from '@/lib/auth';
 
 const sidebarLinks = {
   student: [
