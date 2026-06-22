@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { PROGRAMS_DATA, PROGRAMS_LIST } from '@/lib/programsData';
 import { getProgramLessons, getLessonKey } from '@/lib/lessonsData';
+import { logout } from '@/lib/auth';
 import type { StudentData } from '@/lib/studentData';
 import {
   getStudentData, completeOnboardingStep as completeStep,
@@ -54,7 +55,7 @@ export default function DashboardPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('careerveda_user');
+    logout();
     navigate('/login');
   };
 

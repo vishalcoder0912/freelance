@@ -64,9 +64,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const portalType = getPortalType(location.pathname);
   const links = sidebarLinks[portalType];
 
-  // Read user from localStorage
-  const raw = typeof window !== 'undefined' ? localStorage.getItem('careerveda_user') : null;
-  const storedUser = raw ? JSON.parse(raw) : null;
+  const storedUser = getCurrentUser();
   const displayName = storedUser?.name || 'User';
   const displayEmail = storedUser?.email || 'user@email.com';
   const displayRole = storedUser?.role || portalType;
@@ -187,7 +185,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       <Settings size={14} /> Settings
                     </Link>
                     <button
-                      onClick={() => navigate('/login')}
+                      onClick={() => { logout(); navigate('/login'); }}
                       className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs font-medium text-red-600 hover:bg-red-50"
                     >
                       <LogOut size={14} /> Sign Out
