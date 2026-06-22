@@ -39,6 +39,7 @@ const AICopilotPage = lazy(() => import('@/pages/AICopilotPage'));
 const CareerAnalysisPage = lazy(() => import('@/pages/CareerAnalysisPage'));
 const ResumeAnalyzerPage = lazy(() => import('@/pages/ResumeAnalyzerPage'));
 const InterviewCoachPage = lazy(() => import('@/pages/InterviewCoachPage'));
+const AnalysisConsolePage = lazy(() => import('@/pages/AnalysisConsolePage'));
 
 // =============================================
 // 5. ERP PORTAL ROUTES (Via DashboardLayout)
@@ -113,6 +114,7 @@ export default function App() {
           <Route path="/career-analysis" element={<CareerAnalysisPage />} />
           <Route path="/resume-analyzer" element={<ResumeAnalyzerPage />} />
           <Route path="/interview-coach" element={<InterviewCoachPage />} />
+          <Route path="/analysis-console" element={<AnalysisConsolePage />} />
 
           {/* ============================================= */}
           {/* ERP PORTAL ROUTES                             */}

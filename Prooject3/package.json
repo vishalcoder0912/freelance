@@ -1,0 +1,14 @@
+{
+  "name": "careerveda",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx concurrently -n fe,be -c cyan,green \"npm run dev --prefix careerveda-vite\" \"npm run dev --prefix backend\"",
+    "dev:fe": "npm run dev --prefix careerveda-vite",
+    "dev:be": "npm run dev --prefix backend",
+    "build": "npm run build --prefix careerveda-vite",
+    "test": "npm run test --prefix backend",
+    "test:fe": "npm run test --prefix careerveda-vite",
+    "test:be": "npm run test --prefix backend"
+  }
+}

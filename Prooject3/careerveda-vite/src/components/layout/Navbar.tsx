@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, Sparkles, Brain, GraduationCap, Building2, Users, BookOpen, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, Sparkles, Brain, GraduationCap, Building2, Users, BookOpen, Map, ArrowRight } from 'lucide-react';
 
 const programLinks = [
   { label: 'Business Analytics with Gen AI', slug: 'business-analytics-with-gen-ai' },
   { label: 'Product Management', slug: 'product-management' },
   { label: 'Data Science with Gen AI', slug: 'data-science-with-gen-ai' },
+  { label: 'AI Engineering', slug: 'ai-engineering' },
   { label: 'Data Analytics with Gen AI', slug: 'data-analytics-with-gen-ai' },
   { label: 'Investment Banking', slug: 'investment-banking' },
 ];
@@ -248,9 +249,23 @@ export default function Navbar() {
                     )}
                   </div>
 
+                  <Link to="/career-paths" className="flex items-center gap-2 text-slate-800 font-semibold text-sm py-3">
+                    <Map size={16} className="text-slate-400" /> Career Paths
+                  </Link>
+
                   <Link to="/achievers" className="flex items-center gap-2 text-slate-800 font-semibold text-sm py-3">
                     <Users size={16} className="text-slate-400" /> Our Achievers
                   </Link>
+
+                  <button 
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setTimeout(() => document.getElementById('demo-section')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                    }}
+                    className="flex items-center gap-2 text-slate-800 font-semibold text-sm py-3 w-full text-left cursor-pointer"
+                  >
+                    <Sparkles size={16} className="text-slate-400" /> Pricing
+                  </button>
 
                   <Link to="/faculty" className="flex items-center gap-2 text-slate-800 font-semibold text-sm py-3">
                     <GraduationCap size={16} className="text-slate-400" /> Our Faculty
