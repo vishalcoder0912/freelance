@@ -5,7 +5,7 @@ import {
   Users, MessageSquare, Bell, Search, ChevronDown, LogOut, 
   Menu, X, Brain, User, GraduationCap, Sparkles, Settings,
   BarChart3, FileText, Video, Calendar, ClipboardList, Home,
-  DollarSign, Activity, Shield, TrendingUp, Linkedin, Code2, Mail
+  DollarSign, Activity, Shield, TrendingUp,   Link2, Code2, Mail
 } from 'lucide-react';
 import { logout, getCurrentUser } from '@/lib/auth';
 
@@ -13,19 +13,26 @@ const sidebarLinks: Record<string, { label: string; icon: any; href: string }[]>
   student: [
     { label: 'Overview', icon: LayoutDashboard, href: '/dashboard' },
     { label: 'My Learning', icon: BookOpen, href: '/my-learning' },
+    { label: 'Assignments', icon: ClipboardList, href: '/assignments' },
     { label: 'My Projects', icon: FolderKanban, href: '/my-projects' },
     { label: 'My Certificates', icon: Award, href: '/my-certificates' },
     { label: 'My Placement', icon: Briefcase, href: '/my-placement' },
+    { label: 'Jobs', icon: Search, href: '/jobs' },
+    { label: 'Community', icon: MessageSquare, href: '/community' },
     { label: 'My Mentor', icon: Users, href: '/my-mentor' },
     { label: 'AI Copilot', icon: Brain, href: '/ai-copilot' },
   ],
   mentor: [
     { label: 'Dashboard', icon: LayoutDashboard, href: '/mentor' },
     { label: 'Students', icon: Users, href: '/mentor/students' },
+    { label: 'Learning Progress', icon: TrendingUp, href: '/mentor/learning' },
     { label: 'Assignments', icon: ClipboardList, href: '/mentor/assignments' },
     { label: 'Projects', icon: FolderKanban, href: '/mentor/projects' },
+    { label: 'Resume Reviews', icon: FileText, href: '/mentor/resumes' },
+    { label: 'Mock Interviews', icon: Video, href: '/mentor/interviews' },
     { label: 'Sessions', icon: Calendar, href: '/mentor/sessions' },
     { label: 'Messages', icon: MessageSquare, href: '/mentor/messages' },
+    { label: 'Placement Tracking', icon: Briefcase, href: '/mentor/placements' },
     { label: 'Analytics', icon: BarChart3, href: '/mentor/analytics' },
     { label: 'Profile', icon: User, href: '/mentor/profile' },
   ],
@@ -37,7 +44,7 @@ const sidebarLinks: Record<string, { label: string; icon: any; href: string }[]>
     { label: 'Interviews', icon: Calendar, href: '/recruiter/interviews' },
     { label: 'Offers', icon: Award, href: '/recruiter/offers' },
     { label: 'Analytics', icon: TrendingUp, href: '/recruiter/analytics' },
-    { label: 'Company', icon: Linkedin, href: '/recruiter/company' },
+    { label: 'Company', icon: Link2, href: '/recruiter/company' },
   ],
   admin: [
     { label: 'Overview', icon: LayoutDashboard, href: '/admin' },

@@ -35,6 +35,9 @@ const MyProjectsPage = lazy(() => import('@/pages/MyProjectsPage'));
 const MyCertificatesPage = lazy(() => import('@/pages/MyCertificatesPage'));
 const MyPlacementPage = lazy(() => import('@/pages/MyPlacementPage'));
 const MyMentorPage = lazy(() => import('@/pages/MyMentorPage'));
+const AssignmentsPage = lazy(() => import('@/pages/AssignmentsPage'));
+const JobsPage = lazy(() => import('@/pages/JobsPage'));
+const CommunityPage = lazy(() => import('@/pages/CommunityPage'));
 
 // =============================================
 // 4. AI FEATURE ROUTES (Student Tools)
@@ -49,6 +52,7 @@ const AnalysisConsolePage = lazy(() => import('@/pages/AnalysisConsolePage'));
 // 5. ERP PORTAL ROUTES
 // =============================================
 const MentorPage = lazy(() => import('@/pages/MentorPage'));
+const MentorStudentProfile = lazy(() => import('@/pages/MentorStudentProfile'));
 const RecruiterPage = lazy(() => import('@/pages/RecruiterPage'));
 const AdminPage = lazy(() => import('@/pages/AdminPage'));
 
@@ -118,6 +122,10 @@ export default function App() {
           <Route path="/my-certificates" element={<StudentRoute><MyCertificatesPage /></StudentRoute>} />
           <Route path="/my-placement" element={<StudentRoute><MyPlacementPage /></StudentRoute>} />
           <Route path="/my-mentor" element={<StudentRoute><MyMentorPage /></StudentRoute>} />
+          <Route path="/assignments" element={<StudentRoute><AssignmentsPage /></StudentRoute>} />
+          <Route path="/assignments/:id" element={<StudentRoute><AssignmentsPage /></StudentRoute>} />
+          <Route path="/jobs" element={<StudentRoute><JobsPage /></StudentRoute>} />
+          <Route path="/community" element={<StudentRoute><CommunityPage /></StudentRoute>} />
 
           {/* ============================================= */}
           {/* AI FEATURE ROUTES (Student Tools)              */}
@@ -131,7 +139,8 @@ export default function App() {
           {/* ============================================= */}
           {/* ERP PORTAL ROUTES                              */}
           {/* ============================================= */}
-          <Route path="/mentor" element={<ProtectedRoute><RoleGuard allowedRole="mentor"><MentorPage /></RoleGuard></ProtectedRoute>} />
+          <Route path="/mentor/student/:id" element={<ProtectedRoute><RoleGuard allowedRole="mentor"><MentorStudentProfile /></RoleGuard></ProtectedRoute>} />
+          <Route path="/mentor/*" element={<ProtectedRoute><RoleGuard allowedRole="mentor"><MentorPage /></RoleGuard></ProtectedRoute>} />
           <Route path="/recruiter" element={<ProtectedRoute><RoleGuard allowedRole="recruiter"><RecruiterPage /></RoleGuard></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><RoleGuard allowedRole="admin"><AdminPage /></RoleGuard></ProtectedRoute>} />
 
