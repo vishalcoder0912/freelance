@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { Users, Calendar, MessageSquare, Star, Clock, Video, ChevronRight } from 'lucide-react';
+import { Star, Calendar, Video } from 'lucide-react';
 
 const MENTORS = [
   { name: 'Siddharth Mehta', role: 'Director of Engineering at Razorpay', specialization: 'AI Engineering', rating: 4.9, sessions: 12, avatar: 'SM', available: true },
@@ -16,20 +15,19 @@ const SESSIONS = [
 export default function MyMentorPage() {
   return (
     <DashboardLayout>
-      <div className="max-w-5xl mx-auto space-y-8">
+      <div className="max-w-5xl mx-auto space-y-6">
         <div>
           <h1 className="text-2xl font-extrabold text-slate-900">My Mentor</h1>
           <p className="text-sm text-slate-500 mt-1">Connect with your mentors and schedule sessions.</p>
         </div>
 
-        {/* Active Mentors */}
         <div className="space-y-4">
-          <h2 className="text-lg font-bold text-slate-800">My Mentors</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <h2 className="text-base font-bold text-slate-800">My Mentors</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {MENTORS.map((mentor, i) => (
-              <div key={i} className="bg-white border border-slate-100 rounded-2xl p-5 hover:shadow-md transition-all">
+              <div key={i} className="bg-white border border-slate-100 rounded-2xl p-5 hover:shadow-md transition-all shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white font-bold text-xs">{mentor.avatar}</div>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6D28D9] to-[#8B5CF6] flex items-center justify-center text-white font-bold text-xs">{mentor.avatar}</div>
                   <div>
                     <h3 className="text-sm font-bold text-slate-800">{mentor.name}</h3>
                     <p className="text-[10px] text-slate-400">{mentor.specialization}</p>
@@ -44,7 +42,7 @@ export default function MyMentorPage() {
                     {mentor.available ? 'Available' : 'Busy'}
                   </span>
                 </div>
-                <button className="w-full py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold hover:bg-indigo-700 transition-colors">
+                <button className="w-full py-2 bg-[#6D28D9] text-white rounded-xl text-xs font-bold hover:bg-[#5B21B6] transition-colors cursor-pointer">
                   Schedule Session
                 </button>
               </div>
@@ -52,9 +50,8 @@ export default function MyMentorPage() {
           </div>
         </div>
 
-        {/* Upcoming Sessions */}
-        <div className="bg-white border border-slate-100 rounded-2xl p-6 space-y-4">
-          <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2"><Video size={18} className="text-indigo-500" /> Upcoming Mentorship Sessions</h2>
+        <div className="bg-white border border-slate-100 rounded-2xl p-6 space-y-4 shadow-sm">
+          <h2 className="text-base font-bold text-slate-800 flex items-center gap-2"><Video size={18} className="text-[#6D28D9]" /> Upcoming Mentorship Sessions</h2>
           {SESSIONS.map((session, i) => (
             <div key={i} className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl">
               <div>
@@ -65,35 +62,10 @@ export default function MyMentorPage() {
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${session.status === 'Confirmed' ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-amber-50 text-amber-600 border border-amber-100'}`}>
                   {session.status}
                 </span>
-                <button className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-[10px] font-bold hover:bg-indigo-700">Join</button>
+                <button className="px-3 py-1.5 bg-[#6D28D9] text-white rounded-lg text-[10px] font-bold hover:bg-[#5B21B6] cursor-pointer">Join</button>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Chat */}
-        <div className="bg-white border border-slate-100 rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2"><MessageSquare size={18} className="text-indigo-500" /> Recent Messages</h2>
-            <button className="text-xs font-semibold text-indigo-600 hover:text-indigo-700">View All</button>
-          </div>
-          <div className="space-y-3">
-            {[
-              { from: 'Siddharth Mehta', message: 'Great progress on the MLOps project! Let\'s discuss the next steps.', time: '2 hours ago' },
-              { from: 'Sneha Rao', message: 'Please review the system design materials before our session.', time: '1 day ago' },
-            ].map((msg, i) => (
-              <div key={i} className="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-xl transition-colors cursor-pointer">
-                <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">{msg.from.split(' ').map(n => n[0]).join('')}</div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-center">
-                    <h4 className="text-xs font-bold text-slate-700">{msg.from}</h4>
-                    <span className="text-[9px] text-slate-400">{msg.time}</span>
-                  </div>
-                  <p className="text-xs text-slate-500 truncate">{msg.message}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </DashboardLayout>
