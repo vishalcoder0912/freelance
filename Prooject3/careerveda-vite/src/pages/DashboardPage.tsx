@@ -99,11 +99,10 @@ export default function DashboardPage() {
 
   const menuItems = [
     { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard', active: true, locked: false },
-    { label: 'Roadmap', icon: Map, href: '/career-paths', locked: false },
+    { label: 'Roadmap', icon: Map, href: '/roadmap', locked: false },
     { label: 'AI Copilot', icon: MessageSquare, href: '/ai-copilot', locked: !features.includes('ai-copilot') },
     { label: 'Resume Analyzer', icon: Award, href: '/resume-analyzer', locked: !features.includes('resume-analyzer') },
     { label: 'Interview Coach', icon: UserCheck, href: '/interview-coach', locked: !features.includes('mock-interview') },
-    { label: 'Career Paths', icon: Map, href: '/career-paths', locked: false },
     { label: 'Jobs', icon: Briefcase, href: '/programs', locked: !features.includes('placement-portal') },
     { label: 'Faculty', icon: Users, href: '/faculty', locked: false },
     { label: 'Employers', icon: Building2, href: '/employers', locked: false },

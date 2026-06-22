@@ -26,6 +26,7 @@ const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
 // 3. STUDENT ROUTES (Via DashboardLayout)
 // =============================================
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
+const RoadmapPage = lazy(() => import('@/pages/RoadmapPage'));
 const MyLearningPage = lazy(() => import('@/pages/MyLearningPage'));
 const MyProjectsPage = lazy(() => import('@/pages/MyProjectsPage'));
 const MyCertificatesPage = lazy(() => import('@/pages/MyCertificatesPage'));
@@ -101,6 +102,7 @@ export default function App() {
           {/* STUDENT DASHBOARD ROUTES                      */}
           {/* ============================================= */}
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/roadmap" element={<RoadmapPage />} />
           <Route path="/my-learning" element={<MyLearningPage />} />
           <Route path="/my-projects" element={<MyProjectsPage />} />
           <Route path="/my-certificates" element={<MyCertificatesPage />} />
