@@ -1,7 +1,9 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
+import RoleGuard from '@/components/auth/RoleGuard';
 
 // =============================================
 // 1. PUBLIC ROUTES (Marketing Website)
@@ -23,7 +25,7 @@ const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const RegisterPage = lazy(() => import('@/pages/RegisterPage'));
 
 // =============================================
-// 3. STUDENT ROUTES (Via DashboardLayout)
+// 3. STUDENT ROUTES
 // =============================================
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const RoadmapPage = lazy(() => import('@/pages/RoadmapPage'));
@@ -35,7 +37,7 @@ const MyPlacementPage = lazy(() => import('@/pages/MyPlacementPage'));
 const MyMentorPage = lazy(() => import('@/pages/MyMentorPage'));
 
 // =============================================
-// 4. AI FEATURE ROUTES (Standalone Tools)
+// 4. AI FEATURE ROUTES (Student Tools)
 // =============================================
 const AICopilotPage = lazy(() => import('@/pages/AICopilotPage'));
 const CareerAnalysisPage = lazy(() => import('@/pages/CareerAnalysisPage'));
@@ -44,7 +46,7 @@ const InterviewCoachPage = lazy(() => import('@/pages/InterviewCoachPage'));
 const AnalysisConsolePage = lazy(() => import('@/pages/AnalysisConsolePage'));
 
 // =============================================
-// 5. ERP PORTAL ROUTES (Via DashboardLayout)
+// 5. ERP PORTAL ROUTES
 // =============================================
 const MentorPage = lazy(() => import('@/pages/MentorPage'));
 const RecruiterPage = lazy(() => import('@/pages/RecruiterPage'));
@@ -62,16 +64,21 @@ function PageLoader() {
   );
 }
 
-// Layout wrapper for public pages (Navbar + Footer)
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAFAFC] grid-bg-light">
       <Navbar />
-      <main className="flex-grow pt-16">
-        {children}
-      </main>
+      <main className="flex-grow pt-16">{children}</main>
       <Footer />
     </div>
+  );
+}
+
+function StudentRoute({ children }: { children: React.ReactNode }) {
+  return (
+    <ProtectedRoute>
+      <RoleGuard allowedRole="student">{children}</RoleGuard>
+    </ProtectedRoute>
   );
 }
 
@@ -81,7 +88,7 @@ export default function App() {
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* ============================================= */}
-          {/* PUBLIC ROUTES (Marketing Website)             */}
+          {/* PUBLIC ROUTES                                 */}
           {/* ============================================= */}
           <Route path="/" element={<PublicLayout><LandingPage /></PublicLayout>} />
           <Route path="/programs" element={<PublicLayout><ProgramsPage /></PublicLayout>} />
@@ -94,38 +101,44 @@ export default function App() {
           <Route path="/employers" element={<PublicLayout><EmployersPage /></PublicLayout>} />
 
           {/* ============================================= */}
-          {/* AUTH ROUTES (Standalone - No Navbar/Footer)   */}
+          {/* AUTH ROUTES                                    */}
           {/* ============================================= */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/admin/login" element={<LoginPage />} />
 
           {/* ============================================= */}
-          {/* STUDENT DASHBOARD ROUTES                      */}
+          {/* STUDENT ROUTES                                 */}
           {/* ============================================= */}
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/roadmap" element={<RoadmapPage />} />
-          <Route path="/learn/:programId/:moduleId/:lessonId" element={<LearnPage />} />
-          <Route path="/my-learning" element={<MyLearningPage />} />
-          <Route path="/my-projects" element={<MyProjectsPage />} />
-          <Route path="/my-certificates" element={<MyCertificatesPage />} />
-          <Route path="/my-placement" element={<MyPlacementPage />} />
-          <Route path="/my-mentor" element={<MyMentorPage />} />
+          <Route path="/dashboard" element={<StudentRoute><DashboardPage /></StudentRoute>} />
+          <Route path="/roadmap" element={<StudentRoute><RoadmapPage /></StudentRoute>} />
+          <Route path="/learn/:programId/:moduleId/:lessonId" element={<StudentRoute><LearnPage /></StudentRoute>} />
+          <Route path="/my-learning" element={<StudentRoute><MyLearningPage /></StudentRoute>} />
+          <Route path="/my-projects" element={<StudentRoute><MyProjectsPage /></StudentRoute>} />
+          <Route path="/my-certificates" element={<StudentRoute><MyCertificatesPage /></StudentRoute>} />
+          <Route path="/my-placement" element={<StudentRoute><MyPlacementPage /></StudentRoute>} />
+          <Route path="/my-mentor" element={<StudentRoute><MyMentorPage /></StudentRoute>} />
 
           {/* ============================================= */}
-          {/* AI FEATURE ROUTES (Standalone Tools)          */}
+          {/* AI FEATURE ROUTES (Student Tools)              */}
           {/* ============================================= */}
-          <Route path="/ai-copilot" element={<AICopilotPage />} />
-          <Route path="/career-analysis" element={<CareerAnalysisPage />} />
-          <Route path="/resume-analyzer" element={<ResumeAnalyzerPage />} />
-          <Route path="/interview-coach" element={<InterviewCoachPage />} />
-          <Route path="/analysis-console" element={<AnalysisConsolePage />} />
+          <Route path="/ai-copilot" element={<StudentRoute><AICopilotPage /></StudentRoute>} />
+          <Route path="/career-analysis" element={<StudentRoute><CareerAnalysisPage /></StudentRoute>} />
+          <Route path="/resume-analyzer" element={<StudentRoute><ResumeAnalyzerPage /></StudentRoute>} />
+          <Route path="/interview-coach" element={<StudentRoute><InterviewCoachPage /></StudentRoute>} />
+          <Route path="/analysis-console" element={<StudentRoute><AnalysisConsolePage /></StudentRoute>} />
 
           {/* ============================================= */}
-          {/* ERP PORTAL ROUTES                             */}
+          {/* ERP PORTAL ROUTES                              */}
           {/* ============================================= */}
-          <Route path="/mentor" element={<MentorPage />} />
-          <Route path="/recruiter" element={<RecruiterPage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/mentor" element={<ProtectedRoute><RoleGuard allowedRole="mentor"><MentorPage /></RoleGuard></ProtectedRoute>} />
+          <Route path="/recruiter" element={<ProtectedRoute><RoleGuard allowedRole="recruiter"><RecruiterPage /></RoleGuard></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><RoleGuard allowedRole="admin"><AdminPage /></RoleGuard></ProtectedRoute>} />
+
+          {/* ============================================= */}
+          {/* FALLBACK                                       */}
+          {/* ============================================= */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </Router>

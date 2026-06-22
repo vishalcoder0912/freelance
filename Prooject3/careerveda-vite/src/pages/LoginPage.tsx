@@ -1,21 +1,15 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Brain, Mail, Lock, ShieldAlert, Eye, EyeOff, ChevronRight,
   ArrowLeft, Sparkles, Check, Users, Briefcase, MessageSquare,
-  Target, Star, ArrowDown, GraduationCap, FileText, Zap, BarChart3,
-  TrendingUp, Award
+  Target, Star, GraduationCap, FileText, Zap, BarChart3,
+  TrendingUp, Award, BookOpen, Clock, Calendar, UserCheck,
+  Search, PlusCircle, Video, ClipboardList, Home, Map, Send, Upload
 } from 'lucide-react';
+import { login, getRoleRedirect, isValidEmailForRole, type UserRole } from '@/lib/auth';
 import { initStudentData } from '@/lib/studentData';
-
-function getRoleFromEmail(email: string): string {
-  const e = email.toLowerCase();
-  if (e.includes('admin')) return 'admin';
-  if (e.includes('mentor')) return 'mentor';
-  if (e.includes('recruiter')) return 'recruiter';
-  return 'student';
-}
 
 function getPasswordStrength(pw: string): { label: string; color: string; width: string } {
   let score = 0;
@@ -34,36 +28,92 @@ function getPasswordStrength(pw: string): { label: string; color: string; width:
   return levels[Math.min(score, 4)];
 }
 
-const JOURNEY_STEPS = [
-  { label: 'Register', subtitle: 'Create your account', icon: GraduationCap },
-  { label: 'Career Assessment', subtitle: 'Discover your strengths', icon: Target },
-  { label: 'AI Learning Roadmap', subtitle: 'Personalized curriculum', icon: FileText },
-  { label: 'Projects & Assignments', subtitle: 'Build real portfolio', icon: Briefcase },
-  { label: 'Mock Interviews', subtitle: 'Practice with AI', icon: MessageSquare },
-  { label: 'Placement Readiness', subtitle: 'Score based on activity', icon: Zap },
-  { label: 'Job Offers', subtitle: 'Get hired', icon: Star },
-];
-
-const COMPANY_LOGOS = ['Google', 'Microsoft', 'Amazon', 'Razorpay', 'Adobe', 'Deloitte'];
-
-type PortalRole = 'student' | 'mentor' | 'recruiter';
-
-const ROLE_INFO: Record<PortalRole, { title: string; desc: string }> = {
+const ROLE_INFO: Record<UserRole, { title: string; desc: string }> = {
   student: { title: 'Student', desc: 'Continue your learning journey' },
   mentor: { title: 'Mentor', desc: 'Manage your learners' },
   recruiter: { title: 'Recruiter', desc: 'Hire top talent' },
+  admin: { title: 'Admin', desc: 'Manage platform' },
 };
 
+const COMPANY_LOGOS = ['Google', 'Microsoft', 'Amazon', 'Razorpay', 'Adobe', 'Deloitte'];
+
+const ROLE_PREVIEWS: Record<UserRole, { title: string; metrics: { icon: any; label: string; value: string; color: string }[]; desc: string }> = {
+  student: {
+    title: 'Learning Dashboard Preview',
+    desc: 'Your personalized learning command center',
+    metrics: [
+      { icon: BookOpen, label: 'Course Progress', value: '74%', color: 'text-blue-400' },
+      { icon: Brain, label: 'AI Score', value: '82/100', color: 'text-violet-400' },
+      { icon: Target, label: 'Placement Readiness', value: '68%', color: 'text-emerald-400' },
+      { icon: Award, label: 'Projects Completed', value: '9/15', color: 'text-amber-400' },
+    ],
+  },
+  mentor: {
+    title: 'Mentor Workspace Preview',
+    desc: 'Track, review, and guide your students',
+    metrics: [
+      { icon: Users, label: 'Active Students', value: '24', color: 'text-blue-400' },
+      { icon: ClipboardList, label: 'Pending Reviews', value: '12', color: 'text-amber-400' },
+      { icon: Video, label: 'Upcoming Sessions', value: '6', color: 'text-violet-400' },
+      { icon: TrendingUp, label: 'Avg Student Score', value: '87%', color: 'text-emerald-400' },
+    ],
+  },
+  recruiter: {
+    title: 'Recruiter Portal Preview',
+    desc: 'Post jobs, review candidates, hire talent',
+    metrics: [
+      { icon: Briefcase, label: 'Active Jobs', value: '6', color: 'text-blue-400' },
+      { icon: Search, label: 'Qualified Candidates', value: '48', color: 'text-emerald-400' },
+      { icon: Calendar, label: 'Interviews Scheduled', value: '12', color: 'text-amber-400' },
+      { icon: Star, label: 'Placements This Qtr', value: '9', color: 'text-violet-400' },
+    ],
+  },
+  admin: {
+    title: 'Admin ERP Preview',
+    desc: 'Full platform management and analytics',
+    metrics: [
+      { icon: Users, label: 'Total Users', value: '1,247', color: 'text-blue-400' },
+      { icon: BookOpen, label: 'Active Programs', value: '7', color: 'text-emerald-400' },
+      { icon: Calendar, label: 'Revenue (MTD)', value: '₹2.4M', color: 'text-amber-400' },
+      { icon: TrendingUp, label: 'Placement Rate', value: '87%', color: 'text-violet-400' },
+    ],
+  },
+};
+
+const JOURNEY_STEPS = [
+  { label: 'Register', icon: GraduationCap, desc: 'Create account' },
+  { label: 'Assessment', icon: Target, desc: 'Discover strengths' },
+  { label: 'AI Roadmap', icon: Map, desc: 'Personalized path' },
+  { label: 'Learn & Build', icon: BookOpen, desc: 'Lessons & projects' },
+  { label: 'Mock Interview', icon: UserCheck, desc: 'Practice with AI' },
+  { label: 'Placement', icon: Send, desc: 'Get matched' },
+  { label: 'Job Offer', icon: Award, desc: 'Start your career' },
+];
+
 export default function LoginPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isAdminLogin = location.pathname === '/admin/login';
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [authMode, setAuthMode] = useState<'password' | 'magic'>('password');
-  const [portalRole, setPortalRole] = useState<PortalRole>('student');
-  const navigate = useNavigate();
+  const [portalRole, setPortalRole] = useState<UserRole>(isAdminLogin ? 'admin' : 'student');
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (isAdminLogin) setPortalRole('admin');
+  }, [isAdminLogin]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % JOURNEY_STEPS.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,21 +121,23 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await new Promise((r) => setTimeout(r, 800));
-      const role = getRoleFromEmail(email);
-      const name = email.split('@')[0];
-      localStorage.setItem('careerveda_user', JSON.stringify({ name, email, role, photoURL: null }));
+
+      if (!isValidEmailForRole(email, portalRole)) {
+        throw new Error(`Access denied: This portal requires an email with "${portalRole}" in it.`);
+      }
+
+      const user = login(email, password, portalRole);
       initStudentData();
+
       const pending = localStorage.getItem('pending_purchase');
       if (pending) {
         localStorage.setItem('purchased_program', pending);
         localStorage.removeItem('pending_purchase');
       }
-      const routeMap: Record<string, string> = {
-        admin: '/admin', mentor: '/mentor', recruiter: '/recruiter', student: '/dashboard',
-      };
-      navigate(routeMap[role] || '/dashboard');
+
+      navigate(getRoleRedirect(user.role));
     } catch (err: any) {
-      setError(err.message || 'Failed to sign in. Please verify your credentials.');
+      setError(err.message || 'Failed to sign in.');
     } finally {
       setLoading(false);
     }
@@ -97,13 +149,15 @@ export default function LoginPage() {
 
   const pwStrength = password ? getPasswordStrength(password) : null;
 
+  const availableRoles: UserRole[] = isAdminLogin ? ['admin'] : ['student', 'mentor', 'recruiter'];
+  const preview = ROLE_PREVIEWS[portalRole];
+
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-[#F8FAFC]">
-      {/* Back */}
       <motion.button
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
-        onClick={() => navigate('/')}
+        onClick={() => navigate(isAdminLogin ? '/login' : '/')}
         className="absolute top-6 left-6 p-2.5 rounded-xl border border-slate-200 bg-white/80 backdrop-blur-sm hover:bg-white text-slate-600 hover:text-[#6D28D9] transition-all flex items-center gap-1.5 text-xs font-bold shadow-sm hover:shadow-md cursor-pointer z-50"
       >
         <ArrowLeft size={14} /> Back
@@ -117,7 +171,6 @@ export default function LoginPage() {
         className="lg:col-span-5 flex flex-col justify-center px-6 md:px-16 lg:px-20 py-12 relative z-10"
       >
         <div className="max-w-md w-full mx-auto space-y-5">
-          {/* Brand */}
           <Link to="/" className="flex items-center gap-2.5 group w-fit">
             <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#6D28D9] text-white shadow-md shadow-[#6D28D9]/20 group-hover:shadow-lg group-hover:shadow-[#6D28D9]/30 transition-shadow">
               <Brain size={20} />
@@ -127,40 +180,47 @@ export default function LoginPage() {
             </span>
           </Link>
 
-          {/* Role Switcher */}
-          <div className="flex bg-slate-100 rounded-xl p-0.5">
-            {(Object.entries(ROLE_INFO) as [PortalRole, typeof ROLE_INFO['student']][]).map(([key, info]) => (
-              <button
-                key={key}
-                onClick={() => setPortalRole(key)}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer capitalize ${
-                  portalRole === key ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'
-                }`}
-              >
-                {info.title}
-              </button>
-            ))}
-          </div>
+          {!isAdminLogin && (
+            <div className="flex bg-slate-100 rounded-xl p-0.5">
+              {availableRoles.map((key) => (
+                <button
+                  key={key}
+                  onClick={() => setPortalRole(key)}
+                  className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer capitalize ${
+                    portalRole === key ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                  }`}
+                >
+                  {ROLE_INFO[key].title}
+                </button>
+              ))}
+            </div>
+          )}
 
-          {/* Heading */}
+          {isAdminLogin && (
+            <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-100 rounded-xl">
+              <ShieldAlert size={14} className="text-amber-600 shrink-0" />
+              <span className="text-[10px] font-bold text-amber-700">Admin Portal — Authorized access only</span>
+            </div>
+          )}
+
           <div>
             <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
-              {portalRole === 'student' ? 'Welcome Back' : portalRole === 'mentor' ? 'Mentor Portal' : 'Recruiter Portal'}
+              {isAdminLogin ? 'Admin Login' : portalRole === 'student' ? 'Welcome Back' : portalRole === 'mentor' ? 'Mentor Portal' : 'Recruiter Portal'}
             </h1>
             <p className="text-slate-500 text-xs mt-1 leading-relaxed max-w-sm">
               {portalRole === 'student' && 'Access your learning dashboard, AI career coach, placement portal, and personalized roadmap.'}
               {portalRole === 'mentor' && 'Track student progress, review assignments, and schedule mentoring sessions.'}
               {portalRole === 'recruiter' && 'Post jobs, review candidate profiles, and schedule interviews.'}
+              {portalRole === 'admin' && 'Full platform management — users, programs, placements, and analytics.'}
             </p>
           </div>
 
-          {/* Trust markers */}
           <div className="grid grid-cols-2 gap-x-4 gap-y-1">
             {[
-              { icon: Users, text: '12,400+ Active Learners' },
-              { icon: Briefcase, text: '927+ Hiring Partners' },
+              { icon: portalRole === 'recruiter' ? Briefcase : Users, text: portalRole === 'recruiter' ? '900+ Hiring Partners' : portalRole === 'mentor' ? '24 Active Students' : '12,400+ Active Learners' },
+              { icon: portalRole === 'mentor' ? ClipboardList : Briefcase, text: portalRole === 'student' ? '927+ Hiring Partners' : portalRole === 'mentor' ? '18 Sessions/Month' : '48 Qualified Candidates' },
               { icon: Brain, text: 'AI Career Copilot' },
-              { icon: Target, text: 'Placement Assistance' },
+              { icon: Target, text: portalRole === 'admin' ? '87% Placement Rate' : 'Placement Assistance' },
             ].map((item, i) => {
               const Icon = item.icon;
               return (
@@ -172,7 +232,6 @@ export default function LoginPage() {
             })}
           </div>
 
-          {/* Error */}
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
@@ -184,7 +243,6 @@ export default function LoginPage() {
             </motion.div>
           )}
 
-          {/* Auth Mode Tabs */}
           <div className="flex bg-slate-100 rounded-xl p-0.5">
             <button
               onClick={() => setAuthMode('password')}
@@ -200,7 +258,6 @@ export default function LoginPage() {
             </button>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleEmailLogin} className="space-y-3.5">
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Email Address</label>
@@ -210,7 +267,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="you@company.com"
+                  placeholder={isAdminLogin ? 'admin@careerveda.com' : 'you@company.com'}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-xs focus:outline-none focus:border-[#6D28D9] focus:ring-2 focus:ring-[#6D28D9]/10 transition-all placeholder:text-slate-300"
                 />
                 <Mail size={14} className="text-slate-400 group-focus-within:text-[#6D28D9] transition-colors absolute left-3.5 top-1/2 -translate-y-1/2" />
@@ -258,18 +315,6 @@ export default function LoginPage() {
               </div>
             )}
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-3.5 h-3.5 rounded border-slate-300 text-[#6D28D9] focus:ring-[#6D28D9]/20"
-                />
-                <span className="text-[10px] font-medium text-slate-500">Remember me</span>
-              </label>
-            </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -288,14 +333,12 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Divider */}
           <div className="flex items-center justify-between text-[9px] font-bold text-slate-400 uppercase tracking-wider">
             <span className="w-1/3 h-px bg-slate-200" />
             <span>Or continue with</span>
             <span className="w-1/3 h-px bg-slate-200" />
           </div>
 
-          {/* Social */}
           <div className="grid grid-cols-3 gap-2">
             <button onClick={() => handleProviderLogin('google')} className="flex items-center justify-center gap-2 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] text-slate-700 text-xs font-semibold transition-all cursor-pointer">
               <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
@@ -309,17 +352,18 @@ export default function LoginPage() {
           </div>
 
           <p className="text-center text-xs text-slate-500 font-medium">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-[#6D28D9] font-bold hover:text-[#5B21B6] transition-colors">
-              Register now
-            </Link>
+            {isAdminLogin ? (
+              <Link to="/login" className="text-[#6D28D9] font-bold hover:text-[#5B21B6] transition-colors">Back to User Login</Link>
+            ) : (
+              <>Don't have an account?{' '}
+              <Link to="/register" className="text-[#6D28D9] font-bold hover:text-[#5B21B6] transition-colors">Register now</Link></>
+            )}
           </p>
         </div>
       </motion.div>
 
-      {/* ===== RIGHT: CAREER OS ECOSYSTEM ===== */}
+      {/* ===== RIGHT: CAREER OS PRODUCT PREVIEW ===== */}
       <div className="hidden lg:col-span-7 lg:flex flex-col relative overflow-hidden min-h-screen" style={{ background: '#020617' }}>
-        {/* Animated particles */}
         {[...Array(30)].map((_, i) => (
           <motion.div
             key={i}
@@ -331,26 +375,17 @@ export default function LoginPage() {
               top: Math.random() * 100 + '%',
               background: i % 3 === 0 ? 'rgba(109,40,217,0.3)' : i % 3 === 1 ? 'rgba(16,185,129,0.2)' : 'rgba(139,92,246,0.25)',
             }}
-            animate={{
-              y: [0, -20 - Math.random() * 30, 0],
-              opacity: [0.15, 0.5, 0.15],
-            }}
-            transition={{
-              duration: 5 + Math.random() * 8,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-            }}
+            animate={{ y: [0, -20 - Math.random() * 30, 0], opacity: [0.15, 0.5, 0.15] }}
+            transition={{ duration: 5 + Math.random() * 8, repeat: Infinity, delay: Math.random() * 5 }}
           />
         ))}
-
-        {/* Ambient glows */}
         <div className="absolute top-[-20%] right-[-5%] w-[600px] h-[600px] bg-[#6D28D9]/15 rounded-full blur-[150px]" />
         <div className="absolute bottom-[-15%] left-[-10%] w-[450px] h-[450px] bg-[#10B981]/8 rounded-full blur-[120px]" />
         <div className="absolute top-[40%] left-[40%] w-[300px] h-[300px] bg-[#8B5CF6]/10 rounded-full blur-[100px]" />
 
         <div className="relative z-10 flex flex-col justify-between min-h-screen p-10 lg:p-14">
           {/* Top: Headline + Placement Hook */}
-          <div className="flex items-start justify-between max-w-3xl">
+          <div className="flex items-start justify-between">
             <div className="space-y-3">
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
@@ -359,7 +394,6 @@ export default function LoginPage() {
               >
                 <Sparkles size={11} /> AI Career Operating System
               </motion.div>
-
               <motion.h2
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -369,7 +403,6 @@ export default function LoginPage() {
                 Transform Skills<br />
                 <span className="bg-gradient-to-r from-[#8B5CF6] via-[#6D28D9] to-[#10B981] bg-clip-text text-transparent">Into Careers</span>
               </motion.h2>
-
               <motion.p
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -379,8 +412,6 @@ export default function LoginPage() {
                 Learn. Build. Get Mentored. Get Hired.
               </motion.p>
             </div>
-
-            {/* Placement Hook */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -393,115 +424,153 @@ export default function LoginPage() {
             </motion.div>
           </div>
 
-          {/* Middle: Large Journey Timeline */}
+          {/* Middle: Product Preview + Journey */}
+          <div className="grid grid-cols-12 gap-5 my-6">
+            {/* Product Preview Metrics */}
+            <div className="col-span-7 space-y-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.5 }}
+                className="bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Live Product Preview</p>
+                  <span className="flex items-center gap-1 text-[8px] font-bold text-emerald-400">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Live
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { icon: FileText, label: 'Resume Score', value: '88/100', pct: 88, color: 'bg-emerald-500' },
+                    { icon: Shield, label: 'Placement Readiness', value: '74/100', pct: 74, color: 'bg-violet-500' },
+                    { icon: Briefcase, label: 'Jobs Matched', value: '12', pct: 60, color: 'bg-blue-500' },
+                    { icon: MessageSquare, label: 'Interview Score', value: '82/100', pct: 82, color: 'bg-amber-500' },
+                  ].map((item, i) => {
+                    const Icon = item.icon;
+                    return (
+                      <div key={i} className="bg-white/[0.04] border border-white/[0.06] rounded-xl p-3.5">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <Icon size={12} className="text-slate-500" />
+                            <span className="text-[9px] text-slate-400 font-medium">{item.label}</span>
+                          </div>
+                          <span className="text-xs font-extrabold text-white">{item.value}</span>
+                        </div>
+                        <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${item.pct}%` }}
+                            transition={{ delay: 0.8 + i * 0.15, duration: 1, ease: 'easeOut' }}
+                            className={`h-full rounded-full ${item.color}`}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </motion.div>
+
+              {/* Role-Specific Dynamic Preview */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={portalRole}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5"
+                >
+                  <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3">{preview.title}</p>
+                  <p className="text-[10px] text-slate-400 mb-3">{preview.desc}</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {preview.metrics.map((metric, i) => {
+                      const Icon = metric.icon;
+                      return (
+                        <div key={i} className="flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.06] rounded-lg p-2.5">
+                          <Icon size={14} className={metric.color} />
+                          <div>
+                            <p className="text-[10px] font-bold text-white">{metric.value}</p>
+                            <p className="text-[8px] text-slate-500">{metric.label}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Career Journey Timeline */}
+            <div className="col-span-5">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45, duration: 0.5 }}
+                className="bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 h-full"
+              >
+                <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-4">Your Career Journey</p>
+                <div className="relative">
+                  <div className="absolute left-[15px] top-2 bottom-2 w-0.5 bg-white/[0.08]" />
+                  <div className="space-y-0">
+                    {JOURNEY_STEPS.map((step, i) => {
+                      const Icon = step.icon;
+                      const isActive = i === activeStep;
+                      const isDone = i < activeStep;
+                      return (
+                        <div key={i} className="relative flex items-start gap-3 pb-4 last:pb-0">
+                          <motion.div
+                            animate={isActive ? { scale: [1, 1.2, 1] } : {}}
+                            transition={{ duration: 0.5, repeat: isActive ? Infinity : 0, repeatDelay: 2 }}
+                            className={`relative z-10 w-8 h-8 rounded-lg flex items-center justify-center border transition-all shrink-0 ${
+                              isDone
+                                ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-400'
+                                : isActive
+                                  ? 'bg-[#6D28D9]/30 border-[#6D28D9]/60 text-[#8B5CF6] shadow-lg shadow-[#6D28D9]/20'
+                                  : 'bg-white/[0.04] border-white/[0.08] text-slate-600'
+                            }`}>
+                            {isDone ? <Check size={12} /> : <Icon size={12} />}
+                          </motion.div>
+                          <div className="min-w-0 pt-1">
+                            <p className={`text-[10px] font-bold ${isDone ? 'text-emerald-300' : isActive ? 'text-white' : 'text-slate-500'}`}>
+                              {step.label}
+                            </p>
+                            <p className="text-[8px] text-slate-600">{step.desc}</p>
+                          </div>
+                          {i < JOURNEY_STEPS.length - 1 && (
+                            <motion.div
+                              animate={isActive ? { y: [0, 3, 0] } : {}}
+                              transition={{ duration: 1.5, repeat: Infinity }}
+                              className="absolute left-[19px] top-8 text-slate-600"
+                            >
+                              <ChevronRight size={8} className="rotate-90" />
+                            </motion.div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Bottom: Company Logos */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="my-6"
+            transition={{ delay: 0.65, duration: 0.5 }}
+            className="bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-4 flex items-center justify-between"
           >
-            <div className="flex items-center gap-12">
-              {/* Timeline nodes */}
-              <div className="flex items-center gap-0 flex-1">
-                {JOURNEY_STEPS.map((step, i) => {
-                  const Icon = step.icon;
-                  const isActive = i < 3;
-                  return (
-                    <div key={i} className="flex items-center flex-1">
-                      <div className="flex flex-col items-center min-w-0">
-                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center border transition-all ${
-                          isActive
-                            ? 'bg-[#6D28D9]/20 border-[#6D28D9]/40 text-[#8B5CF6] shadow-lg shadow-[#6D28D9]/10'
-                            : 'bg-white/[0.04] border-white/[0.08] text-slate-600'
-                        }`}>
-                          <Icon size={14} />
-                        </div>
-                        <p className={`text-[9px] font-semibold mt-1.5 text-center leading-tight ${isActive ? 'text-slate-300' : 'text-slate-600'}`}>
-                          {step.label.split(' ')[0]}
-                        </p>
-                        <p className="text-[7px] text-slate-600 text-center hidden xl:block">{step.subtitle}</p>
-                      </div>
-                      {i < JOURNEY_STEPS.length - 1 && (
-                        <div className={`flex-1 h-px mx-2 mt-[-24px] ${i < 3 ? 'bg-gradient-to-r from-[#6D28D9]/60 to-[#8B5CF6]/30' : 'bg-white/[0.06]'}`} />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+            <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest shrink-0 mr-6">Our Alumni Work At</p>
+            <div className="flex items-center gap-6 overflow-hidden">
+              {COMPANY_LOGOS.concat(COMPANY_LOGOS).map((name, i) => (
+                <span key={i} className="text-[10px] font-bold text-slate-500 tracking-wider uppercase opacity-50 whitespace-nowrap">
+                  {name}
+                </span>
+              ))}
             </div>
           </motion.div>
-
-          {/* Bottom: Unified Stats Container + OS Preview */}
-          <div className="grid grid-cols-12 gap-5">
-            {/* Stats Glass Container */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.45, duration: 0.5 }}
-              className="col-span-5 bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5"
-            >
-              <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3">Platform Reach</p>
-              <div className="grid grid-cols-2 gap-y-4">
-                {[
-                  { value: '12,400+', label: 'Active Learners' },
-                  { value: '927+', label: 'Hiring Partners' },
-                  { value: '87%', label: 'Placement Success' },
-                  { value: '4.9/5', label: 'Student Rating' },
-                ].map((stat, i) => (
-                  <div key={i}>
-                    <p className="text-lg font-extrabold text-white">{stat.value}</p>
-                    <p className="text-[9px] text-slate-500 font-medium">{stat.label}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Career OS Preview Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55, duration: 0.5 }}
-              className="col-span-4 bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5"
-            >
-              <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3">Career OS Preview</p>
-              <div className="space-y-3">
-                {[
-                  { icon: FileText, label: 'Resume Score', value: '88/100', color: 'text-emerald-400' },
-                  { icon: Brain, label: 'AI Recommendation', value: 'Product Analytics', color: 'text-violet-400' },
-                  { icon: Briefcase, label: 'Placement Matches', value: '12 Jobs', color: 'text-blue-400' },
-                  { icon: MessageSquare, label: 'Interview Readiness', value: '82/100', color: 'text-amber-400' },
-                ].map((item, i) => {
-                  const Icon = item.icon;
-                  return (
-                    <div key={i} className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Icon size={12} className="text-slate-500" />
-                        <span className="text-[10px] text-slate-400">{item.label}</span>
-                      </div>
-                      <span className={`text-[10px] font-bold ${item.color}`}>{item.value}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </motion.div>
-
-            {/* Company Logos */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.65, duration: 0.5 }}
-              className="col-span-3 bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-5 flex flex-col justify-center"
-            >
-              <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3">Our Alumni Work At</p>
-              <div className="flex flex-wrap gap-x-3 gap-y-2">
-                {COMPANY_LOGOS.map((name) => (
-                  <span key={name} className="text-[10px] font-bold text-slate-400 tracking-wider uppercase opacity-70">
-                    {name}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          </div>
         </div>
       </div>
     </div>
