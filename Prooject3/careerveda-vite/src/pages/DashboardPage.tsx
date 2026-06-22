@@ -1,105 +1,121 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-import { 
-  Brain, LayoutDashboard, Map, MessageSquare, Award, 
+import {
+  Brain, LayoutDashboard, Map, MessageSquare, Award,
   UserCheck, Briefcase, Users, LogOut, Bell, Menu, X,
-  TrendingUp, Star, Sparkles, Plus, CheckCircle2, ChevronRight, BookOpen, Building2, Clock, Check, Loader2, ArrowRight
+  TrendingUp, Star, Sparkles, CheckCircle2, ChevronRight, BookOpen, Building2, Clock, Check, Loader2, ArrowRight,
+  Target, Upload, FileText, Shield, Lock, Unlock, Mail
 } from 'lucide-react';
 import { PROGRAMS_DATA, PROGRAMS_LIST } from '@/lib/programsData';
+import {
+  getStudentData, StudentData, completeOnboardingStep as completeStep,
+  getOnboardingProgress, isOnboardingComplete, getCourseProgressPercent,
+  getAttendancePercent, getAIScore, getPlacementReadiness, getPlacementTier,
+  isPlacementLocked, getUnlockedFeatures, getOnboardingStepLabel,
+  getOnboardingStepNav, updateStudentData, simulateWeeklyProgress
+} from '@/lib/studentData';
+
+interface OnboardingStep {
+  key: keyof StudentData['onboarding'];
+  done: boolean;
+}
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
+  const [data, setData] = useState<StudentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [purchasedSlug, setPurchasedSlug] = useState<string | null>(null);
   const [isPurchasing, setIsPurchasing] = useState<string | null>(null);
   const [purchaseSuccess, setPurchaseSuccess] = useState(false);
-  
+  const [notification, setNotification] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
-  // Load auth state & check purchased program
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        // Fallback for demo mode if not authenticated
-        setUser({
-          displayName: 'Rohan Sharma',
-          email: 'rohan@careerveda.ai',
-          photoURL: null
-        });
-      }
-      setLoading(false);
-    });
-
-    // Check localStorage for purchased program
-    const savedPurchase = localStorage.getItem('purchased_program');
-    setPurchasedSlug(savedPurchase);
-
-    return () => unsubscribe();
+    const raw = localStorage.getItem('careerveda_user');
+    if (raw) setUser(JSON.parse(raw));
+    setData(getStudentData());
+    setPurchasedSlug(localStorage.getItem('purchased_program'));
+    setLoading(false);
   }, []);
 
-  // Sync purchase slug on local actions
-  const refreshPurchaseState = () => {
-    const savedPurchase = localStorage.getItem('purchased_program');
-    setPurchasedSlug(savedPurchase);
+  const refreshData = () => setData(getStudentData());
+
+  const handleCompleteStep = (key: keyof StudentData['onboarding']) => {
+    completeStep(key);
+    refreshData();
+    setNotification('\u2713 ' + getOnboardingStepLabel(key) + ' completed!');
+    setTimeout(() => setNotification(null), 2500);
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigate('/login');
-    } catch (err) {
-      console.error('Logout error:', err);
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('careerveda_user');
+    navigate('/login');
   };
 
-  // Simulate checkout/payment from inside the dashboard
   const handleUnlockPathway = (slug: string) => {
     setIsPurchasing(slug);
     setTimeout(() => {
       setIsPurchasing(null);
       setPurchaseSuccess(true);
-      
       localStorage.setItem('purchased_program', slug);
       setPurchasedSlug(slug);
-      
-      setTimeout(() => {
-        setPurchaseSuccess(false);
-      }, 1500);
+      setTimeout(() => setPurchaseSuccess(false), 1500);
     }, 2000);
   };
 
-  // Leave program to test Free Dashboard again
   const handleResetProgram = () => {
     localStorage.removeItem('purchased_program');
     setPurchasedSlug(null);
   };
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FAFAFC]">
-        <div className="w-10 h-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin"></div>
+        <div className="w-10 h-10 border-4 border-indigo-100 border-t-indigo-600 rounded-full animate-spin" />
       </div>
     );
   }
 
   const activeProgram = purchasedSlug ? PROGRAMS_DATA[purchasedSlug] : null;
+  const onboardingProgress = getOnboardingProgress();
+  const onboardingDone = isOnboardingComplete();
+  const coursePct = getCourseProgressPercent();
+  const attPct = getAttendancePercent();
+  const aiScore = getAIScore();
+  const placementScore = getPlacementReadiness();
+  const placementTier = getPlacementTier(placementScore);
+  const features = getUnlockedFeatures();
+  const locked = isPlacementLocked();
+
+  const onboardingStepKeys: OnboardingStep[] = [
+    { key: 'emailVerified', done: data.onboarding.emailVerified },
+    { key: 'profileCompleted', done: data.onboarding.profileCompleted },
+    { key: 'resumeUploaded', done: data.onboarding.resumeUploaded },
+    { key: 'careerAssessmentTaken', done: data.onboarding.careerAssessmentTaken },
+    { key: 'careerPathSelected', done: data.onboarding.careerPathSelected },
+  ];
 
   const menuItems = [
-    { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard', active: true },
-    { label: 'Roadmap', icon: Map, href: '/career-paths' },
-    { label: 'AI Copilot', icon: MessageSquare, href: '/ai-copilot' },
-    { label: 'Resume Analyzer', icon: Award, href: '/resume-analyzer' },
-    { label: 'Interview Coach', icon: UserCheck, href: '/interview-coach' },
-    { label: 'Career Paths', icon: Map, href: '/career-paths' },
-    { label: 'Jobs', icon: Briefcase, href: '/programs' },
-    { label: 'Faculty', icon: Users, href: '/faculty' },
-    { label: 'Employers', icon: Building2, href: '/employers' }
+    { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard', active: true, locked: false },
+    { label: 'Roadmap', icon: Map, href: '/career-paths', locked: false },
+    { label: 'AI Copilot', icon: MessageSquare, href: '/ai-copilot', locked: !features.includes('ai-copilot') },
+    { label: 'Resume Analyzer', icon: Award, href: '/resume-analyzer', locked: !features.includes('resume-analyzer') },
+    { label: 'Interview Coach', icon: UserCheck, href: '/interview-coach', locked: !features.includes('mock-interview') },
+    { label: 'Career Paths', icon: Map, href: '/career-paths', locked: false },
+    { label: 'Jobs', icon: Briefcase, href: '/programs', locked: !features.includes('placement-portal') },
+    { label: 'Faculty', icon: Users, href: '/faculty', locked: false },
+    { label: 'Employers', icon: Building2, href: '/employers', locked: false },
   ];
+
+  const getMetricColor = (val: number) => {
+    if (val >= 80) return { text: 'text-emerald-600', bg: 'bg-emerald-50', icon: 'text-emerald-500' };
+    if (val >= 50) return { text: 'text-amber-600', bg: 'bg-amber-50', icon: 'text-amber-500' };
+    return { text: 'text-rose-600', bg: 'bg-rose-50', icon: 'text-rose-500' };
+  };
+
+  const mc = getMetricColor(placementScore);
 
   return (
     <div className="min-h-screen flex bg-[#FAFAFC] text-slate-800 font-sans relative">

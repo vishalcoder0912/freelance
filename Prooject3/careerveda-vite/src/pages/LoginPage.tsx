@@ -1,30 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+// Firebase imports are commented out – using localStorage auth instead.
+// import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth';
+// import { auth } from '@/lib/firebase';
 import { motion } from 'framer-motion';
 import { Brain, ArrowLeft, Mail, Lock, ShieldAlert, Sparkles, Eye, EyeOff, ChevronRight } from 'lucide-react';
+import { initStudentData } from '@/lib/studentData';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
-async function syncUserToPostgres(userData: {
-  firebase_uid: string;
-  name: string;
-  email: string;
-  role?: string;
-  provider?: string;
-  photo_url?: string;
-}) {
-  try {
-    const res = await fetch(`${API_URL}/users/sync`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(userData),
-    });
-    if (!res.ok) console.warn('PostgreSQL sync failed:', await res.text());
-  } catch (err) {
-    console.warn('PostgreSQL sync error:', err);
-  }
+function getRoleFromEmail(email: string): string {
+  const e = email.toLowerCase();
+  if (e.includes('admin')) return 'admin';
+  if (e.includes('mentor')) return 'mentor';
+  if (e.includes('recruiter')) return 'recruiter';
+  return 'student';
 }
 
 export default function LoginPage() {
@@ -40,24 +28,38 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+      // Simulate network delay
+      await new Promise((r) => setTimeout(r, 800));
 
-      // Sync user to PostgreSQL
-      await syncUserToPostgres({
-        firebase_uid: user.uid,
-        name: user.displayName || email.split('@')[0],
-        email: user.email || email,
-        role: 'STUDENT',
-        provider: 'email',
-      });
+      const role = getRoleFromEmail(email);
+      const name = email.split('@')[0];
 
+      // Store user in localStorage
+      localStorage.setItem('careerveda_user', JSON.stringify({
+        name,
+        email,
+        role,
+        photoURL: null,
+      }));
+
+      // Initialize student progress data (defaults to all zeros)
+      initStudentData();
+
+      // Preserve pending purchase if any
       const pending = localStorage.getItem('pending_purchase');
       if (pending) {
         localStorage.setItem('purchased_program', pending);
         localStorage.removeItem('pending_purchase');
       }
-      navigate('/dashboard');
+
+      // Navigate based on role
+      const routeMap: Record<string, string> = {
+        admin: '/admin',
+        mentor: '/mentor',
+        recruiter: '/recruiter',
+        student: '/dashboard',
+      };
+      navigate(routeMap[role] || '/dashboard');
     } catch (err: any) {
       setError(err.message || 'Failed to sign in. Please verify your credentials.');
     } finally {
@@ -65,35 +67,9 @@ export default function LoginPage() {
     }
   };
 
-  const handleProviderLogin = async (providerName: 'google' | 'github') => {
-    setError('');
-    setLoading(true);
-    try {
-      const provider = providerName === 'google' ? new GoogleAuthProvider() : new GithubAuthProvider();
-      const userCredential = await signInWithPopup(auth, provider);
-      const user = userCredential.user;
-
-      // Sync user to PostgreSQL
-      await syncUserToPostgres({
-        firebase_uid: user.uid,
-        name: user.displayName || 'User',
-        email: user.email || '',
-        role: 'STUDENT',
-        provider: providerName,
-        photo_url: user.photoURL || undefined,
-      });
-
-      const pending = localStorage.getItem('pending_purchase');
-      if (pending) {
-        localStorage.setItem('purchased_program', pending);
-        localStorage.removeItem('pending_purchase');
-      }
-      navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.message || `Failed to sign in with ${providerName}.`);
-    } finally {
-      setLoading(false);
-    }
+  // Social login handlers are disabled when Firebase is commented out
+  const handleProviderLogin = async (_providerName: 'google' | 'github') => {
+    setError('Social login is unavailable in offline mode. Please use email/password.');
   };
 
   return (

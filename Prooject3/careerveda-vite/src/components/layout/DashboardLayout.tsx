@@ -63,6 +63,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const portalType = getPortalType(location.pathname);
   const links = sidebarLinks[portalType];
 
+  // Read user from localStorage
+  const raw = typeof window !== 'undefined' ? localStorage.getItem('careerveda_user') : null;
+  const storedUser = raw ? JSON.parse(raw) : null;
+  const displayName = storedUser?.name || 'User';
+  const displayEmail = storedUser?.email || 'user@email.com';
+  const displayRole = storedUser?.role || portalType;
+
   return (
     <div className="min-h-screen bg-[#FAFAFC] flex">
       {/* Sidebar */}
@@ -158,11 +165,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 className="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-50 rounded-lg transition-colors"
               >
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-xs font-bold">
-                  U
+                  {displayName.charAt(0).toUpperCase()}
                 </div>
                 <div className="hidden sm:block text-left">
-                  <p className="text-xs font-semibold text-slate-800">User</p>
-                  <p className="text-[10px] text-slate-400">Student</p>
+                  <p className="text-xs font-semibold text-slate-800">{displayName}</p>
+                  <p className="text-[10px] text-slate-400 capitalize">{displayRole}</p>
                 </div>
                 <ChevronDown size={14} className="text-slate-400" />
               </button>
@@ -172,8 +179,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <div className="fixed inset-0 z-10" onClick={() => setProfileOpen(false)} />
                   <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-100 rounded-xl shadow-xl z-20 p-2">
                     <div className="px-3 py-2 border-b border-slate-100 mb-1">
-                      <p className="text-xs font-semibold text-slate-800">User Name</p>
-                      <p className="text-[10px] text-slate-400">user@email.com</p>
+                      <p className="text-xs font-semibold text-slate-800">{displayName}</p>
+                      <p className="text-[10px] text-slate-400">{displayEmail}</p>
                     </div>
                     <Link to="/settings" className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900">
                       <Settings size={14} /> Settings

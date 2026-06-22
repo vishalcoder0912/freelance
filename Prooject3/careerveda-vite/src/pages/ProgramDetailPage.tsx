@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+// Firebase imports commented out – using localStorage auth instead.
+// import { onAuthStateChanged } from 'firebase/auth';
+// import { auth } from '@/lib/firebase';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles, Calendar, Clock, Award, ShieldCheck, ArrowRight, ArrowLeft, Loader2,
@@ -27,10 +28,11 @@ export default function ProgramDetailPage() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-    return () => unsubscribe();
+    // Read user from localStorage instead of Firebase onAuthStateChanged
+    const raw = localStorage.getItem('careerveda_user');
+    if (raw) {
+      try { setCurrentUser(JSON.parse(raw)); } catch { setCurrentUser(null); }
+    }
   }, []);
 
   const base = slug ? (PROGRAMS_DATA[slug] || PROGRAM_DETAILS[slug]) : null;
