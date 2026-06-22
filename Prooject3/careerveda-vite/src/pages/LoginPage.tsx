@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Brain, Mail, Lock, ShieldAlert, Eye, EyeOff, ChevronRight,
+  Brain, Mail, Lock, Shield, ShieldAlert, Eye, EyeOff, ChevronRight,
   ArrowLeft, Sparkles, Check, Users, Briefcase, MessageSquare,
-  Target, Star, GraduationCap, FileText, Zap, BarChart3,
+  Target, Star, GraduationCap, FileText, BarChart3,
   TrendingUp, Award, BookOpen, Clock, Calendar, UserCheck,
-  Search, PlusCircle, Video, ClipboardList, Home, Map, Send, Upload
+  Search, Video, ClipboardList, Map, Send
 } from 'lucide-react';
 import { login, getRoleRedirect, isValidEmailForRole, type UserRole } from '@/lib/auth';
 import { initStudentData } from '@/lib/studentData';

@@ -4,11 +4,12 @@ import {
   LayoutDashboard, BookOpen, FolderKanban, Award, Briefcase, 
   Users, MessageSquare, Bell, Search, ChevronDown, LogOut, 
   Menu, X, Brain, User, GraduationCap, Sparkles, Settings,
-  BarChart3, FileText, Video, Calendar
+  BarChart3, FileText, Video, Calendar, ClipboardList, Home,
+  DollarSign, Activity, Shield, TrendingUp, Linkedin, Code2, Mail
 } from 'lucide-react';
 import { logout, getCurrentUser } from '@/lib/auth';
 
-const sidebarLinks = {
+const sidebarLinks: Record<string, { label: string; icon: any; href: string }[]> = {
   student: [
     { label: 'Overview', icon: LayoutDashboard, href: '/dashboard' },
     { label: 'My Learning', icon: BookOpen, href: '/my-learning' },
@@ -20,29 +21,36 @@ const sidebarLinks = {
   ],
   mentor: [
     { label: 'Dashboard', icon: LayoutDashboard, href: '/mentor' },
-    { label: 'My Students', icon: Users, href: '/mentor/students' },
-    { label: 'Sessions', icon: Video, href: '/mentor/sessions' },
-    { label: 'Assignments', icon: FileText, href: '/mentor/assignments' },
-    { label: 'Feedback', icon: MessageSquare, href: '/mentor/feedback' },
-    { label: 'Reports', icon: BarChart3, href: '/mentor/reports' },
+    { label: 'Students', icon: Users, href: '/mentor/students' },
+    { label: 'Assignments', icon: ClipboardList, href: '/mentor/assignments' },
+    { label: 'Projects', icon: FolderKanban, href: '/mentor/projects' },
+    { label: 'Sessions', icon: Calendar, href: '/mentor/sessions' },
+    { label: 'Messages', icon: MessageSquare, href: '/mentor/messages' },
+    { label: 'Analytics', icon: BarChart3, href: '/mentor/analytics' },
+    { label: 'Profile', icon: User, href: '/mentor/profile' },
   ],
   recruiter: [
     { label: 'Dashboard', icon: LayoutDashboard, href: '/recruiter' },
-    { label: 'Post Jobs', icon: Briefcase, href: '/recruiter/jobs' },
+    { label: 'Job Listings', icon: Briefcase, href: '/recruiter/jobs' },
     { label: 'Candidates', icon: Users, href: '/recruiter/candidates' },
+    { label: 'Applications', icon: FileText, href: '/recruiter/applications' },
     { label: 'Interviews', icon: Calendar, href: '/recruiter/interviews' },
-    { label: 'Shortlist', icon: Award, href: '/recruiter/shortlist' },
+    { label: 'Offers', icon: Award, href: '/recruiter/offers' },
+    { label: 'Analytics', icon: TrendingUp, href: '/recruiter/analytics' },
+    { label: 'Company', icon: Linkedin, href: '/recruiter/company' },
   ],
   admin: [
-    { label: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
-    { label: 'Users', icon: Users, href: '/admin/users' },
+    { label: 'Overview', icon: LayoutDashboard, href: '/admin' },
+    { label: 'Students', icon: Users, href: '/admin/students' },
     { label: 'Programs', icon: BookOpen, href: '/admin/programs' },
-    { label: 'Faculty', icon: GraduationCap, href: '/admin/faculty' },
-    { label: 'Blogs', icon: FileText, href: '/admin/blogs' },
-    { label: 'Placements', icon: Briefcase, href: '/admin/placements' },
-    { label: 'Applications', icon: FileText, href: '/admin/applications' },
-    { label: 'Payments', icon: Sparkles, href: '/admin/payments' },
-    { label: 'Analytics', icon: BarChart3, href: '/admin/analytics' },
+    { label: 'Mentors', icon: GraduationCap, href: '/admin/mentors' },
+    { label: 'Recruiters', icon: Briefcase, href: '/admin/recruiters' },
+    { label: 'Placements', icon: Award, href: '/admin/placements' },
+    { label: 'Payments', icon: DollarSign, href: '/admin/payments' },
+    { label: 'Content', icon: FileText, href: '/admin/content' },
+    { label: 'AI Usage', icon: Brain, href: '/admin/ai' },
+    { label: 'Reports', icon: BarChart3, href: '/admin/reports' },
+    { label: 'Settings', icon: Settings, href: '/admin/settings' },
   ],
 };
 
@@ -90,7 +98,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <nav className="flex-1 overflow-y-auto p-4 space-y-1">
             {links.map((link) => {
               const Icon = link.icon;
-              const isActive = location.pathname === link.href;
+              const isActive = link.href === `/${portalType}` ? location.pathname === link.href : location.pathname.startsWith(link.href);
               return (
                 <Link
                   key={link.href}
