@@ -8,13 +8,15 @@ import {
   Home, Layers, ClipboardList, Terminal, GraduationCap, Send, Calendar, Trophy, Play, BarChart3, RefreshCw
 } from 'lucide-react';
 import { PROGRAMS_DATA, PROGRAMS_LIST } from '@/lib/programsData';
+import { getProgramLessons, getLessonKey } from '@/lib/lessonsData';
 import type { StudentData } from '@/lib/studentData';
 import {
   getStudentData, completeOnboardingStep as completeStep,
   getOnboardingProgress, isOnboardingComplete, getCourseProgressPercent,
   getAttendancePercent, getAIScore, getPlacementReadiness, getPlacementTier,
   isPlacementLocked, getUnlockedFeatures, getOnboardingStepLabel,
-  getOnboardingStepNav, updateStudentData, simulateWeeklyProgress
+  getOnboardingStepNav, updateStudentData, simulateWeeklyProgress,
+  isLessonCompleted
 } from '@/lib/studentData';
 
 interface OnboardingStep {
@@ -70,6 +72,19 @@ export default function DashboardPage() {
   const handleResetProgram = () => {
     localStorage.removeItem('purchased_program');
     setPurchasedSlug(null);
+  };
+
+  const getFirstIncompleteLessonLink = (): string | null => {
+    if (!purchasedSlug) return null;
+    const modules = getProgramLessons(purchasedSlug);
+    for (const mod of modules) {
+      for (const lesson of mod.lessons) {
+        if (!isLessonCompleted(getLessonKey(mod.id, lesson.id))) {
+          return `/learn/${purchasedSlug}/${mod.id}/${lesson.id}`;
+        }
+      }
+    }
+    return null;
   };
 
   if (loading || !data) {
@@ -393,7 +408,10 @@ export default function DashboardPage() {
               </div>
               {activeProgram && (
                 <button
-                  onClick={() => navigate('/my-learning')}
+                  onClick={() => {
+                    const link = getFirstIncompleteLessonLink();
+                    navigate(link || '/my-learning');
+                  }}
                   className="px-5 py-2.5 bg-[#6D28D9] hover:bg-[#5B21B6] text-white text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5"
                 >
                   <Play size={14} /> Resume Learning
@@ -493,6 +511,25 @@ export default function DashboardPage() {
                   {programModules.map((module, idx) => {
                     const isCompleted = idx < moduleProgress;
                     const isCurrent = idx === moduleProgress;
+                    const modData = purchasedSlug ? getProgramLessons(purchasedSlug)[idx] : null;
+                    const firstLessonId = modData?.lessons[0]?.id;
+                    const moduleLink = purchasedSlug && firstLessonId ? `/learn/${purchasedSlug}/m${idx}/${firstLessonId}` : null;
+                    const Content = (
+                      <div className={`flex-1 p-3 rounded-xl border transition-all ${isCompleted ? 'bg-emerald-50/50 border-emerald-100' : isCurrent ? 'bg-violet-50/50 border-violet-200' : 'bg-slate-50/50 border-slate-100'} ${moduleLink && (isCompleted || isCurrent) ? 'hover:shadow-md hover:border-[#6D28D9]/30' : ''}`}>
+                        <div className="flex items-center justify-between">
+                          <span className={`text-xs font-bold ${isCompleted ? 'text-emerald-700' : isCurrent ? 'text-violet-700' : 'text-slate-500'}`}>
+                            {isCompleted ? 'Completed' : isCurrent ? 'In Progress' : 'Locked'}
+                          </span>
+                          <span className="text-[9px] text-slate-400 font-medium">Level {idx + 1}</span>
+                        </div>
+                        <p className={`text-sm font-bold mt-0.5 ${isCompleted ? 'text-emerald-800' : isCurrent ? 'text-slate-800' : 'text-slate-500'}`}>{module}</p>
+                        {(isCompleted || isCurrent) && moduleLink && (
+                          <p className="text-[9px] font-medium text-[#6D28D9] mt-1 flex items-center gap-1">
+                            {isCurrent ? 'Continue module' : 'Review module'} <ChevronRight size={10} />
+                          </p>
+                        )}
+                      </div>
+                    );
                     return (
                       <div key={idx} className="relative flex items-start gap-4 pb-5 last:pb-0">
                         <div className={`relative z-10 w-10 h-10 rounded-xl flex items-center justify-center border-2 shrink-0 ${
@@ -504,15 +541,11 @@ export default function DashboardPage() {
                         }`}>
                           {isCompleted ? <Check size={16} /> : isCurrent ? <Play size={14} className="ml-0.5" /> : <Lock size={12} />}
                         </div>
-                        <div className={`flex-1 p-3 rounded-xl border ${isCompleted ? 'bg-emerald-50/50 border-emerald-100' : isCurrent ? 'bg-violet-50/50 border-violet-200' : 'bg-slate-50/50 border-slate-100'}`}>
-                          <div className="flex items-center justify-between">
-                            <span className={`text-xs font-bold ${isCompleted ? 'text-emerald-700' : isCurrent ? 'text-violet-700' : 'text-slate-500'}`}>
-                              {isCompleted ? 'Completed' : isCurrent ? 'In Progress' : 'Locked'}
-                            </span>
-                            <span className="text-[9px] text-slate-400 font-medium">Level {idx + 1}</span>
-                          </div>
-                          <p className={`text-sm font-bold mt-0.5 ${isCompleted ? 'text-emerald-800' : isCurrent ? 'text-slate-800' : 'text-slate-500'}`}>{module}</p>
-                        </div>
+                        {moduleLink && (isCompleted || isCurrent) ? (
+                          <button onClick={() => navigate(moduleLink!)} className="flex-1 text-left cursor-pointer">
+                            {Content}
+                          </button>
+                        ) : Content}
                       </div>
                     );
                   })}

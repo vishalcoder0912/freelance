@@ -6,9 +6,11 @@ import {
   TrendingUp, BookOpen, Play, Clock, Star, Award, GraduationCap, Shield, Trophy, Zap
 } from 'lucide-react';
 import { PROGRAMS_DATA, PROGRAMS_LIST } from '@/lib/programsData';
+import { getProgramLessons, getLessonKey } from '@/lib/lessonsData';
 import {
   getStudentData, getCourseProgressPercent, getAttendancePercent,
-  getAIScore, getPlacementReadiness, getUnlockedFeatures
+  getAIScore, getPlacementReadiness, getUnlockedFeatures,
+  isLessonCompleted
 } from '@/lib/studentData';
 
 const PATH_ICONS: Record<string, any> = {
@@ -208,9 +210,17 @@ export default function RoadmapPage() {
                                 {status === 'completed' ? 'Completed' : status === 'current' ? 'In Progress' : 'Locked'}
                               </span>
                             </div>
-                            {status === 'current' && (
+                            {status === 'current' && activePath && (
                               <button
-                                onClick={() => purchased ? navigate('/my-learning') : navigate('/programs') }
+                                onClick={() => {
+                                  if (!purchased) { navigate('/programs'); return; }
+                                  const modules = getProgramLessons(activePath);
+                                  const mod = modules[idx];
+                                  if (!mod) return;
+                                  const firstIncomplete = mod.lessons.find(l => !isLessonCompleted(getLessonKey(mod.id, l.id)));
+                                  const target = firstIncomplete || mod.lessons[0];
+                                  if (target) navigate(`/learn/${activePath}/${mod.id}/${target.id}`);
+                                }}
                                 className="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[9px] font-bold rounded-lg transition-all cursor-pointer"
                               >
                                 Continue <ChevronRight size={10} className="inline" />

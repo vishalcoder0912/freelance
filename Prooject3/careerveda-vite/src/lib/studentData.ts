@@ -36,6 +36,12 @@ export interface StudentData {
     completed: number;
     total: number;
   };
+  learning: {
+    lessonProgress: Record<string, boolean>;
+    lessonNotes: Record<string, string>;
+    timeSpent: Record<string, number>;
+    currentLesson: string | null;
+  };
   nextClass: string | null;
   assignmentsDue: number;
   selectedCareerPath: string | null;
@@ -78,6 +84,12 @@ export function getDefaultStudentData(): StudentData {
       completed: 0,
       total: 8,
     },
+    learning: {
+      lessonProgress: {},
+      lessonNotes: {},
+      timeSpent: {},
+      currentLesson: null,
+    },
     nextClass: null,
     assignmentsDue: 0,
     selectedCareerPath: null,
@@ -90,7 +102,7 @@ export function getStudentData(): StudentData {
     if (raw) {
       const parsed = JSON.parse(raw);
       const defaults = getDefaultStudentData();
-      return { ...defaults, ...parsed, onboarding: { ...defaults.onboarding, ...parsed.onboarding }, courseProgress: { ...defaults.courseProgress, ...parsed.courseProgress }, attendance: { ...defaults.attendance, ...parsed.attendance }, scores: { ...defaults.scores, ...parsed.scores }, interviews: { ...defaults.interviews, ...parsed.interviews }, weeklyTasks: { ...defaults.weeklyTasks, ...parsed.weeklyTasks } };
+      return { ...defaults, ...parsed, onboarding: { ...defaults.onboarding, ...parsed.onboarding }, courseProgress: { ...defaults.courseProgress, ...parsed.courseProgress }, attendance: { ...defaults.attendance, ...parsed.attendance }, scores: { ...defaults.scores, ...parsed.scores }, interviews: { ...defaults.interviews, ...parsed.interviews }, weeklyTasks: { ...defaults.weeklyTasks, ...parsed.weeklyTasks }, learning: { ...defaults.learning, ...parsed.learning } };
     }
   } catch { /* ignore */ }
   return getDefaultStudentData();
@@ -116,6 +128,7 @@ export function updateStudentData(updates: Partial<StudentData>): StudentData {
   if (updates.scores) merged.scores = { ...current.scores, ...updates.scores };
   if (updates.interviews) merged.interviews = { ...current.interviews, ...updates.interviews };
   if (updates.weeklyTasks) merged.weeklyTasks = { ...current.weeklyTasks, ...updates.weeklyTasks };
+  if (updates.learning) merged.learning = { ...current.learning, ...updates.learning };
   saveStudentData(merged);
   return merged;
 }
@@ -231,6 +244,67 @@ export function getOnboardingStepNav(step: keyof StudentData['onboarding']): str
     careerPathSelected: '/career-paths',
   };
   return nav[step];
+}
+
+export function completeLesson(lessonKey: string): StudentData {
+  const data = getStudentData();
+  data.learning.lessonProgress[lessonKey] = true;
+  data.courseProgress.lessonsCompleted = Object.keys(data.learning.lessonProgress).length;
+  data.courseProgress.totalLessons = Math.max(data.courseProgress.totalLessons, data.courseProgress.lessonsCompleted);
+  saveStudentData(data);
+  return data;
+}
+
+export function isLessonCompleted(lessonKey: string): boolean {
+  return !!getStudentData().learning.lessonProgress[lessonKey];
+}
+
+export function saveLessonNote(lessonKey: string, note: string): void {
+  const data = getStudentData();
+  data.learning.lessonNotes[lessonKey] = note;
+  saveStudentData(data);
+}
+
+export function getLessonNote(lessonKey: string): string {
+  return getStudentData().learning.lessonNotes[lessonKey] || '';
+}
+
+export function setCurrentLesson(lessonKey: string | null): void {
+  const data = getStudentData();
+  data.learning.currentLesson = lessonKey;
+  saveStudentData(data);
+}
+
+export function getModuleProgress(programSlug: string, moduleIndex: number, lessonsPerModule: number): number {
+  const data = getStudentData();
+  const start = moduleIndex * lessonsPerModule;
+  let completed = 0;
+  for (let i = 0; i < lessonsPerModule; i++) {
+    const key = `${programSlug}-m${moduleIndex}-l${i}`;
+    if (data.learning.lessonProgress[key]) completed++;
+  }
+  return lessonsPerModule > 0 ? Math.round((completed / lessonsPerModule) * 100) : 0;
+}
+
+export function getOverallModuleIndex(programSlug: string, moduleIndex: number, lessonsPerModule: number): number {
+  const data = getStudentData();
+  const start = moduleIndex * lessonsPerModule;
+  for (let i = 0; i < lessonsPerModule; i++) {
+    const key = `${programSlug}-m${moduleIndex}-l${i}`;
+    if (!data.learning.lessonProgress[key]) return moduleIndex;
+  }
+  return moduleIndex + 1;
+}
+
+export function getCurrentLessonKey(programSlug: string, modules: { lessons: any[] }[]): string | null {
+  const data = getStudentData();
+  for (let m = 0; m < modules.length; m++) {
+    for (let l = 0; l < modules[m].lessons.length; l++) {
+      const key = `${programSlug}-m${m}-l${l}`;
+      if (!data.learning.lessonProgress[key]) return key;
+    }
+  }
+  return null;
 }
 
 export function simulateWeeklyProgress(): void {
