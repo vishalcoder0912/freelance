@@ -90,8 +90,8 @@ model User {
   updatedAt     DateTime  @updatedAt
 
   enrollments        Enrollment[]
-  assignments        Assignment[]
   submissions        Submission[]
+  projects           Project[]
   certificates       Certificate[]
   mentorSessions     MentorSession[]   @relation("Mentor")
   studentSessions    MentorSession[]   @relation("Student")
@@ -385,6 +385,8 @@ model Application {
 
   job  Job  @relation(fields: [jobId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  placement Placement?
 
   @@unique([jobId, userId])
   @@index([jobId])

@@ -9,94 +9,94 @@ afterEach(() => {
 })
 
 // Mock Firebase
-import { jest } from 'vitest'
+import { vi } from 'vitest'
 
 Object.defineProperty(globalThis, 'firebase', {
   value: {
-    auth: jest.fn(() => ({
+    auth: vi.fn(() => ({
       currentUser: null,
-      onAuthStateChanged: jest.fn(callback => {
+      onAuthStateChanged: vi.fn(callback => {
         callback(null)
-        return jest.fn()
+        return vi.fn()
       }),
-      signInWithEmailAndPassword: jest.fn(),
-      createUserWithEmailAndPassword: jest.fn(),
-      signOut: jest.fn()
+      signInWithEmailAndPassword: vi.fn(),
+      createUserWithEmailAndPassword: vi.fn(),
+      signOut: vi.fn()
     })),
-    firestore: jest.fn(() => ({
-      collection: jest.fn(() => ({
-        doc: jest.fn(() => ({
-          get: jest.fn(),
-          set: jest.fn(),
-          update: jest.fn(),
-          delete: jest.fn()
+    firestore: vi.fn(() => ({
+      collection: vi.fn(() => ({
+        doc: vi.fn(() => ({
+          get: vi.fn(),
+          set: vi.fn(),
+          update: vi.fn(),
+          delete: vi.fn()
         })),
-        add: jest.fn(),
-        get: jest.fn(),
-        update: jest.fn(),
-        delete: jest.fn()
+        add: vi.fn(),
+        get: vi.fn(),
+        update: vi.fn(),
+        delete: vi.fn()
       }))
     })),
-    storage: jest.fn(() => ({
-      ref: jest.fn(() => ({
-        uploadBytes: jest.fn(),
-        getDownloadURL: jest.fn()
+    storage: vi.fn(() => ({
+      ref: vi.fn(() => ({
+        uploadBytes: vi.fn(),
+        getDownloadURL: vi.fn()
       }))
     }))
   },
   writable: true
 })
 
-// Mock MSW
-import { setupWorker } from 'msw'
-import { handlers } from './src/test/handlers'
+// Mock MSW - using server instead of worker for Node/jsdom environment
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
 
-const worker = setupWorker(...handlers)
+const server = setupServer(...handlers)
 
 beforeAll(async () => {
-  await worker.start({
+  await server.listen({
     onUnhandledRequest: 'bypass'
   })
 })
 
 afterAll(async () => {
-  await worker.stop()
+  await server.close()
 })
 
 // Mock IntersectionObserver
 Object.defineProperty(globalThis, 'IntersectionObserver', {
-  value: jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn()
+  value: vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn()
   }))
 })
 
 // Mock ResizeObserver
 Object.defineProperty(globalThis, 'ResizeObserver', {
-  value: jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn()
+  value: vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn()
   }))
 })
 
 // Mock matchMedia
 Object.defineProperty(globalThis, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation(query => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn()
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn()
   }))
 })
 
 // Mock window.scrollTo
 Object.defineProperty(globalThis, 'scrollTo', {
-  value: jest.fn()
+  value: vi.fn()
 })
