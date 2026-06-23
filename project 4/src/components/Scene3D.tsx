@@ -1,7 +1,7 @@
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, PerspectiveCamera, Environment, ContactShadows } from "@react-three/drei";
-import { Mesh, Group, Vector3 } from "three";
+import { Mesh, Group, type BufferGeometry } from "three";
 
 function GoldBarberChair({ mouse }: { mouse: { x: number; y: number } }) {
   const group = useRef<Group>(null!);
@@ -53,6 +53,8 @@ function Particles({ count = 200 }) {
   }, [count]);
 
   const meshRef = useRef<Mesh>(null!);
+  const geoRef = useRef<BufferGeometry>(null!);
+
   useFrame((state) => {
     if (meshRef.current) {
       meshRef.current.rotation.y = state.clock.elapsedTime * 0.02;
@@ -60,9 +62,14 @@ function Particles({ count = 200 }) {
   });
 
   return (
-    <points ref={meshRef as any}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={count} array={positions} itemSize={3} />
+    <points ref={meshRef}>
+      <bufferGeometry ref={geoRef}>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+          count={count}
+          itemSize={3}
+        />
       </bufferGeometry>
       <pointsMaterial size={0.03} color="#c8b04a" transparent opacity={0.6} sizeAttenuation />
     </points>
