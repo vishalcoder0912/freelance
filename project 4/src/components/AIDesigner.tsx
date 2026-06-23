@@ -46,7 +46,7 @@ export default function AIDesigner() {
         >
           <div
             onClick={() => setUploaded(true)}
-            className="flex cursor-pointer flex-col items-center justify-center rounded-sm border-2 border-dashed border-gold/50 bg-luxury-white p-16 transition-all hover:border-gold hover:bg-gold/5"
+            className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gold/40 bg-luxury-white p-12 sm:p-16 transition-all hover:border-gold hover:bg-gold/5 shadow-sm hover:shadow-md"
           >
             <Upload size={40} className="text-gold" />
             <p className="mt-4 font-heading text-xl font-semibold text-premium-black">
