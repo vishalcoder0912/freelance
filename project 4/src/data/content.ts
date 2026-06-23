@@ -1,11 +1,9 @@
 export const navLinks = [
-  { label: "Home", href: "#" },
-  { label: "Collections", href: "#collections" },
-  { label: "Projects", href: "#projects" },
-  { label: "About Us", href: "#about" },
-  { label: "Clients", href: "#clients" },
-  { label: "Blogs", href: "#blogs" },
-  { label: "Contact", href: "#contact" },
+  { label: "HOME", href: "#" },
+  { label: "COLLECTIONS", href: "#collections" },
+  { label: "ABOUT US", href: "#about" },
+  { label: "OUR CLIENTS", href: "#clients" },
+  { label: "BLOGS", href: "#blogs" },
 ];
 
 export const trustedClients = [
@@ -51,32 +49,42 @@ export const collections = [
   {
     title: "Unisex Chairs",
     desc: "Premium hydraulic styling chairs for every salon type.",
-    image: "https://images.unsplash.com/photo-1633681926025-84c23e8cb2d5?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800&q=80",
   },
   {
     title: "Barber Chairs",
     desc: "Heavy-duty barber chairs built for daily commercial use.",
-    image: "https://images.unsplash.com/photo-1585747861115-bc21e20462ef?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&q=80",
   },
   {
     title: "Manicure-Pedicure Stations",
     desc: "Ergonomic stations designed for comfort and durability.",
-    image: "https://images.unsplash.com/photo-1610992015682-3d2f1c669c4a?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=800&q=80",
   },
   {
     title: "Hair Wash Stations",
     desc: "Backwash units with anti-leak systems and chrome finishes.",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=80",
   },
   {
     title: "Beauty Machine",
     desc: "Professional-grade beauty and skincare equipment.",
-    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800&q=80",
   },
   {
-    title: "Reception Desks",
-    desc: "Make a lasting impression with luxury reception furniture.",
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80",
+    title: "Nail Art",
+    desc: "Modern manicure tables, stools, and dedicated setups.",
+    image: "https://images.unsplash.com/photo-1604654894610-df4906b241af?w=800&q=80",
+  },
+  {
+    title: "Salon Accessories",
+    desc: "Essential salon styling equipment, parts, and accessories.",
+    image: "https://images.unsplash.com/photo-1596178060810-72cb74080887?w=800&q=80",
+  },
+  {
+    title: "Reception Desk",
+    desc: "Make a lasting impression with luxury reception desks.",
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80",
   },
 ];
 
