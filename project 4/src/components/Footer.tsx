@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 
 export default function Footer() {
@@ -11,21 +10,28 @@ export default function Footer() {
       <div className="container-main py-20">
         <div className="grid gap-12 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <h3 className="font-heading text-3xl font-bold text-luxury-white">
-              Salon <span className="text-gold">Factory</span>
-            </h3>
-            <p className="mt-4 max-w-md text-gray-500 leading-relaxed">
+            <div className="flex flex-col items-start gap-1 group">
+              <div className="bg-[#d61b2a] px-4 py-1.5 rounded-[5px] border border-[#b21421]">
+                <span className="font-heading text-base font-extrabold tracking-wide text-white uppercase block leading-none">
+                  SALON FACTORY
+                </span>
+              </div>
+              <span className="text-[9px] font-semibold text-gray-500 uppercase tracking-[0.2em] font-body mt-1">
+                Furniture • Tools • Essentials
+              </span>
+            </div>
+            <p className="mt-6 max-w-md text-gray-500 leading-relaxed text-sm">
               India's most trusted salon furniture manufacturer. Premium commercial-grade furniture for luxury salons, barber lounges, and beauty chains across India.
             </p>
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex gap-3 max-w-sm">
               <input
                 type="email"
                 placeholder="Your email for updates"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 border border-white/10 bg-white/5 px-4 py-3 text-sm text-luxury-white placeholder-gray-500 focus:border-gold focus:outline-none"
+                className="flex-1 border border-white/15 bg-white/5 px-4 py-2.5 rounded-full text-sm text-luxury-white placeholder-gray-500 focus:border-gold focus:outline-none font-body"
               />
-              <Button size="sm">Subscribe</Button>
+              <Button size="sm" className="rounded-full">Subscribe</Button>
             </div>
           </div>
           <div>
