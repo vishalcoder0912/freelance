@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { bestSellers } from "../data/content";
 import { Button } from "./ui/button";
+import SafeImage from "./ui/SafeImage";
 
 export default function BestSelling() {
   const ref = useRef<HTMLDivElement>(null!);
@@ -37,10 +38,11 @@ export default function BestSelling() {
             >
               <div className="relative overflow-hidden transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(-5deg)rotateX(5deg)] group-hover:shadow-2xl">
                 <div className="relative h-72 overflow-hidden">
-                  <img
+                  <SafeImage
                     src={product.image}
                     alt={product.name}
                     className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+                    fallbackIcon="⭐"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-premium-black/60 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                   <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">

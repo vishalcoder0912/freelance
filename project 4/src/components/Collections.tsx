@@ -2,6 +2,21 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { collections } from "../data/content";
 import { ArrowRight } from "lucide-react";
+import SafeImage from "./ui/SafeImage";
+
+const getCollectionIcon = (title: string) => {
+  switch (title) {
+    case "Unisex Chairs": return "🪑";
+    case "Barber Chairs": return "💈";
+    case "Manicure-Pedicure Stations": return "💅";
+    case "Hair Wash Stations": return "🚿";
+    case "Beauty Machine": return "⚡";
+    case "Nail Art": return "🎨";
+    case "Salon Accessories": return "⚙️";
+    case "Reception Desk": return "🏢";
+    default: return "🛋️";
+  }
+};
 
 export default function Collections() {
   const ref = useRef<HTMLDivElement>(null!);
@@ -57,10 +72,11 @@ export default function Collections() {
             >
               {/* Product Image Container */}
               <div className="w-full h-[210px] rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center relative p-3">
-                <img
+                <SafeImage
                   src={item.image}
                   alt={item.title}
                   className="h-full w-full object-cover rounded-lg transition-transform duration-500 group-hover:scale-105"
+                  fallbackIcon={getCollectionIcon(item.title)}
                 />
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>

@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { manufacturingSteps } from "../data/content";
+import SafeImage from "./ui/SafeImage";
 
 export default function Manufacturing() {
   const ref = useRef<HTMLDivElement>(null!);
@@ -37,10 +38,11 @@ export default function Manufacturing() {
               className="group bg-white rounded-2xl overflow-hidden border border-gray-150 shadow-sm transition-all duration-300 hover:scale-102 hover:shadow-lg hover:border-gold/40 cursor-pointer flex flex-col h-[280px]"
             >
               <div className="w-full h-[180px] overflow-hidden bg-gray-50 relative">
-                <img
+                <SafeImage
                   src={step.image}
                   alt={step.title}
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  fallbackIcon="⚙️"
                 />
                 <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>

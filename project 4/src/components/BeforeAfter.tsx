@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Button } from "./ui/button";
+import SafeImage from "./ui/SafeImage";
 
 const transformations = [
   {
@@ -83,10 +84,11 @@ export default function BeforeAfter() {
                 <div className="absolute top-4 left-4 z-10 bg-premium-black/85 backdrop-blur px-4 py-1.5 rounded-lg shadow-sm">
                   <span className="text-xs uppercase tracking-widest font-extrabold text-gold">{type}</span>
                 </div>
-                <img
+                <SafeImage
                   src={type === "before" ? transformations[active].before : transformations[active].after}
                   alt={`${transformations[active].name} ${type}`}
                   className="h-80 w-full object-cover transition-transform duration-700 hover:scale-103"
+                  fallbackIcon={type === "before" ? "🏚️" : "✨"}
                 />
               </div>
             ))}

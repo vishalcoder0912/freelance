@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import SafeImage from "./ui/SafeImage";
 
 const testimonials = [
   {
@@ -70,7 +71,7 @@ export default function Testimonials() {
               </div>
               
               <div className="mt-6 flex items-center gap-4 pt-4 border-t border-gray-50">
-                <img src={item.image} alt={item.name} className="h-12 w-12 rounded-full object-cover border border-gray-100 shadow-inner" />
+                <SafeImage src={item.image} alt={item.name} className="h-12 w-12 rounded-full object-cover border border-gray-100 shadow-inner" fallbackIcon="👤" />
                 <div>
                   <p className="font-bold text-premium-black text-sm sm:text-base font-body">{item.name}</p>
                   <p className="text-xs text-gray-500 font-semibold">{item.salon}, {item.location}</p>

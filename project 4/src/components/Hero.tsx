@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Truck, Tag, Palette, Award, CheckCircle } from "lucide-react";
 import { Button } from "./ui/button";
+import SafeImage from "./ui/SafeImage";
 
 const slides = [
   {
@@ -149,10 +150,11 @@ export default function Hero() {
                 transition={{ duration: 0.8 }}
                 className="absolute inset-0"
               >
-                <img
+                <SafeImage
                   src={slides[currentSlide].image}
                   alt={slides[currentSlide].name}
                   className="h-full w-full object-cover"
+                  fallbackIcon="💈"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 text-white text-left">

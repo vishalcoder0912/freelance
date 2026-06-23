@@ -54,3 +54,33 @@ body {
 .animate-scroll-left:hover {
   animation-play-state: paused;
 }
+
+/* Custom Leaflet Controls */
+.leaflet-bar {
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+.leaflet-bar a {
+  background-color: #ffffff !important;
+  color: #111111 !important;
+  border: none !important;
+  transition: all 0.2s ease;
+}
+.leaflet-bar a:hover {
+  background-color: #fcfbf7 !important;
+  color: #c8b04a !important;
+}
+.leaflet-tooltip {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  color: #111111 !important;
+}
+.leaflet-tooltip-top:before {
+  border-top-color: #ffffff !important;
+}
+
