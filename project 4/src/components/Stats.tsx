@@ -28,8 +28,9 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
 
   return (
     <div ref={ref} className="text-center">
-      <p className="stat-value font-heading text-5xl font-bold text-gold md:text-6xl">
-        {0}{suffix}
+      <p className="font-heading text-5xl font-bold text-gold md:text-6xl">
+        <span className="stat-value">0</span>
+        {suffix}
       </p>
       <p className="mt-2 text-sm uppercase tracking-wider text-gray-500">{label}</p>
     </div>
