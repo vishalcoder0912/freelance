@@ -33,31 +33,34 @@ export default function BeforeAfter() {
   const [active, setActive] = useState(0);
 
   return (
-    <section ref={ref} className="bg-premium-black py-24" id="projects">
+    <section ref={ref} className="bg-[#fcfbfa] py-24 border-b border-gray-100" id="projects">
       <div className="container-main">
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-center text-sm uppercase tracking-[0.3em] text-gold"
+          className="text-center text-sm uppercase tracking-[0.3em] text-gold font-body font-bold"
         >
           Transformations
         </motion.p>
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.1 }}
-          className="mt-4 text-center font-heading text-4xl text-luxury-white md:text-5xl lg:text-6xl"
+          className="mt-4 text-center font-heading text-4xl font-bold text-premium-black md:text-5xl lg:text-6xl"
         >
           Before & After <span className="text-gold">Transformations</span>
         </motion.h2>
 
-        <div className="mt-10 flex justify-center gap-4">
+        {/* Tab Buttons */}
+        <div className="mt-10 flex justify-center gap-3 flex-wrap">
           {transformations.map((t, i) => (
             <button
               key={t.name}
               onClick={() => setActive(i)}
-              className={`px-6 py-3 text-sm font-medium transition-all duration-300 ${
-                active === i ? "bg-gold text-premium-black" : "border border-white/20 text-gray-400 hover:border-gold/50"
+              className={`px-6 py-2.5 text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 rounded-full cursor-pointer ${
+                active === i
+                  ? "bg-gold text-premium-black shadow-md shadow-gold/15"
+                  : "border border-gray-200 bg-white text-gray-500 hover:border-gold/50"
               }`}
             >
               {t.name}
@@ -65,6 +68,7 @@ export default function BeforeAfter() {
           ))}
         </div>
 
+        {/* Before / After Images */}
         <AnimatePresence mode="wait">
           <motion.div
             key={active}
@@ -72,57 +76,74 @@ export default function BeforeAfter() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
-            className="mt-12 grid gap-8 lg:grid-cols-2"
+            className="mt-12 grid gap-8 md:grid-cols-2"
           >
-            {["before", "after"].map((type, idx) => (
-              <div key={type} className="relative overflow-hidden">
-                <div className="absolute top-4 left-4 z-10 bg-premium-black/80 backdrop-blur px-4 py-2">
-                  <span className="text-xs uppercase tracking-wider text-gold">{type}</span>
+            {["before", "after"].map((type) => (
+              <div key={type} className="relative rounded-2xl overflow-hidden shadow-md border border-gray-150">
+                <div className="absolute top-4 left-4 z-10 bg-premium-black/85 backdrop-blur px-4 py-1.5 rounded-lg shadow-sm">
+                  <span className="text-xs uppercase tracking-widest font-extrabold text-gold">{type}</span>
                 </div>
                 <img
                   src={type === "before" ? transformations[active].before : transformations[active].after}
-                  alt={type}
-                  className="h-80 w-full object-cover transition-all duration-700 hover:scale-105"
+                  alt={`${transformations[active].name} ${type}`}
+                  className="h-80 w-full object-cover transition-transform duration-700 hover:scale-103"
                 />
               </div>
             ))}
           </motion.div>
         </AnimatePresence>
 
+        {/* Details Grid */}
         <motion.div
           key={`details-${active}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-10 grid gap-8 lg:grid-cols-3"
+          transition={{ duration: 0.5 }}
+          className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 text-left"
         >
-          <div className="rounded-sm border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <p className="text-xs uppercase tracking-wider text-gray-500">Budget</p>
-            <p className="mt-1 font-heading text-2xl font-bold text-gold">{transformations[active].budget}</p>
-            <p className="text-xs text-gray-500">Timeline: {transformations[active].timeline}</p>
+          <div className="rounded-2xl border border-gray-150 bg-white p-6 shadow-sm">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Budget & Timeline</p>
+            <p className="mt-2 font-heading text-2xl font-bold text-gold">{transformations[active].budget}</p>
+            <p className="text-xs text-gray-500 mt-1 font-semibold">Completed in {transformations[active].timeline}</p>
           </div>
-          <div className="rounded-sm border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <p className="text-xs uppercase tracking-wider text-gray-500">Products Used</p>
-            <ul className="mt-2 space-y-1">
+          
+          <div className="rounded-2xl border border-gray-150 bg-white p-6 shadow-sm">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Products Installed</p>
+            <ul className="mt-2.5 space-y-1">
               {transformations[active].products.map((p) => (
-                <li key={p} className="text-sm text-gray-300">• {p}</li>
+                <li key={p} className="text-xs sm:text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-gold flex-shrink-0" />
+                  {p}
+                </li>
               ))}
             </ul>
           </div>
-          <div className="rounded-sm border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <p className="text-xs uppercase tracking-wider text-gray-500">Business Impact</p>
-            <p className="mt-2 text-sm text-gray-300">{transformations[active].impact}</p>
+          
+          <div className="rounded-2xl border border-gray-150 bg-white p-6 shadow-sm sm:col-span-2 lg:col-span-1">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Business Impact</p>
+            <p className="mt-2 text-xs sm:text-sm font-bold text-premium-black leading-relaxed">
+              {transformations[active].impact}
+            </p>
           </div>
         </motion.div>
 
+        {/* Review Quote & CTA */}
         <motion.div
           key={`review-${active}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="mt-8 text-center"
+          transition={{ duration: 0.6 }}
+          className="mt-10 text-center max-w-2xl mx-auto space-y-6"
         >
-          <p className="text-lg italic text-gray-400">"{transformations[active].review}"</p>
-          <div className="mt-6">
-            <Button>Start Your Transformation</Button>
+          <p className="text-base sm:text-lg italic text-gray-600 font-serif leading-relaxed">
+            "{transformations[active].review}"
+          </p>
+          <div className="pt-2">
+            <a href="#contact">
+              <Button className="rounded-full px-8 py-3 text-sm font-bold shadow-md hover:shadow-lg">
+                Start Your Transformation
+              </Button>
+            </a>
           </div>
         </motion.div>
       </div>
