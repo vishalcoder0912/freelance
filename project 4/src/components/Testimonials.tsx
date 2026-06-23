@@ -33,20 +33,20 @@ export default function Testimonials() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <section ref={ref} className="bg-premium-black py-24">
+    <section ref={ref} className="bg-[#faf9f6] py-24 border-b border-gray-100">
       <div className="container-main">
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-center text-sm uppercase tracking-[0.3em] text-gold"
+          className="text-center text-sm uppercase tracking-[0.3em] text-gold font-bold font-body"
         >
           Testimonials
         </motion.p>
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.1 }}
-          className="mt-4 text-center font-heading text-4xl text-luxury-white md:text-5xl lg:text-6xl"
+          className="mt-4 text-center font-heading text-4xl font-bold text-premium-black md:text-5xl lg:text-6xl"
         >
           What Our <span className="text-gold">Clients Say</span>
         </motion.h2>
@@ -57,18 +57,23 @@ export default function Testimonials() {
               key={item.name}
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.15 + i * 0.1 }}
-              className="group rounded-sm border border-white/10 bg-white/5 p-8 backdrop-blur transition-all duration-500 hover:bg-white/10 hover:border-gold/30"
+              transition={{ delay: 0.15 + i * 0.08 }}
+              className="group rounded-2xl border border-gray-150 bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-gold/40 cursor-pointer flex flex-col justify-between text-left"
             >
-              <div className="text-gold text-lg">
-                {"★".repeat(item.rating)}{"☆".repeat(5 - item.rating)}
+              <div>
+                <div className="text-gold text-lg flex gap-0.5">
+                  {"★".repeat(item.rating)}{"☆".repeat(5 - item.rating)}
+                </div>
+                <p className="mt-4 text-sm sm:text-base leading-relaxed text-gray-600 font-body italic">
+                  "{item.text}"
+                </p>
               </div>
-              <p className="mt-4 text-lg leading-relaxed text-gray-300">"{item.text}"</p>
-              <div className="mt-6 flex items-center gap-4">
-                <img src={item.image} alt={item.name} className="h-12 w-12 rounded-full object-cover" />
+              
+              <div className="mt-6 flex items-center gap-4 pt-4 border-t border-gray-50">
+                <img src={item.image} alt={item.name} className="h-12 w-12 rounded-full object-cover border border-gray-100 shadow-inner" />
                 <div>
-                  <p className="font-semibold text-luxury-white">{item.name}</p>
-                  <p className="text-sm text-gray-500">{item.salon}, {item.location}</p>
+                  <p className="font-bold text-premium-black text-sm sm:text-base font-body">{item.name}</p>
+                  <p className="text-xs text-gray-500 font-semibold">{item.salon}, {item.location}</p>
                 </div>
               </div>
             </motion.div>
