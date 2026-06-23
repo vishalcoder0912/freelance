@@ -34,7 +34,7 @@ export default function Locations() {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.15 + i * 0.1 }}
-              className="group rounded-sm border border-beige bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-lg"
+              className="group rounded-2xl border border-gray-150 bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-gold/40"
             >
               <h3 className="font-heading text-2xl font-semibold text-premium-black">{loc.title}</h3>
               <div className="mt-6 space-y-4">
