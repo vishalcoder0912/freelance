@@ -1,58 +1,85 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { collections } from "../data/content";
+import { ArrowRight } from "lucide-react";
 
 export default function Collections() {
   const ref = useRef<HTMLDivElement>(null!);
   const isInView = useInView(ref, { once: true });
 
   return (
-    <section ref={ref} className="bg-beige py-24" id="collections">
+    <section ref={ref} className="bg-[#fcfbfa] py-24" id="collections">
       <div className="container-main">
-        <div className="text-center">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            className="text-sm uppercase tracking-[0.3em] text-gold"
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 border-b border-gray-100 pb-8">
+          <div className="text-left">
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              className="text-xs font-bold uppercase tracking-[0.3em] text-gold"
+            >
+              THE SELECTION
+            </motion.p>
+            <motion.h2
+              initial={{ opacity: 0, y: 25 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.1 }}
+              className="mt-3 font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-premium-black"
+            >
+              Premium Salon Furniture.
+            </motion.h2>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.2 }}
           >
-            Product Range
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 }}
-            className="mt-4 font-heading text-4xl text-premium-black md:text-5xl lg:text-6xl"
-          >
-            Explore <span className="text-gold">Collections</span>
-          </motion.h2>
+            <a
+              href="#collections"
+              className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-[#555] hover:text-gold transition-colors duration-300 group"
+            >
+              VIEW ALL CATEGORIES
+              <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1 text-gold" />
+            </a>
+          </motion.div>
         </div>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* 8 Categories Grid */}
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {collections.map((item, i) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.15 + i * 0.08 }}
-              className="group relative h-80 cursor-pointer overflow-hidden"
+              transition={{ delay: 0.1 + i * 0.05 }}
+              className="group bg-white rounded-2xl border border-gray-150 shadow-sm p-4 flex flex-col justify-between h-[340px] cursor-pointer transition-all duration-300 hover:scale-102 hover:shadow-xl hover:border-[#dfd4a3]"
             >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-premium-black/90 via-premium-black/30 to-transparent p-6 flex flex-col justify-end">
-                <h3 className="font-heading text-2xl font-semibold text-luxury-white transition-all duration-500 group-hover:translate-y-[-4px]">
-                  {item.title}
-                </h3>
-                <p className="mt-2 max-w-xs text-sm text-gray-300 translate-y-4 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                  {item.desc}
-                </p>
-                <span className="mt-3 text-sm text-gold opacity-0 transition-all duration-500 group-hover:opacity-100">
-                  View Collection →
-                </span>
+              {/* Product Image Container */}
+              <div className="w-full h-[210px] rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center relative p-3">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="h-full w-full object-cover rounded-lg transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <div className="absolute inset-0 border border-gold/0 transition-all duration-500 group-hover:border-gold/50" />
+
+              {/* Card Footer Content */}
+              <div className="pt-4 pb-2 flex items-center justify-between">
+                <div className="text-left flex-1 pr-4">
+                  <h3 className="font-heading text-lg font-bold text-[#222] group-hover:text-gold transition-colors duration-300 leading-tight">
+                    {item.title}
+                  </h3>
+                  {/* Underline matching the screenshot */}
+                  <div className="w-8 h-[1px] bg-gray-300 mt-2 group-hover:w-full group-hover:bg-gold transition-all duration-500" />
+                </div>
+                
+                {/* Arrow Button appearing on hover */}
+                <div className="w-8 h-8 rounded-full border border-[#dfd4a3] bg-transparent text-gold flex items-center justify-center opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 flex-shrink-0">
+                  <ArrowRight size={14} />
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
