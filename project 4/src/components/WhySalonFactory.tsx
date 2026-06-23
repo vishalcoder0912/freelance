@@ -1,36 +1,51 @@
-import Reveal from "./Reveal";
-import { benefits } from "../data/content";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { bentoGrid } from "../data/content";
+
+const sizeClasses: Record<string, string> = {
+  md: "md:col-span-2 md:row-span-1",
+  sm: "md:col-span-1 md:row-span-1",
+  lg: "md:col-span-2 md:row-span-2",
+};
 
 export default function WhySalonFactory() {
+  const ref = useRef<HTMLDivElement>(null!);
+  const isInView = useInView(ref, { once: true });
+
   return (
-    <section className="py-24" id="why-us">
-      <div className="container-main grid items-center gap-12 lg:grid-cols-2">
-        <Reveal direction="left">
-          <div className="h-[500px] overflow-hidden rounded-sm">
-            <img
-              src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&q=80"
-              alt="Salon Factory Manufacturing"
-              className="h-full w-full object-cover"
-            />
-          </div>
-        </Reveal>
-        <div>
-          <Reveal direction="right">
-            <h2 className="font-heading text-4xl text-primary md:text-5xl">Why Salon Factory</h2>
-          </Reveal>
-          <div className="mt-10 space-y-8">
-            {benefits.map((item, i) => (
-              <Reveal key={item.title} direction="right" delay={i * 0.15}>
-                <div className="group flex gap-5 border-l-2 border-secondary/30 p-4 transition hover:border-secondary">
-                  <div className="mt-1 text-2xl">{item.icon}</div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-primary">{item.title}</h3>
-                    <p className="mt-1 text-gray-600">{item.description}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+    <section ref={ref} className="bg-beige py-24" id="about">
+      <div className="container-main">
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          className="text-center text-sm uppercase tracking-[0.3em] text-gold"
+        >
+          Why Choose Us
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.1 }}
+          className="mt-4 text-center font-heading text-4xl text-premium-black md:text-5xl lg:text-6xl"
+        >
+          Why Salon <span className="text-gold">Factory</span>
+        </motion.h2>
+
+        <div className="mt-14 grid gap-4 md:grid-cols-3 md:grid-rows-2">
+          {bentoGrid.map((item, i) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.1 + i * 0.06 }}
+              className={`group relative overflow-hidden rounded-sm bg-luxury-white p-8 shadow-sm transition-all duration-500 hover:shadow-xl ${sizeClasses[item.size] || ""}`}
+            >
+              <span className="text-3xl">{item.icon}</span>
+              <h3 className="mt-4 font-heading text-xl font-semibold text-premium-black">{item.title}</h3>
+              <p className="mt-2 text-gray-600">{item.desc}</p>
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-gold transition-all duration-500 group-hover:w-full" />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

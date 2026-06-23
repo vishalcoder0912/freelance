@@ -1,37 +1,60 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "./ui/button";
+
 export default function Footer() {
   const year = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+
   return (
-    <footer className="bg-accent py-16">
-      <div className="container-main">
-        <div className="grid gap-10 md:grid-cols-4">
-          <div className="md:col-span-2">
-            <h3 className="font-heading text-2xl font-bold text-white">
-              Salon <span className="text-secondary">Factory</span>
+    <footer className="bg-premium-black">
+      <div className="container-main py-20">
+        <div className="grid gap-12 lg:grid-cols-4">
+          <div className="lg:col-span-2">
+            <h3 className="font-heading text-3xl font-bold text-luxury-white">
+              Salon <span className="text-gold">Factory</span>
             </h3>
-            <p className="mt-3 max-w-md text-gray-400">
-              India's most trusted salon furniture manufacturer. Premium salon infrastructure for luxury spaces across the country.
+            <p className="mt-4 max-w-md text-gray-500 leading-relaxed">
+              India's most trusted salon furniture manufacturer. Premium commercial-grade furniture for luxury salons, barber lounges, and beauty chains across India.
             </p>
+            <div className="mt-6 flex gap-3">
+              <input
+                type="email"
+                placeholder="Your email for updates"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-1 border border-white/10 bg-white/5 px-4 py-3 text-sm text-luxury-white placeholder-gray-500 focus:border-gold focus:outline-none"
+              />
+              <Button size="sm">Subscribe</Button>
+            </div>
           </div>
           <div>
-            <h4 className="font-semibold text-white">Quick Links</h4>
-            <ul className="mt-4 space-y-2 text-sm text-gray-400">
-              <li><a href="#collections" className="hover:text-secondary transition">Collections</a></li>
-              <li><a href="#products" className="hover:text-secondary transition">Products</a></li>
-              <li><a href="#projects" className="hover:text-secondary transition">Projects</a></li>
-              <li><a href="#quote" className="hover:text-secondary transition">Get Quote</a></li>
+            <h4 className="font-semibold text-luxury-white">Quick Links</h4>
+            <ul className="mt-4 space-y-3">
+              {["Collections", "Products", "Projects", "About Us", "Contact"].map((item) => (
+                <li key={item}>
+                  <a href={`#${item.toLowerCase().replace(/\s/g, "-")}`} className="text-sm text-gray-500 transition-colors hover:text-gold">
+                    {item}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-white">Contact</h4>
-            <ul className="mt-4 space-y-2 text-sm text-gray-400">
+            <h4 className="font-semibold text-luxury-white">Contact</h4>
+            <ul className="mt-4 space-y-3 text-sm text-gray-500">
               <li>info@salonfactory.in</li>
-              <li>+91 98765 43210</li>
-              <li>Delhi, India</li>
+              <li>+91 93355 66771</li>
+              <li>Delhi · Lucknow</li>
             </ul>
           </div>
         </div>
-        <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-gray-500">
-          <p>© {year} Salon Factory. All rights reserved.</p>
+        <div className="mt-16 border-t border-white/10 pt-8 flex flex-col items-center justify-between gap-4 md:flex-row">
+          <p className="text-sm text-gray-600">© {year} Salon Factory. All rights reserved.</p>
+          <div className="flex gap-6 text-sm text-gray-600">
+            <a href="#" className="hover:text-gold transition">Privacy Policy</a>
+            <a href="#" className="hover:text-gold transition">Terms of Service</a>
+          </div>
         </div>
       </div>
     </footer>
