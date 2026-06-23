@@ -38,7 +38,7 @@ export default function WhySalonFactory() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1 + i * 0.06 }}
-              className={`group relative overflow-hidden rounded-sm bg-luxury-white p-8 shadow-sm transition-all duration-500 hover:shadow-xl ${sizeClasses[item.size] || ""}`}
+              className={`group relative overflow-hidden rounded-2xl border border-gray-100 bg-luxury-white p-8 shadow-sm transition-all duration-500 hover:shadow-xl ${sizeClasses[item.size] || ""}`}
             >
               <span className="text-3xl">{item.icon}</span>
               <h3 className="mt-4 font-heading text-xl font-semibold text-premium-black">{item.title}</h3>
