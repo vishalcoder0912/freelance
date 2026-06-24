@@ -17,7 +17,9 @@ export function Home() {
 
   return (
     <div className="min-h-screen">
+      {/* ---------- Hero section with floating emojis ---------- */}
       <div className="relative overflow-hidden bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100">
+        {/* Floating animated background emojis */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {['⭐', '🌟', '✨', '🌈', '🎈', '🎉'].map((e, i) => (
             <motion.span key={i} className="absolute text-2xl" style={{ top: `${10 + i * 15}%`, left: `${5 + i * 15}%` }}
@@ -29,23 +31,27 @@ export function Home() {
 
         <div className="max-w-6xl mx-auto px-4 py-12 md:py-20">
           <div className="text-center mb-12">
+            {/* Tagline badge */}
             <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="inline-flex items-center gap-2 bg-white/80 backdrop-blur rounded-full px-4 py-2 mb-6 shadow-sm">
               <Sparkles className="w-4 h-4 text-kid-yellow" />
               <span className="text-sm font-bold text-kid-purple">K-12 School Management Platform</span>
             </motion.div>
 
+            {/* Main heading */}
             <motion.h1 className="text-4xl md:text-6xl font-fredoka text-gray-800 mb-4 leading-tight"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               Where Learning
               <span className="bg-gradient-to-r from-kid-orange to-kid-pink bg-clip-text text-transparent"> Becomes Fun!</span>
             </motion.h1>
 
+            {/* Subtitle */}
             <motion.p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8"
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
               An engaging, interactive school management platform for Kindergarten through Class 12.
               Designed for curious minds and modern education.
             </motion.p>
 
+            {/* CTA buttons: Start Learning & Login */}
             <motion.div className="flex flex-wrap justify-center gap-4"
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
               <button onClick={() => navigate('/classes')}
@@ -59,6 +65,7 @@ export function Home() {
             </motion.div>
           </div>
 
+          {/* Animated mascot characters */}
           <div className="flex justify-center gap-4 mb-12">
             <AnimatedCharacter name="Buddy" emoji="🦊" size="lg" />
             <AnimatedCharacter name="Luna" emoji="🦉" size="lg" />
@@ -67,6 +74,7 @@ export function Home() {
         </div>
       </div>
 
+      {/* ---------- Features grid ---------- */}
       <div className="max-w-6xl mx-auto px-4 py-12">
         <motion.h2 className="text-3xl font-fredoka text-center text-gray-800 mb-8"
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}>
@@ -87,6 +95,7 @@ export function Home() {
         </div>
       </div>
 
+      {/* ---------- Quick class selector ---------- */}
       <div className="bg-gradient-to-r from-kid-blue to-kid-indigo py-12">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <motion.h2 className="text-3xl font-fredoka text-white mb-6"
@@ -112,6 +121,7 @@ export function Home() {
         </div>
       </div>
 
+      {/* ---------- Footer ---------- */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-gray-400">&copy; 2026 KidoSchool. Making learning fun for every child.</p>

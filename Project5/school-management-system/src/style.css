@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/*
+ * style.css - Global styles for the school management system.
+ * Sections: theme variables | base body styles | animations | utility classes
+ */
+
+/* ===== Theme Customization ===== */
 @theme {
   --font-nunito: 'Nunito', sans-serif;
   --font-fredoka: 'Fredoka One', cursive;
@@ -15,12 +21,14 @@
   --color-kid-lime: #8BC34A;
 }
 
+/* ===== Base Body Styles ===== */
 body {
   margin: 0;
   font-family: var(--font-nunito);
   -webkit-font-smoothing: antialiased;
 }
 
+/* Universal box-sizing reset */
 * {
   box-sizing: border-box;
 }
@@ -30,33 +38,39 @@ body {
   50% { transform: translateY(-10px); }
 }
 
+/* Subtle vertical bounce */
 @keyframes bounce-gentle {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
 }
 
+/* Side-to-side wiggle effect */
 @keyframes wiggle {
   0%, 100% { transform: rotate(0deg); }
   25% { transform: rotate(-5deg); }
   75% { transform: rotate(5deg); }
 }
 
+/* Scale-up entry animation */
 @keyframes pop-in {
   0% { transform: scale(0); opacity: 0; }
   80% { transform: scale(1.1); }
   100% { transform: scale(1); opacity: 1; }
 }
 
+/* Slide-up fade-in entry */
 @keyframes slide-up {
   from { transform: translateY(20px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
 
+/* Continuous hue rotation for rainbow effects */
 @keyframes rainbow {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }
 }
 
+/* ===== Utility Classes ===== */
 .animate-float { animation: float 3s ease-in-out infinite; }
 .animate-bounce-gentle { animation: bounce-gentle 2s ease-in-out infinite; }
 .animate-wiggle { animation: wiggle 0.5s ease-in-out infinite; }

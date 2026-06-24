@@ -1,9 +1,15 @@
+/*
+ * main.ts - Legacy entry point for the Vite + TypeScript demo page.
+ * Renders a static hero section and documentation links, then sets up
+ * a counter button. (Used alongside the React entry point in main.tsx.)
+ */
 import './style.css'
 import typescriptLogo from './assets/typescript.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import { setupCounter } from './counter.ts'
 
+// Inject the demo page markup into the app root
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <section id="center">
   <div class="hero">

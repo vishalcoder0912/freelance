@@ -89,19 +89,24 @@ import FeeManagement from './admin/pages/FeeManagement'
 import TransportManagement from './admin/pages/TransportManagement'
 import EventManagement from './admin/pages/EventManagement'
 
+/** Root application component that sets up routing and auth context. */
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          {/* Public route - login page, no layout wrapper */}
           <Route path="/login" element={<Login />} />
+          {/* Routes wrapped in shared Layout (nav bar + header) */}
           <Route element={<Layout />}>
+            {/* General / public pages */}
             <Route path="/" element={<Home />} />
             <Route path="/classes" element={<Classes />} />
             <Route path="/games" element={<Games />} />
             <Route path="/rewards" element={<Rewards />} />
             <Route path="/profile" element={<Profile />} />
 
+            {/* Kindergarten portal routes */}
             <Route path="/kindergarten" element={<KindergartenDashboard />} />
             <Route path="/kindergarten/alphabet-world" element={<AlphabetWorld />} />
             <Route path="/kindergarten/number-world" element={<NumberWorld />} />
@@ -115,6 +120,7 @@ export default function App() {
             <Route path="/kindergarten/rewards" element={<KindergartenRewards />} />
             <Route path="/kindergarten/progress-tracker" element={<ProgressTracker />} />
 
+            {/* Nursery portal routes */}
             <Route path="/nursery" element={<NurseryDashboard />} />
             <Route path="/nursery/alphabets" element={<Alphabets />} />
             <Route path="/nursery/numbers" element={<Numbers />} />
@@ -127,6 +133,7 @@ export default function App() {
             <Route path="/nursery/rewards" element={<NurseryRewards />} />
             <Route path="/nursery/progress" element={<Progress />} />
 
+            {/* LKG portal routes */}
             <Route path="/lkg" element={<LkgDashboard />} />
             <Route path="/lkg/reading-zone" element={<ReadingZone />} />
             <Route path="/lkg/phonics" element={<Phonics />} />
@@ -138,6 +145,7 @@ export default function App() {
             <Route path="/lkg/assessments" element={<Assessments />} />
             <Route path="/lkg/rewards" element={<LkgRewards />} />
 
+            {/* UKG portal routes */}
             <Route path="/ukg" element={<UkgDashboard />} />
             <Route path="/ukg/english" element={<English />} />
             <Route path="/ukg/mathematics" element={<Mathematics />} />
@@ -149,6 +157,7 @@ export default function App() {
             <Route path="/ukg/exams" element={<Exams />} />
             <Route path="/ukg/achievements" element={<Achievements />} />
 
+            {/* Student portal routes */}
             <Route path="/student" element={<StudentDashboard />} />
             <Route path="/student/homework" element={<Homework />} />
             <Route path="/student/timetable" element={<Timetable />} />
@@ -156,6 +165,7 @@ export default function App() {
             <Route path="/student/reports" element={<StudentReports />} />
             <Route path="/student/certificates" element={<StudentCertificates />} />
 
+            {/* Parent portal routes */}
             <Route path="/parent" element={<ParentDashboard />} />
             <Route path="/parent/fee-tracking" element={<FeeTracking />} />
             <Route path="/parent/attendance" element={<AttendanceReports />} />
@@ -163,6 +173,7 @@ export default function App() {
             <Route path="/parent/communication" element={<Communication />} />
             <Route path="/parent/activity" element={<ActivityMonitoring />} />
 
+            {/* Teacher portal routes */}
             <Route path="/teacher" element={<TeacherDashboard />} />
             <Route path="/teacher/class-management" element={<ClassManagement />} />
             <Route path="/teacher/attendance" element={<TeacherAttendance />} />
@@ -170,6 +181,7 @@ export default function App() {
             <Route path="/teacher/quiz-builder" element={<QuizBuilder />} />
             <Route path="/teacher/analytics" element={<StudentAnalytics />} />
 
+            {/* Admin portal routes */}
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/students" element={<StudentManagement />} />
             <Route path="/admin/staff" element={<StaffManagement />} />

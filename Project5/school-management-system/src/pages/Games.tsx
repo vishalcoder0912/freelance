@@ -1,3 +1,4 @@
+/** Games - Game selection grid. Click a tile to load and play the active game. */
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AlphabetMatch } from '../shared/games/alphabet-match/AlphabetMatch'
@@ -11,6 +12,7 @@ import { CountingGame } from '../shared/games/counting-game/CountingGame'
 import { TracingGame } from '../shared/games/tracing-game/TracingGame'
 import { PhonicsGame } from '../shared/games/phonics-game/PhonicsGame'
 
+/* ---------- Available games ---------- */
 const games = [
   { id: 'alphabet', title: 'Alphabet Match', icon: '🔤', color: 'blue', component: AlphabetMatch },
   { id: 'color', title: 'Color Match', icon: '🎨', color: 'pink', component: ColorMatch },

@@ -1,9 +1,11 @@
+/** Login - Email/password form with demo quick-login buttons for each role. */
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { GraduationCap, Mail, Lock, LogIn, Sparkles } from 'lucide-react'
 
+/* ---------- Quick-login demo accounts ---------- */
 const demoAccounts = [
   { email: 'student@school.com', role: 'Student', color: 'from-green-400 to-teal-500' },
   { email: 'parent@school.com', role: 'Parent', color: 'from-blue-400 to-indigo-500' },
@@ -17,6 +19,7 @@ export function Login() {
   const { login } = useAuth()
   const navigate = useNavigate()
 
+  /** Submit credentials, derive role from email prefix, and redirect. */
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     await login(email, password)
@@ -25,6 +28,7 @@ export function Login() {
     navigate(paths[role])
   }
 
+  /** One-click demo login with predefined credentials. */
   const quickLogin = async (e: string) => {
     setEmail(e)
     setPassword('demo123')
@@ -37,6 +41,7 @@ export function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center p-4">
       <motion.div className="w-full max-w-md" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+        {/* ---------- Header with animated icon ---------- */}
         <div className="text-center mb-8">
           <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity }}>
             <GraduationCap className="w-16 h-16 text-kid-blue mx-auto" />
@@ -45,7 +50,9 @@ export function Login() {
           <p className="text-gray-500">Sign in to continue learning</p>
         </div>
 
+        {/* ---------- Login card ---------- */}
         <div className="bg-white rounded-3xl shadow-xl p-8">
+          {/* Email / Password form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="text-sm font-bold text-gray-600 mb-1 block">Email</label>
@@ -72,6 +79,7 @@ export function Login() {
             </motion.button>
           </form>
 
+          {/* ---------- Quick demo login buttons ---------- */}
           <div className="mt-6">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-4 h-4 text-kid-yellow" />
