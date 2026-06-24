@@ -1,3 +1,5 @@
+// InteractiveGames - Game selection hub for UKG
+// Launches alphabet match, color match, shape sorter, memory cards, animal sounds, puzzle builder, and drag-drop
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -13,6 +15,7 @@ import { DragDropLearning } from '../../../shared/games/drag-drop-learning/DragD
 
 type GameType = 'alphabet' | 'colors' | 'shapes' | 'memory' | 'animals' | 'puzzle' | 'dragdrop' | null
 
+// Metadata for each available game
 const gameMeta = [
   { id: 'alphabet' as const, title: 'Alphabet Match', icon: '🔤', color: 'blue', desc: 'Match letters with pictures' },
   { id: 'colors' as const, title: 'Color Match', icon: '🎨', color: 'pink', desc: 'Find the matching colors' },
@@ -27,6 +30,7 @@ export function InteractiveGames() {
   const navigate = useNavigate()
   const [activeGame, setActiveGame] = useState<GameType>(null)
 
+  // Render the selected game component
   const renderGame = () => {
     switch (activeGame) {
       case 'alphabet': return <AlphabetMatch onComplete={(score) => console.log('Alphabet score:', score)} />
@@ -43,6 +47,7 @@ export function InteractiveGames() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-orange-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Dynamic back button */}
         <motion.button
           onClick={() => activeGame ? setActiveGame(null) : navigate('/ukg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -51,6 +56,7 @@ export function InteractiveGames() {
           <ArrowLeft className="w-5 h-5" /> {activeGame ? 'Back to Games' : 'Back to UKG'}
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-purple to-kid-pink rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -64,6 +70,7 @@ export function InteractiveGames() {
         </motion.div>
 
         {activeGame ? (
+          // Active game view
           <motion.div
             key={activeGame}
             className="bg-white rounded-3xl shadow-lg overflow-hidden"
@@ -73,6 +80,7 @@ export function InteractiveGames() {
             {renderGame()}
           </motion.div>
         ) : (
+          // Game selection grid
           <motion.div
             className="grid grid-cols-2 gap-4"
             initial={{ opacity: 0 }}
@@ -91,6 +99,7 @@ export function InteractiveGames() {
           </motion.div>
         )}
 
+        {/* Motivational footer (only on game selection view) */}
         {!activeGame && (
           <motion.div
             className="mt-6 bg-gradient-to-r from-kid-purple to-kid-pink rounded-2xl p-4 text-center shadow-lg"
