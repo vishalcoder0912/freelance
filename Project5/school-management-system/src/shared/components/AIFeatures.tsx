@@ -1,3 +1,9 @@
+/*
+ * AIFeatures.tsx - Interactive AI Learning Assistant panel.
+ * Provides tabbed access to AI-generated stories, quizzes, homework,
+ * progress reports, and activity recommendations for children.
+ */
+
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, BookOpen, Brain, FileText, Lightbulb, Stars } from 'lucide-react'
@@ -9,6 +15,7 @@ interface Props {
   grade?: string
 }
 
+/** Available AI feature tabs with icons and gradient colors */
 const tabs = [
   { id: 'story', label: 'Story', icon: <BookOpen className="w-4 h-4" />, color: 'from-purple-400 to-pink-500' },
   { id: 'quiz', label: 'Quiz', icon: <Brain className="w-4 h-4" />, color: 'from-green-400 to-teal-500' },
@@ -17,11 +24,17 @@ const tabs = [
   { id: 'recommend', label: 'Recommend', icon: <Lightbulb className="w-4 h-4" />, color: 'from-yellow-400 to-orange-500' },
 ]
 
+/**
+ * AIFeatures - Main AI assistant component with tab switching.
+ * Generates new content each time a tab is selected or the
+ * "Generate New" button is clicked.
+ */
 export function AIFeatures({ childName = 'Student', age = 4, grade = 'kindergarten' }: Props) {
   const [activeTab, setActiveTab] = useState('story')
   const [topic, setTopic] = useState('friendship')
   const [content, setContent] = useState(generateStory('friendship', age))
 
+  /** Generates fresh content for the selected tab */
   const handleGenerate = (tab: string) => {
     setActiveTab(tab)
     switch (tab) {
@@ -50,7 +63,9 @@ export function AIFeatures({ childName = 'Student', age = 4, grade = 'kindergart
     }
   }
 
+  /** Renders the active tab's content with appropriate layout */
   const renderContent = () => {
+    // Story view - displays narrative text with a topic emoji
     if (activeTab === 'story') {
       return (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="prose max-w-none">
@@ -62,6 +77,7 @@ export function AIFeatures({ childName = 'Student', age = 4, grade = 'kindergart
         </motion.div>
       )
     }
+    // Quiz view - renders questions with answer options (correct answer highlighted)
     if (activeTab === 'quiz') {
       const quiz = JSON.parse(content)
       return (
@@ -82,6 +98,7 @@ export function AIFeatures({ childName = 'Student', age = 4, grade = 'kindergart
         </div>
       )
     }
+    // Homework view - numbered task list
     if (activeTab === 'homework') {
       const tasks = JSON.parse(content)
       return (
@@ -96,6 +113,7 @@ export function AIFeatures({ childName = 'Student', age = 4, grade = 'kindergart
         </ul>
       )
     }
+    // Report view - progress card with strengths, improvements, and teacher note
     if (activeTab === 'report') {
       const report = JSON.parse(content)
       return (
@@ -129,11 +147,13 @@ export function AIFeatures({ childName = 'Student', age = 4, grade = 'kindergart
 
   return (
     <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4 shadow-lg">
+      {/* Header */}
       <div className="flex items-center gap-2 mb-4">
         <Sparkles className="w-5 h-5 text-kid-purple" />
         <h2 className="font-fredoka text-lg text-gray-800">AI Learning Assistant</h2>
       </div>
 
+      {/* Feature tabs row */}
       <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
         {tabs.map((tab) => (
           <motion.button
@@ -150,12 +170,14 @@ export function AIFeatures({ childName = 'Student', age = 4, grade = 'kindergart
         ))}
       </div>
 
+      {/* Dynamic content area with enter/exit transitions */}
       <div className="min-h-[200px]">
         <AnimatePresence mode="wait">
           {renderContent()}
         </AnimatePresence>
       </div>
 
+      {/* Generate new content button */}
       <motion.button
         onClick={() => handleGenerate(activeTab)}
         className="mt-4 w-full bg-gradient-to-r from-kid-purple to-kid-pink text-white py-2 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2"

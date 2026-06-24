@@ -1,3 +1,5 @@
+// KindergartenDashboard - Main hub for kindergarten class
+// Displays greeting, progress stats, quick-access modules, achievements and mini games
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -17,6 +19,7 @@ const motivationalQuotes = [
   'Today is full of possibilities!',
 ]
 
+// Quick-access shortcuts to main learning modules
 const quickActions = [
   { title: 'Alphabet', icon: '🔤', path: '/kindergarten/alphabet-world', color: 'blue' },
   { title: 'Numbers', icon: '🔢', path: '/kindergarten/number-world', color: 'green' },
@@ -33,11 +36,12 @@ const floatingElements = ['🌸', '⭐', '🌈', '🦋', '✨', '💫', '🎈', 
 export function KindergartenDashboard() {
   const navigate = useNavigate()
   const hour = new Date().getHours()
-  const greeting = greetings[hour < 12 ? 0 : hour < 17 ? 1 : 2]
+  const greeting = greetings[hour < 12 ? 0 : hour < 17 ? 1 : 2]  // Determine time-of-day greeting
   const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]
 
   const [showQuote, setShowQuote] = useState(true)
 
+  // Aggregate progress data from all kindergarten modules
   const totalActivities = kindergartenModules.reduce((sum, m) => sum + m.activities.length, 0)
   const completedActivities = kindergartenModules.reduce((sum, m) => sum + m.activities.filter(a => a.completed).length, 0)
   const totalStars = kindergartenModules.reduce((sum, m) => sum + m.activities.reduce((s, a) => s + a.stars, 0), 0)

@@ -1,4 +1,5 @@
 // StudentDashboard: Kid-friendly overview showing attendance, homework, achievements, schedule, learning activities, and quick-access class links.
+// File: StudentDashboard — Kid-friendly dashboard with attendance, homework, achievements, schedule, learning activities, and quick-access class links.
 import { motion } from 'framer-motion'
 import { BookOpen, Calendar, Clock, Trophy, ArrowRight, Sparkles, GraduationCap, Gamepad2, Star } from 'lucide-react'
 import { AnimatedCharacter } from '../../shared/components/AnimatedCharacter'
@@ -58,10 +59,12 @@ const classLinks = [
 ]
 
 export default function StudentDashboard() {
+  // Aggregate attendance percentage across all months
   const attendancePercent = Math.round((attendanceData.reduce((a, b) => a + b.present, 0) / attendanceData.reduce((a, b) => a + b.days, 0)) * 100)
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Greeting section with animated character mascot */}
       <motion.div variants={item} className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -72,6 +75,7 @@ export default function StudentDashboard() {
         <AnimatedCharacter name="Buddy" emoji="🦊" size="md" />
       </motion.div>
 
+      {/* Stats row: attendance rate, pending homework, unlocked achievements, class info */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <motion.div variants={item} className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">

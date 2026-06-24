@@ -1,3 +1,9 @@
+/*
+ * GameCard.tsx - Gamified card component for learning activities.
+ * Displays a gradient card with icon, title, star rating, and optional
+ * locked/completed states. Used for class modules and mini-games.
+ */
+
 import { motion } from 'framer-motion'
 import { Sparkles, Star, Lock } from 'lucide-react'
 import type { ReactNode } from 'react'
@@ -14,6 +20,7 @@ interface Props {
   className?: string
 }
 
+/** Maps color names to Tailwind gradient classes */
 const colorMap: Record<string, string> = {
   blue: 'from-blue-400 to-blue-600 shadow-blue-200',
   green: 'from-green-400 to-green-600 shadow-green-200',
@@ -27,7 +34,13 @@ const colorMap: Record<string, string> = {
   lime: 'from-lime-400 to-lime-600 shadow-lime-200',
 }
 
+/**
+ * GameCard - Animated card button for learning modules.
+ * Supports locked (grayed out with lock icon), completed (sparkle badge),
+ * and star-rating states. Animates on hover and tap.
+ */
 export function GameCard({ title, icon, color, onClick, locked, completed, stars = 0, description, className = '' }: Props) {
+  // Resolve gradient from color name or fall back to blue
   const gradient = colorMap[color] || 'from-blue-400 to-blue-600 shadow-blue-200'
 
   return (
@@ -39,11 +52,13 @@ export function GameCard({ title, icon, color, onClick, locked, completed, stars
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
     >
+      {/* Lock overlay for inaccessible items */}
       {locked && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-2xl z-10">
           <Lock className="w-8 h-8 text-white" />
         </div>
       )}
+      {/* Completed sparkle badge */}
       {completed && (
         <div className="absolute top-2 right-2 z-10">
           <div className="bg-green-400 rounded-full p-1">
@@ -51,10 +66,12 @@ export function GameCard({ title, icon, color, onClick, locked, completed, stars
           </div>
         </div>
       )}
+      {/* Card body */}
       <div className="flex flex-col items-center gap-3">
         <div className="text-4xl">{icon}</div>
         <h3 className="font-bold text-lg font-fredoka">{title}</h3>
         {description && <p className="text-xs text-white/80">{description}</p>}
+        {/* Star rating display (out of 3) */}
         {stars > 0 && (
           <div className="flex gap-0.5">
             {Array.from({ length: 3 }).map((_, i) => (

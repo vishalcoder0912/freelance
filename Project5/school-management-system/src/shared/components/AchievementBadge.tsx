@@ -1,3 +1,9 @@
+/*
+ * AchievementBadge.tsx - Animated badge component for displaying
+ * user achievements. Shows a spring-animated card with an emoji
+ * icon, title, and optional description. Locked badges are dimmed.
+ */
+
 import { motion } from 'framer-motion'
 
 interface Props {
@@ -8,6 +14,10 @@ interface Props {
   className?: string
 }
 
+/**
+ * AchievementBadge - Renders a single achievement badge with
+ * a spring pop-in animation. Grays out the badge when locked.
+ */
 export function AchievementBadge({ title, emoji, unlocked = true, description, className = '' }: Props) {
   return (
     <motion.div
