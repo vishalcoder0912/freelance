@@ -1,9 +1,12 @@
+// English - Reading and comprehension practice for UKG
+// Dual mode: sentence reading with word cards and comprehension passages with multiple-choice questions
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Volume2, Sparkles, Star, ChevronRight } from 'lucide-react'
 import { RewardScreen } from '../../../shared/components/RewardScreen'
 
+// Sentence data for reading practice
 const sentences = [
   { sentence: 'The sun is bright today.', words: ['The', 'sun', 'is', 'bright', 'today'], emoji: '☀️' },
   { sentence: 'I love to read books.', words: ['I', 'love', 'to', 'read', 'books'], emoji: '📚' },
@@ -15,6 +18,7 @@ const sentences = [
   { sentence: 'She likes to sing songs.', words: ['She', 'likes', 'to', 'sing', 'songs'], emoji: '🎵' },
 ]
 
+// Comprehension passages with multiple questions each
 const comprehension = [
   { title: 'The Cat and the Mat', text: 'A cat sat on a mat. The mat was red. The cat was happy.', questions: [
     { q: 'What sat on the mat?', options: ['A dog', 'A cat', 'A bird', 'A fish'], correct: 1 },
@@ -43,6 +47,7 @@ export function English() {
   const comp = comprehension[currentComp]
   const question = comp?.questions[currentQ]
 
+  // Mark current sentence as read and advance
   const markSentenceRead = () => {
     setReadWords(prev => new Set([...prev, currentSentence]))
     if (currentSentence < sentences.length - 1) {
@@ -50,6 +55,7 @@ export function English() {
     }
   }
 
+  // Handle comprehension answer selection and auto-advance
   const handleComprehensionAnswer = (idx: number) => {
     if (selectedAnswer !== null) return
     setSelectedAnswer(idx)
@@ -73,6 +79,7 @@ export function English() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/ukg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -81,6 +88,7 @@ export function English() {
           <ArrowLeft className="w-5 h-5" /> Back to UKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-blue to-kid-indigo rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -93,6 +101,7 @@ export function English() {
           <p className="text-white/80 text-sm">Practice reading sentences and comprehension!</p>
         </motion.div>
 
+        {/* Mode toggle: Sentence Reading / Comprehension */}
         <div className="flex gap-2 mb-6">
           <motion.button
             onClick={() => { setMode('sentences'); setCurrentSentence(0) }}
@@ -114,6 +123,7 @@ export function English() {
 
         <AnimatePresence mode="wait">
           {mode === 'sentences' ? (
+            // Sentence reading mode with word cards
             <motion.div
               key="sentences"
               initial={{ opacity: 0, x: -20 }}
@@ -126,16 +136,19 @@ export function English() {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
               >
+                {/* Progress dots */}
                 <div className="flex justify-center gap-1 mb-4">
                   {sentences.map((_, i) => (
                     <div key={i} className={`w-2.5 h-2.5 rounded-full ${i <= currentSentence ? 'bg-kid-blue' : 'bg-gray-200'}`} />
                   ))}
                 </div>
 
+                {/* Bouncing emoji */}
                 <motion.span className="text-5xl block mb-4" animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
                   {sentence.emoji}
                 </motion.span>
 
+                {/* Word cards with staggered entrance */}
                 <div className="flex justify-center gap-2 flex-wrap mb-4">
                   {sentence.words.map((word, i) => (
                     <motion.span
@@ -150,13 +163,16 @@ export function English() {
                   ))}
                 </div>
 
+                {/* Full sentence display */}
                 <p className="text-xl font-bold text-gray-800 mb-4">{sentence.sentence}</p>
 
+                {/* Read-aloud prompt */}
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-4">
                   <Volume2 className="w-4 h-4" />
                   <span>Read the sentence aloud!</span>
                 </div>
 
+                {/* Mark as read button */}
                 <motion.button
                   onClick={markSentenceRead}
                   className="bg-gradient-to-r from-kid-blue to-kid-indigo text-white px-6 py-3 rounded-full font-bold shadow-lg"
@@ -167,6 +183,7 @@ export function English() {
                 </motion.button>
               </motion.div>
 
+              {/* Navigation controls */}
               <div className="flex items-center justify-between">
                 <motion.button
                   onClick={() => currentSentence > 0 && setCurrentSentence(i => i - 1)}
@@ -191,6 +208,7 @@ export function English() {
               </div>
             </motion.div>
           ) : (
+            // Comprehension mode with passages and multiple-choice questions
             <motion.div
               key="comprehension"
               initial={{ opacity: 0, x: 20 }}
@@ -204,18 +222,22 @@ export function English() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
+                  {/* Progress header */}
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-sm font-bold text-gray-500">Story {currentComp + 1}/{comprehension.length}</span>
                     <span className="text-sm font-bold text-gray-500">Question {currentQ + 1}/{comp.questions.length}</span>
                   </div>
 
+                  {/* Passage display */}
                   <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-4 mb-6">
                     <h3 className="font-bold text-gray-700 font-fredoka mb-2">{comp.title}</h3>
                     <p className="text-sm text-gray-600 leading-relaxed">{comp.text}</p>
                   </div>
 
+                  {/* Question */}
                   <p className="text-lg font-bold text-gray-800 mb-4">{question.q}</p>
 
+                  {/* Answer options */}
                   <div className="space-y-3">
                     {question.options.map((option, idx) => (
                       <motion.button
@@ -247,6 +269,7 @@ export function English() {
           )}
         </AnimatePresence>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-6 bg-gradient-to-r from-kid-blue to-kid-indigo rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}
