@@ -1,8 +1,11 @@
+// Rewards - Achievement overview for LKG
+// Shows LKG-specific badges, total stars, and level using the shared RewardSystem component
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Sparkles } from 'lucide-react'
 import { RewardSystem } from '../../../shared/games/reward-system/RewardSystem'
 
+// LKG-specific badges
 const lkgBadges = [
   { id: 'first-phonics', title: 'First Phonics', emoji: '🔤', description: 'Completed a phonics lesson', unlocked: true },
   { id: 'counting-star', title: 'Counting Star', emoji: '🔢', description: 'Counted up to 10', unlocked: true },
@@ -22,6 +25,7 @@ export function Rewards() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/lkg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -30,6 +34,7 @@ export function Rewards() {
           <ArrowLeft className="w-5 h-5" /> Back to LKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-yellow to-kid-orange rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -42,6 +47,7 @@ export function Rewards() {
           <p className="text-white/80 text-sm">Your achievements and progress!</p>
         </motion.div>
 
+        {/* Rewards card with badge grid and star/level display */}
         <motion.div
           className="bg-white rounded-3xl shadow-lg overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
@@ -50,6 +56,7 @@ export function Rewards() {
           <RewardSystem badges={lkgBadges} totalStars={totalStars} level={level} />
         </motion.div>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-6 bg-gradient-to-r from-kid-yellow to-kid-orange rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}

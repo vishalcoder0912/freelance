@@ -1,3 +1,5 @@
+// Handwriting - Letter tracing practice for LKG
+// Wraps the shared TracingGame component with navigation and header
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Sparkles } from 'lucide-react'
@@ -9,6 +11,7 @@ export function Handwriting() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-red-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/lkg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -17,6 +20,7 @@ export function Handwriting() {
           <ArrowLeft className="w-5 h-5" /> Back to LKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-purple to-kid-pink rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -29,6 +33,7 @@ export function Handwriting() {
           <p className="text-white/80 text-sm">Trace letters and learn to write!</p>
         </motion.div>
 
+        {/* Tracing game wrapper */}
         <motion.div
           className="bg-white rounded-3xl shadow-lg overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
@@ -38,6 +43,7 @@ export function Handwriting() {
           <TracingGame onComplete={(score) => console.log('Tracing score:', score)} />
         </motion.div>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-6 bg-gradient-to-r from-kid-purple to-kid-pink rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}

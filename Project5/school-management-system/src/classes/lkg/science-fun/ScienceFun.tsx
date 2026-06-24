@@ -1,8 +1,12 @@
+// ScienceFun - Science topic exploration for LKG
+// Grid of science topics (Water Cycle, Plants, Weather, Animals, My Body, Space)
+// Each topic reveals clickable facts with a tap-to-reveal interaction
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Sparkles, Star, Volume2 } from 'lucide-react'
 
+// Science topics with emoji, color, and fun facts
 const topics = [
   {
     title: 'Water Cycle', emoji: '💧', color: 'blue', facts: [
@@ -61,6 +65,7 @@ export function ScienceFun() {
 
   const topic = selectedTopic !== null ? topics[selectedTopic] : null
 
+  // Reveal a fact when tapped
   const revealFact = (fact: string) => {
     setUnlockedFacts(prev => new Set([...prev, fact]))
   }
@@ -68,6 +73,7 @@ export function ScienceFun() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-teal-50 to-green-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Dynamic back button: goes to topic list or LKG dashboard */}
         <motion.button
           onClick={() => selectedTopic !== null ? setSelectedTopic(null) : navigate('/lkg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -76,6 +82,7 @@ export function ScienceFun() {
           <ArrowLeft className="w-5 h-5" /> {selectedTopic !== null ? 'Back to Topics' : 'Back to LKG'}
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-teal to-kid-green rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -89,6 +96,7 @@ export function ScienceFun() {
         </motion.div>
 
         {selectedTopic === null ? (
+          // Topic selection grid
           <motion.div
             className="grid grid-cols-2 gap-4"
             initial={{ opacity: 0 }}
@@ -105,6 +113,7 @@ export function ScienceFun() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
               >
+                {/* Bouncing topic emoji */}
                 <motion.div
                   className="text-5xl mb-2"
                   animate={{ y: [0, -5, 0] }}
@@ -118,12 +127,14 @@ export function ScienceFun() {
             ))}
           </motion.div>
         ) : (
+          // Topic detail view with tap-to-reveal facts
           <motion.div
             key={selectedTopic}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
           >
             <div className="bg-white rounded-3xl p-6 shadow-lg text-center mb-6">
+              {/* Wobbling emoji */}
               <motion.div
                 className="text-7xl mb-4"
                 animate={{ rotate: [0, -5, 5, 0] }}
@@ -134,6 +145,7 @@ export function ScienceFun() {
               <h2 className="text-2xl font-bold text-gray-800 font-fredoka mb-2">{topic?.title}</h2>
               <p className="text-gray-500 text-sm mb-4">Tap each fact to reveal!</p>
 
+              {/* Fact cards */}
               <div className="space-y-2 text-left">
                 {topic?.facts.map((fact, i) => {
                   const revealed = unlockedFacts.has(fact)
@@ -163,6 +175,7 @@ export function ScienceFun() {
                 })}
               </div>
 
+              {/* Done button */}
               <motion.button
                 onClick={() => {
                   setSelectedTopic(null)
@@ -178,6 +191,7 @@ export function ScienceFun() {
           </motion.div>
         )}
 
+        {/* Motivational footer (only on topic selection view) */}
         {selectedTopic === null && (
           <motion.div
             className="mt-6 bg-gradient-to-r from-kid-teal to-kid-blue rounded-2xl p-4 text-center shadow-lg"

@@ -1,3 +1,6 @@
+// Assessments - Quiz-based evaluation for LKG
+// 10 multiple-choice questions covering letters, numbers, colors, animals, shapes, and general knowledge
+// Shows final score with per-question correct/incorrect review and reward on 7+ correct
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -11,6 +14,7 @@ interface Question {
   correct: number
 }
 
+// Quiz question bank
 const quizData: Question[] = [
   { question: 'Which letter comes after A?', emoji: '🔤', options: ['B', 'C', 'D', 'E'], correct: 0 },
   { question: 'How many fingers do you have on one hand?', emoji: '✋', options: ['3', '5', '10', '2'], correct: 1 },
@@ -35,6 +39,7 @@ export function Assessments() {
   const question = quizData[current]
   const isLast = current === quizData.length - 1
 
+  // Handle answer selection with visual feedback and auto-advance
   const handleAnswer = (idx: number) => {
     if (selected !== null) return
     setSelected(idx)
@@ -55,6 +60,7 @@ export function Assessments() {
     }, 1200)
   }
 
+  // Restart the assessment from scratch
   const restart = useCallback(() => {
     setCurrent(0)
     setSelected(null)
@@ -64,6 +70,7 @@ export function Assessments() {
 
   const score = answers.filter(Boolean).length
 
+  // Results screen
   if (showResult) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 p-4">
@@ -73,6 +80,7 @@ export function Assessments() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
           >
+            {/* Pulsing result emoji */}
             <motion.div
               className="text-7xl mb-4"
               animate={{ scale: [1, 1.1, 1] }}
@@ -83,11 +91,13 @@ export function Assessments() {
             <h2 className="text-2xl font-bold text-gray-800 font-fredoka mb-2">
               {score >= 7 ? 'Great Job!' : 'Keep Trying!'}
             </h2>
+            {/* Score display */}
             <div className="flex justify-center items-center gap-2 mb-4">
               <Star className="w-6 h-6 fill-kid-yellow text-kid-yellow" />
               <span className="text-4xl font-bold text-gray-800">{score}</span>
               <span className="text-xl text-gray-500">/ {quizData.length}</span>
             </div>
+            {/* Score bar animation */}
             <div className="w-full bg-gray-200 rounded-full h-4 mb-6 overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-kid-orange to-kid-pink rounded-full"
@@ -96,6 +106,7 @@ export function Assessments() {
                 transition={{ duration: 1, ease: 'easeOut' }}
               />
             </div>
+            {/* Per-question result review */}
             <div className="space-y-2 mb-6">
               {answers.map((correct, i) => (
                 <div key={i} className="flex items-center gap-2 text-sm">
@@ -110,6 +121,7 @@ export function Assessments() {
                 </div>
               ))}
             </div>
+            {/* Retry button */}
             <motion.button
               onClick={restart}
               className="bg-gradient-to-r from-kid-orange to-kid-pink text-white px-8 py-3 rounded-full font-bold text-lg shadow-lg"
@@ -125,9 +137,11 @@ export function Assessments() {
     )
   }
 
+  // Question view
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/lkg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -136,6 +150,7 @@ export function Assessments() {
           <ArrowLeft className="w-5 h-5" /> Back to LKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-yellow to-kid-orange rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -148,7 +163,9 @@ export function Assessments() {
           <p className="text-white/80 text-sm">Test what you've learned!</p>
         </motion.div>
 
+        {/* Question card */}
         <div className="bg-white rounded-3xl p-6 shadow-lg">
+          {/* Progress indicators */}
           <div className="flex justify-between items-center mb-4">
             <span className="text-sm font-bold text-gray-500">Question {current + 1}/{quizData.length}</span>
             <div className="flex gap-1">
@@ -158,6 +175,7 @@ export function Assessments() {
             </div>
           </div>
 
+          {/* Question with animated entrance */}
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
@@ -166,6 +184,7 @@ export function Assessments() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
+              {/* Bouncing question emoji */}
               <motion.span
                 className="text-6xl block mb-4"
                 animate={{ y: [0, -5, 0] }}
@@ -177,6 +196,7 @@ export function Assessments() {
             </motion.div>
           </AnimatePresence>
 
+          {/* Answer options */}
           <div className="space-y-3">
             {question.options.map((option, idx) => (
               <motion.button
@@ -204,6 +224,7 @@ export function Assessments() {
           </div>
         </div>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-6 bg-gradient-to-r from-kid-yellow to-kid-orange rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}

@@ -1,8 +1,11 @@
+// ReadingZone - Word builder and read-along practice for LKG
+// Dual mode: phonics-style word building with letter cards, and sentence reading with progress tracking
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Volume2, ChevronRight, Star } from 'lucide-react'
 
+// Word sets for the word builder mode
 const wordSets = [
   { word: 'CAT', emoji: '🐱', letters: 'C-A-T', sound: 'Cat' },
   { word: 'DOG', emoji: '🐶', letters: 'D-O-G', sound: 'Dog' },
@@ -16,6 +19,7 @@ const wordSets = [
   { word: 'FROG', emoji: '🐸', letters: 'F-R-O-G', sound: 'Frog' },
 ]
 
+// Simple sentences for read-along practice
 const readAlongSections = [
   { title: 'The Cat', text: 'The cat sat on a mat. The cat is fat. The cat likes to nap.' },
   { title: 'My Dog', text: 'I have a dog. My dog can run. My dog is fun.' },
@@ -34,6 +38,7 @@ export function ReadingZone() {
   const item = wordSets[currentSet]
   const readItem = currentRead !== null ? readAlongSections[currentRead] : null
 
+  // Mark current word as read and advance to next
   const markRead = () => {
     setReadWords(prev => new Set([...prev, item.word]))
     if (currentSet < wordSets.length - 1) {
@@ -44,6 +49,7 @@ export function ReadingZone() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-blue-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/lkg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -52,6 +58,7 @@ export function ReadingZone() {
           <ArrowLeft className="w-5 h-5" /> Back to LKG
         </motion.button>
 
+        {/* Mode toggle: Word Builder / Read Along */}
         <div className="flex gap-2 mb-6">
           <motion.button
             onClick={() => { setShowPhonics(true); setCurrentRead(null) }}
@@ -73,6 +80,7 @@ export function ReadingZone() {
 
         <AnimatePresence mode="wait">
           {showPhonics ? (
+            // Word Builder mode: letter cards with sound
             <motion.div
               key="phonics"
               initial={{ opacity: 0, x: -20 }}
@@ -86,12 +94,14 @@ export function ReadingZone() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               >
+                {/* Progress dots */}
                 <div className="flex justify-center gap-1 mb-4">
                   {wordSets.map((_, i) => (
                     <div key={i} className={`w-2.5 h-2.5 rounded-full ${i <= currentSet ? 'bg-kid-green' : 'bg-gray-200'}`} />
                   ))}
                 </div>
 
+                {/* Pulsing emoji */}
                 <motion.div
                   className="text-7xl mb-4"
                   animate={{ scale: [1, 1.1, 1] }}
@@ -100,6 +110,7 @@ export function ReadingZone() {
                   {item.emoji}
                 </motion.div>
 
+                {/* Letter cards with staggered entrance */}
                 <div className="flex justify-center gap-2 mb-4">
                   {item.word.split('').map((letter, i) => (
                     <motion.span
@@ -114,6 +125,7 @@ export function ReadingZone() {
                   ))}
                 </div>
 
+                {/* Phonics sound identifier */}
                 <div className="flex items-center justify-center gap-2 text-gray-500 text-sm font-bold mb-4">
                   <Volume2 className="w-4 h-4" />
                   <span>{item.letters}</span>
@@ -121,6 +133,7 @@ export function ReadingZone() {
 
                 <p className="text-lg font-bold text-kid-green mb-4">Sound: "{item.sound}"</p>
 
+                {/* Mark as read button */}
                 <motion.button
                   onClick={markRead}
                   className="bg-gradient-to-r from-kid-green to-kid-teal text-white px-6 py-3 rounded-full font-bold shadow-lg"
@@ -131,6 +144,7 @@ export function ReadingZone() {
                 </motion.button>
               </motion.div>
 
+              {/* Navigation controls */}
               <div className="flex items-center justify-between">
                 <motion.button
                   onClick={() => currentSet > 0 && setCurrentSet(i => i - 1)}
@@ -155,6 +169,7 @@ export function ReadingZone() {
               </div>
             </motion.div>
           ) : (
+            // Read Along mode: sentence reading with animated text
             <motion.div
               key="readalong"
               initial={{ opacity: 0, x: 20 }}
@@ -168,6 +183,7 @@ export function ReadingZone() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
+                  {/* Progress dots */}
                   <div className="flex justify-center gap-1 mb-4">
                     {readAlongSections.map((_, i) => (
                       <div key={i} className={`w-2.5 h-2.5 rounded-full ${i <= (currentRead ?? 0) ? 'bg-kid-blue' : 'bg-gray-200'}`} />
@@ -176,6 +192,7 @@ export function ReadingZone() {
 
                   <h3 className="text-xl font-bold text-gray-800 font-fredoka text-center mb-4">{readItem.title}</h3>
 
+                  {/* Sentence text with staggered word animation */}
                   <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-4">
                     <p className="text-lg leading-relaxed text-gray-700 font-medium text-center">
                       {readItem.text.split('. ').map((sentence, i) => (
@@ -192,11 +209,13 @@ export function ReadingZone() {
                     </p>
                   </div>
 
+                  {/* Read-along hint */}
                   <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-4">
                     <Volume2 className="w-4 h-4" />
                     <span>Read along with the teacher!</span>
                   </div>
 
+                  {/* Navigation buttons */}
                   <div className="flex justify-center gap-3">
                     <motion.button
                       onClick={() => { if (currentRead !== null && currentRead > 0) setCurrentRead(prev => (prev ?? 0) - 1) }}
@@ -218,6 +237,7 @@ export function ReadingZone() {
                 </motion.div>
               )}
 
+              {/* Read-along section selector grid */}
               <div className="grid grid-cols-2 gap-3">
                 {readAlongSections.map((section, i) => (
                   <motion.button

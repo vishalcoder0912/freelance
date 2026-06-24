@@ -1,9 +1,13 @@
+// MathFun - Addition and subtraction quiz game for LKG
+// Generates random addition/subtraction problems with emoji visualization,
+// multiple-choice answers, streak tracking, and reward screen
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Sparkles, Star } from 'lucide-react'
 import { RewardScreen } from '../../../shared/components/RewardScreen'
 
+// Emojis used to visually represent quantities in questions
 const emojis = ['🍎', '🐱', '⭐', '🌸', '🦋', '🌈', '🎈', '🍭']
 
 interface Question {
@@ -14,6 +18,7 @@ interface Question {
   emoji: string
 }
 
+// Generate a random addition or subtraction question (numbers 1-5)
 function generateQuestion(): Question {
   const op = Math.random() > 0.5 ? '+' : '-'
   let a: number, b: number, answer: number
@@ -29,6 +34,7 @@ function generateQuestion(): Question {
   return { a, b, op, answer, emoji: emojis[Math.floor(Math.random() * emojis.length)] }
 }
 
+// Generate 4 options including the correct answer
 function generateOptions(correct: number): number[] {
   const opts = new Set<number>([correct])
   while (opts.size < 4) {
@@ -48,6 +54,7 @@ export function MathFun() {
   const [showReward, setShowReward] = useState(false)
   const [streak, setStreak] = useState(0)
 
+  // Advance to the next question
   const next = useCallback(() => {
     const q = generateQuestion()
     setQuestion(q)
@@ -55,6 +62,7 @@ export function MathFun() {
     setFeedback(null)
   }, [])
 
+  // Handle answer selection with feedback and auto-advance
   const handleAnswer = (num: number) => {
     if (feedback) return
     if (num === question.answer) {
@@ -77,6 +85,7 @@ export function MathFun() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/lkg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -85,6 +94,7 @@ export function MathFun() {
           <ArrowLeft className="w-5 h-5" /> Back to LKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-red to-kid-orange rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -97,7 +107,9 @@ export function MathFun() {
           <p className="text-white/80 text-sm">Practice addition and subtraction!</p>
         </motion.div>
 
+        {/* Quiz card */}
         <motion.div className="bg-white rounded-3xl p-6 shadow-lg">
+          {/* Score display */}
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <span className="text-sm font-bold text-gray-500">Score: {score}/{total}</span>
@@ -108,6 +120,7 @@ export function MathFun() {
             </div>
           </div>
 
+          {/* Streak indicator */}
           {streak >= 2 && (
             <motion.div
               className="text-center text-sm text-kid-orange font-bold mb-2"
@@ -118,6 +131,7 @@ export function MathFun() {
             </motion.div>
           )}
 
+          {/* Question display with animated numbers and emoji visualization */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`${question.a}-${question.b}`}
@@ -146,6 +160,7 @@ export function MathFun() {
                 <span className="text-5xl font-fredoka text-kid-orange">?</span>
               </div>
 
+              {/* Visual emoji representation */}
               <motion.div
                 className="flex justify-center gap-1 flex-wrap"
                 animate={{ scale: [1, 1.05, 1] }}
@@ -162,6 +177,7 @@ export function MathFun() {
             </motion.div>
           </AnimatePresence>
 
+          {/* Multiple-choice answer options */}
           <div className="grid grid-cols-2 gap-3">
             {options.map((num) => (
               <motion.button
@@ -183,6 +199,7 @@ export function MathFun() {
           </div>
         </motion.div>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-6 bg-gradient-to-r from-kid-red to-kid-pink rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}
@@ -196,6 +213,7 @@ export function MathFun() {
           </p>
         </motion.div>
 
+        {/* Reward overlay on milestone */}
         <RewardScreen
           show={showReward}
           message="Math Star!"
