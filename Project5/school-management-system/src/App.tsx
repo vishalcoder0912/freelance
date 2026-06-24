@@ -1,3 +1,9 @@
+/*
+ * App.tsx - Main application routing component.
+ * Defines all routes for the school management system including
+ * public pages, class-level portals (kindergarten, nursery, LKG, UKG),
+ * and role-based portals (student, parent, teacher, admin).
+ */
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { Layout } from './shared/components/Layout'

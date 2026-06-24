@@ -1,8 +1,10 @@
+/** Home - Landing page hero, feature cards, class selector, and footer. */
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { GraduationCap, Gamepad2, Users, BookOpen, Sparkles, ArrowRight, Star, School, Trophy } from 'lucide-react'
 import { AnimatedCharacter } from '../shared/components/AnimatedCharacter'
 
+/* ---------- Feature cards data ---------- */
 const features = [
   { icon: <School className="w-6 h-6" />, title: 'Smart Classes', desc: 'Pre-Primary to K-12', color: 'from-blue-400 to-blue-600' },
   { icon: <Gamepad2 className="w-6 h-6" />, title: 'Interactive Games', desc: 'Learn while playing', color: 'from-green-400 to-green-600' },
