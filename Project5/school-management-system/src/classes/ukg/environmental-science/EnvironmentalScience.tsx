@@ -1,8 +1,12 @@
+// EnvironmentalScience - Environment and science exploration for UKG
+// Grid of topics (Weather & Seasons, Our Environment, Food & Nutrition, Community Helpers, Transport, Our Body)
+// Each topic shows items with a carousel navigation and progress dots
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Sparkles, Volume2 } from 'lucide-react'
 
+// Environmental science topics with items per topic
 const topics = [
   {
     title: 'Weather & Seasons', emoji: '🌈', color: 'orange', items: [
@@ -64,6 +68,7 @@ export function EnvironmentalScience() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-lime-50 via-green-50 to-teal-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Dynamic back button */}
         <motion.button
           onClick={() => selectedTopic !== null ? setSelectedTopic(null) : navigate('/ukg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -72,6 +77,7 @@ export function EnvironmentalScience() {
           <ArrowLeft className="w-5 h-5" /> {selectedTopic !== null ? 'Back to Topics' : 'Back to UKG'}
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-lime to-kid-green rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -85,6 +91,7 @@ export function EnvironmentalScience() {
         </motion.div>
 
         {selectedTopic === null ? (
+          // Topic selection grid
           <motion.div
             className="grid grid-cols-2 gap-4"
             initial={{ opacity: 0 }}
@@ -101,6 +108,7 @@ export function EnvironmentalScience() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.08 }}
               >
+                {/* Bouncing topic emoji */}
                 <motion.div
                   className="text-5xl mb-2"
                   animate={{ y: [0, -5, 0] }}
@@ -113,18 +121,21 @@ export function EnvironmentalScience() {
             ))}
           </motion.div>
         ) : (
+          // Topic detail view with item carousel
           <motion.div
             key={selectedTopic}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
           >
             <div className="bg-white rounded-3xl p-6 shadow-lg text-center mb-6">
+              {/* Progress dots */}
               <div className="flex justify-center gap-1 mb-4">
                 {topic?.items.map((_, i) => (
                   <div key={i} className={`w-2.5 h-2.5 rounded-full ${i === activeItem ? 'bg-kid-green' : 'bg-gray-200'}`} />
                 ))}
               </div>
 
+              {/* Animated icon with spring rotation effect */}
               <motion.div
                 key={activeItem}
                 className="text-7xl mb-4"
@@ -138,11 +149,13 @@ export function EnvironmentalScience() {
               <h2 className="text-2xl font-bold text-gray-800 font-fredoka mb-2">{topic?.items[activeItem].name}</h2>
               <p className="text-gray-600 font-medium mb-4">{topic?.items[activeItem].fact}</p>
 
+              {/* Learning prompt */}
               <div className="flex items-center justify-center gap-2 text-sm text-gray-500 mb-4">
                 <Volume2 className="w-4 h-4" />
                 <span>Learn about {topic?.items[activeItem].name}!</span>
               </div>
 
+              {/* Navigation buttons */}
               <div className="flex gap-3 justify-center">
                 <motion.button
                   onClick={() => activeItem > 0 && setActiveItem(i => i - 1)}
@@ -163,6 +176,7 @@ export function EnvironmentalScience() {
               </div>
             </div>
 
+            {/* Item selector grid */}
             <div className="grid grid-cols-2 gap-3">
               {topic?.items.map((item, i) => (
                 <motion.button
@@ -180,6 +194,7 @@ export function EnvironmentalScience() {
           </motion.div>
         )}
 
+        {/* Motivational footer (only on topic selection view) */}
         {selectedTopic === null && (
           <motion.div
             className="mt-6 bg-gradient-to-r from-kid-lime to-kid-green rounded-2xl p-4 text-center shadow-lg"
