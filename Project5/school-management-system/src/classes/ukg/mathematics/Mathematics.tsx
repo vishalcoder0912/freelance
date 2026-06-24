@@ -1,9 +1,12 @@
+// Mathematics - Addition and subtraction practice for UKG (1-9 range)
+// Generates random problems with emoji visualization, multiple-choice answers, streak tracking, and reward
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Sparkles, Star } from 'lucide-react'
 import { RewardScreen } from '../../../shared/components/RewardScreen'
 
+// Emojis used to visually represent quantities
 const emojis = ['🍎', '🐱', '⭐', '🌸', '🦋', '🌈', '🎈', '🍭', '🐶', '🌻']
 
 interface Question {
@@ -14,6 +17,7 @@ interface Question {
   emoji: string
 }
 
+// Generate a random addition or subtraction question (numbers 1-9)
 function generateQuestion(): Question {
   const op = Math.random() > 0.5 ? '+' : '-'
   let a: number, b: number, answer: number
@@ -29,6 +33,7 @@ function generateQuestion(): Question {
   return { a, b, op, answer, emoji: emojis[Math.floor(Math.random() * emojis.length)] }
 }
 
+// Generate 4 options including the correct answer
 function generateOptions(correct: number): number[] {
   const opts = new Set<number>([correct])
   while (opts.size < 4) {
@@ -48,6 +53,7 @@ export function Mathematics() {
   const [showReward, setShowReward] = useState(false)
   const [streak, setStreak] = useState(0)
 
+  // Advance to next question
   const next = useCallback(() => {
     const q = generateQuestion()
     setQuestion(q)
@@ -55,6 +61,7 @@ export function Mathematics() {
     setFeedback(null)
   }, [])
 
+  // Handle answer with visual feedback and auto-advance
   const handleAnswer = (num: number) => {
     if (feedback) return
     if (num === question.answer) {
@@ -77,6 +84,7 @@ export function Mathematics() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-blue-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/ukg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -85,6 +93,7 @@ export function Mathematics() {
           <ArrowLeft className="w-5 h-5" /> Back to UKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-green to-kid-teal rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -97,7 +106,9 @@ export function Mathematics() {
           <p className="text-white/80 text-sm">Practice addition and subtraction!</p>
         </motion.div>
 
+        {/* Quiz card */}
         <motion.div className="bg-white rounded-3xl p-6 shadow-lg">
+          {/* Score display */}
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <span className="text-sm font-bold text-gray-500">Score: {score}/{total}</span>
@@ -108,6 +119,7 @@ export function Mathematics() {
             </div>
           </div>
 
+          {/* Streak indicator */}
           {streak >= 3 && (
             <motion.div
               className="text-center text-sm text-kid-orange font-bold mb-2"
@@ -118,6 +130,7 @@ export function Mathematics() {
             </motion.div>
           )}
 
+          {/* Question display with animated numbers and emoji visualization */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`${question.a}-${question.b}`}
@@ -146,6 +159,7 @@ export function Mathematics() {
                 <span className="text-6xl font-fredoka text-kid-orange">?</span>
               </div>
 
+              {/* Emoji quantity representation */}
               <div className="flex justify-center gap-2 flex-wrap">
                 {Array.from({ length: question.op === '+' ? question.a : question.a }).map((_, i) => (
                   <motion.span
@@ -174,6 +188,7 @@ export function Mathematics() {
             </motion.div>
           </AnimatePresence>
 
+          {/* Multiple-choice answer options */}
           <div className="grid grid-cols-2 gap-3">
             {options.map((num) => (
               <motion.button
@@ -195,6 +210,7 @@ export function Mathematics() {
           </div>
         </motion.div>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-6 bg-gradient-to-r from-kid-green to-kid-teal rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}
