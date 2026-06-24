@@ -1,3 +1,4 @@
+// File: ColorMatch — See a color swatch and name, then pick the matching color from four options.
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

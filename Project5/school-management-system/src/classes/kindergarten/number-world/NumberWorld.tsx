@@ -1,3 +1,5 @@
+// NumberWorld - Interactive number learning module for kindergarten
+// Covers numbers 1-10 with counting game, number explorer, and finger counting
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CountingGame } from '../../../shared/games/counting-game/CountingGame'
@@ -10,6 +12,7 @@ type View = 'menu' | 'game' | 'explore' | 'count'
 
 const numbers = Array.from({ length: 10 }, (_, i) => i + 1)
 
+// Visual representation data for each number: emoji, word, fingers, and dot count
 const numberVisuals: Record<number, { emoji: string; word: string; fingers: string; dots: number[] }> = {
   1: { emoji: '☝️', word: 'One', fingers: '☝️', dots: [1] },
   2: { emoji: '✌️', word: 'Two', fingers: '✌️', dots: [1, 1] },
@@ -23,6 +26,7 @@ const numberVisuals: Record<number, { emoji: string; word: string; fingers: stri
   10: { emoji: '🔟', word: 'Ten', fingers: '🖐️🖐️', dots: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] },
 }
 
+// Gradient color themes for each number card
 const numberColors = [
   'from-red-400 to-orange-500',
   'from-blue-400 to-indigo-500',
@@ -36,6 +40,7 @@ const numberColors = [
   'from-cyan-400 to-blue-500',
 ]
 
+// Number card component showing the numeral, dots, and word
 function NumberCard({ num, onClick }: { num: number; onClick: () => void }) {
   const info = numberVisuals[num]
   return (
@@ -69,6 +74,7 @@ export function NumberWorld() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header with title */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             {view !== 'menu' && (
@@ -87,6 +93,7 @@ export function NumberWorld() {
         </motion.div>
 
         <AnimatePresence mode="wait">
+          {/* Main menu with game selection and number grid */}
           {view === 'menu' && (
             <motion.div
               key="menu"
@@ -94,6 +101,7 @@ export function NumberWorld() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
+              {/* Game mode cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <GameCard
                   title="Counting Game"
@@ -118,6 +126,7 @@ export function NumberWorld() {
                 />
               </div>
 
+              {/* Numbers 1-10 grid */}
               <div className="bg-white rounded-2xl p-4 shadow-md">
                 <h2 className="text-lg font-bold text-gray-800 font-fredoka mb-4 flex items-center gap-2">
                   <Calculator className="w-5 h-5 text-kid-green" />
@@ -132,6 +141,7 @@ export function NumberWorld() {
             </motion.div>
           )}
 
+          {/* Counting game view */}
           {view === 'game' && (
             <motion.div
               key="game"
@@ -145,6 +155,7 @@ export function NumberWorld() {
             </motion.div>
           )}
 
+          {/* Number explorer: shows visual representation of the selected number */}
           {view === 'explore' && selectedNumber !== null && (
             <motion.div
               key="explore"
@@ -163,6 +174,7 @@ export function NumberWorld() {
                 {selectedNumber}
               </motion.div>
 
+              {/* Animated dot counter */}
               <div className="flex justify-center gap-2 flex-wrap mb-4">
                 {numberVisuals[selectedNumber].dots.map((_, i) => (
                   <motion.span
@@ -177,6 +189,7 @@ export function NumberWorld() {
                 ))}
               </div>
 
+              {/* Info cards: word and finger representation */}
               <div className="space-y-3 max-w-md mx-auto">
                 <div className="bg-gradient-to-r from-green-50 to-teal-50 rounded-xl p-4 flex items-center gap-3 justify-center">
                   <Eye className="w-5 h-5 text-kid-green" />
@@ -188,6 +201,7 @@ export function NumberWorld() {
                 </div>
               </div>
 
+              {/* Number selector */}
               <div className="flex gap-2 justify-center mt-6 flex-wrap">
                 {numbers.map(n => (
                   <motion.button
@@ -204,6 +218,7 @@ export function NumberWorld() {
             </motion.div>
           )}
 
+          {/* Let's count view: animated counting display */}
           {view === 'count' && (
             <motion.div
               key="count"
@@ -217,6 +232,7 @@ export function NumberWorld() {
                 Let's Count Together!
               </h2>
 
+              {/* Count selector */}
               <div className="flex flex-wrap gap-2 justify-center mb-6">
                 {numbers.map(n => (
                   <motion.button
@@ -231,6 +247,7 @@ export function NumberWorld() {
                 ))}
               </div>
 
+              {/* Animated count display with numbered boxes */}
               {selectedNumber !== null && (
                 <div className="text-center">
                   <div className="bg-gradient-to-br from-green-100 to-teal-100 rounded-2xl p-6 mb-4">

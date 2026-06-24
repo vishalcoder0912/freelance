@@ -1,6 +1,9 @@
+// VegetablesLearning - Vegetable identification for nursery
+// Grid of vegetable cards with emoji; tapping opens a detail modal with health message
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Vegetable data with emoji, color name, and gradient/border classes
 const vegetables = [
   { name: 'Carrot', emoji: '🥕', color: 'Orange', bg: 'from-orange-100 to-orange-200', border: 'border-orange-300' },
   { name: 'Broccoli', emoji: '🥦', color: 'Green', bg: 'from-green-100 to-green-200', border: 'border-green-300' },
@@ -24,6 +27,7 @@ export function VegetablesLearning() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-lime-50 p-4 md:p-6">
+      {/* Page header */}
       <motion.div
         className="text-center mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -35,6 +39,7 @@ export function VegetablesLearning() {
         <p className="text-gray-500 mt-2">Learn about healthy vegetables!</p>
       </motion.div>
 
+      {/* Vegetable grid with staggered entrance */}
       <motion.div
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-5xl mx-auto"
         initial="hidden"
@@ -56,6 +61,7 @@ export function VegetablesLearning() {
         ))}
       </motion.div>
 
+      {/* Vegetable detail modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -73,6 +79,7 @@ export function VegetablesLearning() {
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Bouncing vegetable emoji */}
               <motion.div
                 className="text-8xl mb-4"
                 animate={{ y: [0, -10, 0] }}
@@ -81,6 +88,7 @@ export function VegetablesLearning() {
                 {selected.emoji}
               </motion.div>
               <h2 className="text-3xl font-bold font-fredoka text-gray-800">{selected.name}</h2>
+              {/* Health badge */}
               <div className="inline-block mt-3 px-4 py-1 rounded-full bg-gradient-to-r from-green-100 to-green-200 text-green-700 font-bold text-sm">
                 Healthy & Yummy! 💪
               </div>

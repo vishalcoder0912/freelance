@@ -1,3 +1,4 @@
+// File: AdminDashboard — School-wide admin overview with fee collection chart, upcoming events, transport status, attendance, and quick stats.
 import { motion } from 'framer-motion'
 import { Users, GraduationCap, CreditCard, Bus, Calendar, DollarSign, School } from 'lucide-react'
 import { StatsCard } from '../components/StatsCard'
@@ -37,18 +38,22 @@ const transportStatus = [
 ]
 
 export default function AdminDashboard() {
+  // Aggregate fee collection totals and compute collection percentage
   const totalCollected = feeCollectionData.reduce((a, b) => a + b.collected, 0)
   const totalPending = feeCollectionData.reduce((a, b) => a + b.pending, 0)
   const feePercent = Math.round((totalCollected / (totalCollected + totalPending)) * 100)
+  // Maximum monthly collected amount for scaling the bar chart
   const maxFee = Math.max(...feeCollectionData.map(d => d.collected))
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8">
+      {/* Welcome header */}
       <motion.div variants={item} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800">Admin Dashboard</h1>
         <p className="text-gray-500 font-nunito">Welcome back! Here's your school overview.</p>
       </motion.div>
 
+      {/* Top-level stat cards: total students, staff, classes, fee collection */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <StatsCard title="Total Students" value="486" icon={<Users className="w-5 h-5" />} color="blue" trend="+12%" trendUp />
         <StatsCard title="Staff Members" value="48" icon={<GraduationCap className="w-5 h-5" />} color="green" trend="+2 new" trendUp />
@@ -57,6 +62,7 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        {/* Fee Collection bar chart — shows monthly collected amounts with animated bars */}
         <motion.div variants={item} className="lg:col-span-2 bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-4 flex items-center gap-2"><DollarSign className="w-5 h-5 text-kid-green" /> Fee Collection Summary</h2>
           <div className="flex items-end gap-2 h-48 mb-4">
@@ -82,6 +88,7 @@ export default function AdminDashboard() {
           </div>
         </motion.div>
 
+        {/* Sidebar: upcoming events list and transport status overview */}
         <motion.div variants={item} className="space-y-6">
           <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
             <h2 className="font-fredoka text-gray-700 mb-3 flex items-center gap-2"><Calendar className="w-4 h-4 text-kid-orange" /> Upcoming Events</h2>
@@ -121,6 +128,7 @@ export default function AdminDashboard() {
         </motion.div>
       </div>
 
+      {/* Bottom row: gender distribution quick stats and attendance per class level */}
       <motion.div variants={item} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-3">Quick Stats</h2>

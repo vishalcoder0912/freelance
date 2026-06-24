@@ -1,3 +1,4 @@
+// File: Performance — Detailed subject-wise performance with grade badges, progress bars, score trends, and insights.
 import { motion } from 'framer-motion'
 import { TrendingUp, BarChart3, Target } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -32,6 +33,7 @@ const maxScore = 100
 export default function Performance() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Page header */}
       <motion.div variants={card} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
           <BarChart3 className="w-7 h-7 text-kid-purple" /> Performance Analytics
@@ -39,6 +41,7 @@ export default function Performance() {
         <p className="text-gray-500 font-nunito">Detailed academic performance analysis</p>
       </motion.div>
 
+      {/* Key insights cards: strongest subject, needs improvement, overall trend */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         {performanceInsights.map((insight, i) => (
           <motion.div

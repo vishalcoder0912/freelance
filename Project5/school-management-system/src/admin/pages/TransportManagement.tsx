@@ -1,3 +1,4 @@
+// File: TransportManagement — Bus fleet management with route cards showing capacity, driver info, status, and driver directory.
 import { motion } from 'framer-motion'
 import { Bus, MapPin, Users, Shield, Clock, Plus, Search } from 'lucide-react'
 import { StatsCard } from '../components/StatsCard'
@@ -26,6 +27,7 @@ const drivers = [
 export default function TransportManagement() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8">
+      {/* Header with Add Route button */}
       <motion.div variants={container} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -42,6 +44,7 @@ export default function TransportManagement() {
         </motion.button>
       </motion.div>
 
+      {/* Stat cards: total buses, active routes, students transported, drivers */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <StatsCard title="Total Buses" value="10" icon={<Bus className="w-4 h-4" />} color="teal" />
         <StatsCard title="Active Routes" value="6" icon={<MapPin className="w-4 h-4" />} color="blue" />
@@ -49,6 +52,7 @@ export default function TransportManagement() {
         <StatsCard title="Drivers" value="8" icon={<Shield className="w-4 h-4" />} color="purple" />
       </div>
 
+      {/* Two-column: route cards (left) with capacity bars, driver directory (right) with bus tracker search */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <motion.div variants={container} className="lg:col-span-2 space-y-4">
           <h2 className="font-fredoka text-gray-700">Bus Routes</h2>

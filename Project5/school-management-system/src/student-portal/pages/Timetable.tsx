@@ -1,3 +1,4 @@
+// File: Timetable — Weekly class schedule displayed as a table grid with subject cards for each day and time slot.
 import { motion } from 'framer-motion'
 import { Calendar, Clock } from 'lucide-react'
 
@@ -55,6 +56,7 @@ const timetableData: Record<string, { subject: string; teacher: string; room: st
 export default function Timetable() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Page header with class info */}
       <motion.div variants={container} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
           <Calendar className="w-7 h-7 text-kid-blue" /> Weekly Timetable
@@ -62,6 +64,7 @@ export default function Timetable() {
         <p className="text-gray-500 font-nunito">Kindergarten - Section A</p>
       </motion.div>
 
+      {/* Scrollable timetable table — rows are time slots, columns are days; subject cards show teacher and room */}
       <div className="overflow-x-auto">
         <table className="w-full min-w-[800px] border-separate border-spacing-2">
           <thead>

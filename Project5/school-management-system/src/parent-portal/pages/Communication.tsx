@@ -1,3 +1,4 @@
+// File: Communication — Parent-teacher messaging interface with teacher contact cards, chat bubble history, and quick reply suggestions.
 import { motion } from 'framer-motion'
 import { MessageSquare, Send, Phone, Mail, User } from 'lucide-react'
 
@@ -36,6 +37,7 @@ const quickReplies = [
 export default function Communication() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Page header */}
       <motion.div variants={card} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
           <MessageSquare className="w-7 h-7 text-kid-blue" /> Teacher Communication
@@ -43,6 +45,7 @@ export default function Communication() {
         <p className="text-gray-500 font-nunito">Stay connected with your child's teachers</p>
       </motion.div>
 
+      {/* Left: teacher contact list with email/call buttons; Right: chat interface with message history and input */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div variants={card} className="lg:col-span-1 space-y-3">
           <h2 className="font-fredoka text-gray-700 mb-2 text-sm">Teachers</h2>

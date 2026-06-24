@@ -1,3 +1,4 @@
+// File: ClassManagement — Teacher's class roster with student cards showing attendance, performance, and parent contact info.
 import { motion } from 'framer-motion'
 import { Users, Search, MoreVertical, Mail, Phone, UserPlus } from 'lucide-react'
 
@@ -31,6 +32,7 @@ const performanceColors: Record<string, string> = {
 export default function ClassManagement() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with class info and Add Student button */}
       <motion.div variants={card} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -47,6 +49,7 @@ export default function ClassManagement() {
         </motion.button>
       </motion.div>
 
+      {/* Search bar for filtering students */}
       <motion.div variants={card} className="bg-white rounded-2xl p-3 shadow-md border border-gray-100 mb-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -58,6 +61,7 @@ export default function ClassManagement() {
         </div>
       </motion.div>
 
+      {/* Student cards grid — each shows avatar, name, roll no, attendance bar, performance badge, parent info, and contact actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {students.map((student) => (
           <motion.div

@@ -1,3 +1,4 @@
+// File: StudentManagement — Admin view of all enrolled students with search, filters, status badges, and contact actions in a table.
 import { motion } from 'framer-motion'
 import { Users, Search, Filter, Plus, Mail, Phone, MoreVertical } from 'lucide-react'
 import { StatsCard } from '../components/StatsCard'
@@ -21,6 +22,7 @@ const students = [
 export default function StudentManagement() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8">
+      {/* Header with total count and Add Student button */}
       <motion.div variants={container} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -37,6 +39,7 @@ export default function StudentManagement() {
         </motion.button>
       </motion.div>
 
+      {/* Stat cards: active, new this month, inactive */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         <StatsCard title="Active Students" value="462" icon={<Users className="w-4 h-4" />} color="blue" />
         <StatsCard title="New This Month" value="12" icon={<Users className="w-4 h-4" />} color="green" trend="+8%" trendUp />
@@ -55,6 +58,7 @@ export default function StudentManagement() {
         </div>
       </motion.div>
 
+      {/* Students table — columns: student name, class, roll no, parent, contact actions, status badge, actions menu */}
       <motion.div variants={container} className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

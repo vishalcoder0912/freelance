@@ -1,3 +1,4 @@
+// File: FeeManagement — Admin fee tracking with collection stats, progress bar, search, and a table of fee records with payment status.
 import { motion } from 'framer-motion'
 import { CreditCard, DollarSign, TrendingUp, Search, Download, CheckCircle, Clock, AlertCircle } from 'lucide-react'
 import { StatsCard } from '../components/StatsCard'
@@ -26,6 +27,7 @@ const statusConfig = {
 }
 
 export default function FeeManagement() {
+  // Compute totals and collection rate from fee records
   const totalFee = feeRecords.reduce((a, b) => a + b.fee, 0)
   const totalPaid = feeRecords.reduce((a, b) => a + b.paid, 0)
   const totalDue = totalFee - totalPaid
@@ -33,6 +35,7 @@ export default function FeeManagement() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8">
+      {/* Header with export button */}
       <motion.div variants={container} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -49,6 +52,7 @@ export default function FeeManagement() {
         </motion.button>
       </motion.div>
 
+      {/* Summary stat cards: total fee, collected, pending, defaulters */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <StatsCard title="Total Fee" value={`₹${(totalFee / 100000).toFixed(1)}L`} icon={<DollarSign className="w-4 h-4" />} color="blue" />
         <StatsCard title="Collected" value={`₹${(totalPaid / 100000).toFixed(1)}L`} icon={<TrendingUp className="w-4 h-4" />} color="green" trend={`${collectionRate}%`} trendUp />

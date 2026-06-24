@@ -1,3 +1,4 @@
+// File: Reports — Academic progress report with GPA, per-subject scores, grade trends, and animated monthly progress bar chart.
 import { motion } from 'framer-motion'
 import { BarChart3, TrendingUp, Award, Download } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -37,10 +38,12 @@ const gradePoints = subjects.reduce((sum, s) => {
 const gpa = (gradePoints / subjects.length).toFixed(1)
 
 export default function Reports() {
+  // Maximum score used for scaling the monthly bar chart
   const maxScore = Math.max(...monthlyData.map(d => d.score))
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with download button */}
       <motion.div variants={card} className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -57,6 +60,7 @@ export default function Reports() {
         </motion.button>
       </motion.div>
 
+      {/* Key metrics row: overall GPA, average score, A-grade count */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <motion.div variants={card} className="bg-white rounded-2xl p-6 shadow-md border border-gray-100 text-center">
           <Award className="w-10 h-10 text-kid-yellow mx-auto mb-2" />
@@ -75,7 +79,9 @@ export default function Reports() {
         </motion.div>
       </div>
 
+      {/* Two-column layout: per-subject performance bars and monthly trend bar chart */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Subject Performance — progress bars with grade labels and trend indicators */}
         <motion.div variants={card} className="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-4">Subject Performance</h2>
           <div className="space-y-4">
@@ -95,6 +101,7 @@ export default function Reports() {
           </div>
         </motion.div>
 
+        {/* Monthly Progress — animated bar chart showing score trend across months */}
         <motion.div variants={card} className="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-4">Monthly Progress</h2>
           <div className="flex items-end gap-3 h-48">

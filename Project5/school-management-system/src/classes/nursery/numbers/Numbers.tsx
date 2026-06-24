@@ -1,8 +1,12 @@
+// Numbers - Number recognition and counting for nursery (1-20)
+// Shows a grid of numbers with dot patterns; tapping opens a detail view with apples.
+// Includes a separate CountingGame view for interactive play
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CountingGame } from '../../../shared/games/counting-game/CountingGame'
 import { RewardScreen } from '../../../shared/components/RewardScreen'
 
+// Generate number data from 1 to 20 with emoji and dot representation
 const numberData = Array.from({ length: 20 }, (_, i) => ({
   number: i + 1,
   emoji: (['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟', '💯', '🔢'])[i] || '🔢',
@@ -14,6 +18,7 @@ export function Numbers() {
   const [showReward, setShowReward] = useState(false)
   const [selectedNum, setSelectedNum] = useState<number | null>(null)
 
+  // Show reward when counting game score reaches 5
   const handleComplete = (score: number) => {
     if (score >= 5) {
       setShowReward(true)
@@ -24,6 +29,7 @@ export function Numbers() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-blue-50 p-4 md:p-6">
       {!showGame ? (
         <>
+          {/* Page header */}
           <motion.div
             className="text-center mb-8"
             initial={{ opacity: 0, y: -20 }}
@@ -35,6 +41,7 @@ export function Numbers() {
             <p className="text-gray-500 mt-2">Learn to count and recognize numbers!</p>
           </motion.div>
 
+          {/* Number grid with dot patterns */}
           <motion.div
             className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 max-w-4xl mx-auto mb-8"
             initial="hidden"
@@ -56,6 +63,7 @@ export function Numbers() {
             ))}
           </motion.div>
 
+          {/* Number detail modal with apple count */}
           <AnimatePresence>
             {selectedNum && (
               <motion.div
@@ -76,6 +84,7 @@ export function Numbers() {
                   <div className="w-24 h-24 bg-gradient-to-br from-kid-green to-kid-teal rounded-full flex items-center justify-center mx-auto mb-4">
                     <span className="text-5xl font-bold font-fredoka text-white">{selectedNum}</span>
                   </div>
+                  {/* Apples representing the count */}
                   <div className="flex justify-center gap-2 flex-wrap mb-4">
                     {Array.from({ length: selectedNum }).map((_, i) => (
                       <motion.span
@@ -103,6 +112,7 @@ export function Numbers() {
             )}
           </AnimatePresence>
 
+          {/* Launch counting game button */}
           <motion.div
             className="text-center"
             initial={{ opacity: 0 }}
@@ -120,6 +130,7 @@ export function Numbers() {
           </motion.div>
         </>
       ) : (
+        // Interactive counting game view
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -141,6 +152,7 @@ export function Numbers() {
         </motion.div>
       )}
 
+      {/* Reward screen on game completion */}
       <RewardScreen
         show={showReward}
         message="Number Champion!"

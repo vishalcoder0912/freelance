@@ -1,8 +1,11 @@
+// DrawingBoard - Freeform drawing canvas for kindergarten
+// Supports brush and stamp tools with color palette, stroke undo, and download
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AnimatedCharacter } from '../../../shared/components/AnimatedCharacter'
 import { ArrowLeft, Undo2, Trash2, Download, Pipette, Pen, Minus, Plus } from 'lucide-react'
 
+// Available brush colors
 const colorPalette = [
   { name: 'Red', hex: '#FF6B6B' },
   { name: 'Blue', hex: '#4A90D9' },
@@ -18,6 +21,7 @@ const colorPalette = [
   { name: 'White', hex: '#FFFFFF' },
 ]
 
+// Brush size options
 const brushSizes = [4, 8, 12, 18, 24]
 
 interface Stroke {
@@ -26,6 +30,7 @@ interface Stroke {
   points: { x: number; y: number }[]
 }
 
+// Emoji stamps for the stamp tool
 const stampEmojis = ['🌸', '⭐', '❤️', '🌈', '🦋', '🌞', '🎈', '🍎', '🐱', '🌟', '☁️', '💖']
 
 export function DrawingBoard() {
@@ -38,6 +43,7 @@ export function DrawingBoard() {
   const [selectedTool, setSelectedTool] = useState<'brush' | 'stamp'>('brush')
   const [selectedStamp, setSelectedStamp] = useState('🌸')
 
+  // Maps mouse/touch coordinates to canvas space accounting for scaling
   const getCanvasCoordinates = useCallback((e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
     if (!canvas) return { x: 0, y: 0 }
@@ -57,6 +63,7 @@ export function DrawingBoard() {
     }
   }, [])
 
+  // Redraws all strokes and the current stroke onto the canvas
   const redrawCanvas = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -93,10 +100,12 @@ export function DrawingBoard() {
     }
   }, [strokes, currentStroke])
 
+  // Re-render canvas on stroke changes
   useEffect(() => {
     redrawCanvas()
   }, [redrawCanvas])
 
+  // Handles canvas resize on window resize
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -113,6 +122,7 @@ export function DrawingBoard() {
     return () => window.removeEventListener('resize', resizeCanvas)
   }, [resizeCanvas])
 
+  // Starts a new stroke (or places a stamp)
   const startDrawing = useCallback((e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault()
     const coords = getCanvasCoordinates(e)
@@ -137,6 +147,7 @@ export function DrawingBoard() {
     })
   }, [getCanvasCoordinates, currentColor, brushSize, selectedTool, selectedStamp])
 
+  // Continues the current stroke with new points
   const draw = useCallback((e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     e.preventDefault()
     if (!isDrawing || !currentStroke) return
@@ -147,6 +158,7 @@ export function DrawingBoard() {
     })
   }, [isDrawing, currentStroke, getCanvasCoordinates])
 
+  // Finalizes the current stroke and saves it
   const stopDrawing = useCallback(() => {
     if (currentStroke && currentStroke.points.length > 0) {
       setStrokes(prev => [...prev, currentStroke])
@@ -155,15 +167,18 @@ export function DrawingBoard() {
     setCurrentStroke(null)
   }, [currentStroke])
 
+  // Clears the entire canvas
   const clearCanvas = () => {
     setStrokes([])
     setCurrentStroke(null)
   }
 
+  // Undoes the last stroke
   const undoLastStroke = () => {
     setStrokes(prev => prev.slice(0, -1))
   }
 
+  // Downloads canvas as PNG image
   const downloadCanvas = () => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -176,6 +191,7 @@ export function DrawingBoard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-amber-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header */}
         <motion.div className="flex items-center justify-between mb-4" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-gray-800 font-fredoka">Drawing Board</h1>
@@ -183,11 +199,13 @@ export function DrawingBoard() {
           <AnimatedCharacter name="Draw" emoji="✏️" size="sm" />
         </motion.div>
 
+        {/* Drawing canvas with toolbar */}
         <motion.div
           className="bg-white rounded-2xl shadow-lg overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
+          {/* Toolbar: tool selection, color palette, brush sizes, stamp selector, actions */}
           <div className="bg-gradient-to-r from-red-100 via-orange-100 to-amber-100 p-3 flex flex-wrap items-center gap-2 border-b border-gray-200">
             <div className="flex items-center gap-1 bg-white rounded-lg p-1 shadow-sm">
               <motion.button
@@ -210,6 +228,7 @@ export function DrawingBoard() {
 
             <div className="h-6 w-px bg-gray-300" />
 
+            {/* Color palette */}
             <div className="flex items-center gap-1">
               {colorPalette.map((c) => (
                 <motion.button
@@ -226,6 +245,7 @@ export function DrawingBoard() {
 
             <div className="h-6 w-px bg-gray-300" />
 
+            {/* Brush size selector */}
             <div className="flex items-center gap-1">
               {brushSizes.map((size) => (
                 <motion.button
@@ -240,6 +260,7 @@ export function DrawingBoard() {
               ))}
             </div>
 
+            {/* Stamp emoji selector (visible when stamp tool is active) */}
             {selectedTool === 'stamp' && (
               <>
                 <div className="h-6 w-px bg-gray-300" />
@@ -259,6 +280,7 @@ export function DrawingBoard() {
               </>
             )}
 
+            {/* Action buttons: undo, clear, download */}
             <div className="ml-auto flex items-center gap-1">
               <motion.button
                 onClick={undoLastStroke}
@@ -287,6 +309,7 @@ export function DrawingBoard() {
             </div>
           </div>
 
+          {/* Canvas area with touch/mouse drawing support */}
           <div className="relative bg-white" style={{ touchAction: 'none' }}>
             <canvas
               ref={canvasRef}
@@ -300,6 +323,7 @@ export function DrawingBoard() {
               onTouchMove={draw}
               onTouchEnd={stopDrawing}
             />
+            {/* Empty state placeholder */}
             {strokes.length === 0 && !currentStroke && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <p className="text-gray-300 font-fredoka text-lg">Draw something fun! 🎨</p>
@@ -308,6 +332,7 @@ export function DrawingBoard() {
           </div>
         </motion.div>
 
+        {/* Tool usage hints */}
         <motion.div
           className="mt-4 bg-white rounded-2xl p-4 shadow-md"
           initial={{ opacity: 0 }}

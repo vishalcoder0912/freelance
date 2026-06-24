@@ -1,3 +1,5 @@
+// AnimalKingdom - Interactive animal learning module for kindergarten
+// Features animal sounds game and animal explorer with habitat-based grouping
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AnimalSounds } from '../../../shared/games/animal-sounds/AnimalSounds'
@@ -5,6 +7,7 @@ import { GameCard } from '../../../shared/components/GameCard'
 import { AnimatedCharacter } from '../../../shared/components/AnimatedCharacter'
 import { ArrowLeft, PawPrint, Music, Globe } from 'lucide-react'
 
+// Animal data: name, emoji, sound, habitat, and fun fact
 const animals = [
   { name: 'Dog', emoji: '🐶', sound: 'Woof! Woof!', habitat: '🏠', fact: 'Dogs are called man\'s best friend!' },
   { name: 'Cat', emoji: '🐱', sound: 'Meow! Meow!', habitat: '🏠', fact: 'Cats can jump 6 times their length!' },
@@ -26,6 +29,7 @@ const animals = [
 
 type View = 'menu' | 'game' | 'explore'
 
+// Animal card with animated emoji
 function AnimalCard({ animal, onClick }: { animal: typeof animals[0]; onClick: () => void }) {
   return (
     <motion.button
@@ -52,11 +56,13 @@ export function AnimalKingdom() {
   const [view, setView] = useState<View>('menu')
   const [selectedAnimal, setSelectedAnimal] = useState<typeof animals[0] | null>(null)
 
+  // Extract unique habitats for grouping
   const habitats = [...new Set(animals.map(a => a.habitat))]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-lime-50 via-green-50 to-emerald-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             {view !== 'menu' && (
@@ -75,6 +81,7 @@ export function AnimalKingdom() {
         </motion.div>
 
         <AnimatePresence mode="wait">
+          {/* Main menu: game selection and animals grouped by habitat */}
           {view === 'menu' && (
             <motion.div
               key="menu"
@@ -99,6 +106,7 @@ export function AnimalKingdom() {
                 />
               </div>
 
+              {/* Animals grouped by habitat (domestic, farm, wild, water, etc.) */}
               <div className="bg-white rounded-2xl p-4 shadow-md">
                 <h2 className="text-lg font-bold text-gray-800 font-fredoka mb-4 flex items-center gap-2">
                   <Globe className="w-5 h-5 text-kid-lime" />
@@ -130,6 +138,7 @@ export function AnimalKingdom() {
             </motion.div>
           )}
 
+          {/* Animal sounds game */}
           {view === 'game' && (
             <motion.div
               key="game"
@@ -143,6 +152,7 @@ export function AnimalKingdom() {
             </motion.div>
           )}
 
+          {/* Animal explorer: shows sound, habitat, and fun fact */}
           {view === 'explore' && selectedAnimal && (
             <motion.div
               key="explore"
@@ -163,6 +173,7 @@ export function AnimalKingdom() {
 
               <p className="text-2xl font-bold font-fredoka text-gray-800 mb-2">{selectedAnimal.name}</p>
 
+              {/* Info cards: sound, habitat, and fun fact */}
               <div className="space-y-3 max-w-md mx-auto">
                 <div className="bg-gradient-to-r from-green-50 to-lime-50 rounded-xl p-4 flex items-center gap-3 justify-center">
                   <Music className="w-5 h-5 text-kid-green" />
@@ -178,6 +189,7 @@ export function AnimalKingdom() {
                 </div>
               </div>
 
+              {/* Animal selector (first 10) */}
               <div className="flex gap-2 justify-center mt-6 flex-wrap">
                 {animals.slice(0, 10).map(a => (
                   <motion.button

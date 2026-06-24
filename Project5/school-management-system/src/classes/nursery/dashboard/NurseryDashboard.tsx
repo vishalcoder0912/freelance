@@ -1,3 +1,5 @@
+// NurseryDashboard - Main landing page for nursery class
+// Shows greeting, stats, progress bar, quick access grid, learning modules, achievements, and fun games
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -8,8 +10,10 @@ import { AchievementBadge } from '../../../shared/components/AchievementBadge'
 import { nurseryModules, calculateLevel } from '../../../shared/learning-engine/LearningEngine'
 import { Sparkles, Star, Trophy, TrendingUp, Activity, Gamepad2, Sun, ArrowRight } from 'lucide-react'
 
+// Greeting messages based on time of day
 const greetings = ['Good Morning!', 'Good Afternoon!', 'Good Evening!']
 
+// Rotating motivational quotes
 const motivationalQuotes = [
   'You are a superstar! 🌟',
   'Learning is fun! Let\'s go!',
@@ -18,6 +22,7 @@ const motivationalQuotes = [
   'Today is full of possibilities!',
 ]
 
+// Quick-access navigation cards
 const quickActions = [
   { title: 'Alphabets', icon: '📖', path: '/nursery/alphabets', color: 'blue' },
   { title: 'Numbers', icon: '🔢', path: '/nursery/numbers', color: 'green' },
@@ -29,27 +34,32 @@ const quickActions = [
   { title: 'Puzzles', icon: '🧩', path: '/nursery/puzzles', color: 'yellow' },
 ]
 
+// Floating decorative background elements
 const floatingElements = ['🌸', '⭐', '🌈', '🦋', '✨', '💫', '🎈', '🌟']
 
 export function NurseryDashboard() {
   const navigate = useNavigate()
   const hour = new Date().getHours()
+  // Pick greeting based on hour: morning <12, afternoon <17, evening otherwise
   const greeting = greetings[hour < 12 ? 0 : hour < 17 ? 1 : 2]
   const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]
 
   const [showQuote, setShowQuote] = useState(true)
 
+  // Progress stats derived from nursery learning modules
   const totalActivities = nurseryModules.reduce((sum, m) => sum + m.activities.length, 0)
   const completedActivities = nurseryModules.reduce((sum, m) => sum + m.activities.filter(a => a.completed).length, 0)
   const totalStars = nurseryModules.reduce((sum, m) => sum + m.activities.reduce((s, a) => s + a.stars, 0), 0)
   const level = calculateLevel(totalStars)
 
+  // Recent badges relevant for nursery
   const recentBadges = [
     { id: 'welcome', title: 'Welcome', emoji: '👋', description: 'Started learning!', unlocked: true },
     { id: 'quick-learner', title: 'Quick Learner', emoji: '⚡', description: 'Complete 5 activities', unlocked: completedActivities >= 5 },
     { id: 'star-collector', title: 'Star Collector', emoji: '⭐', description: 'Collect 10 stars', unlocked: totalStars >= 10 },
   ]
 
+  // Framer-motion staggered animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
@@ -62,6 +72,7 @@ export function NurseryDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-pink-50 overflow-hidden">
+      {/* Floating background decorations */}
       {floatingElements.map((el, i) => (
         <motion.div
           key={i}
@@ -75,6 +86,7 @@ export function NurseryDashboard() {
       ))}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Greeting header hero card */}
         <motion.div
           className="bg-gradient-to-r from-kid-orange via-kid-pink to-kid-purple rounded-3xl p-6 md:p-8 text-white shadow-xl mb-6 relative overflow-hidden"
           initial={{ opacity: 0, y: -20 }}
@@ -99,6 +111,7 @@ export function NurseryDashboard() {
               </h1>
               <p className="text-white/80 text-lg">Let's learn and play together!</p>
 
+              {/* Dismissible motivational quote */}
               <AnimatePresence mode="wait">
                 {showQuote && (
                   <motion.div
@@ -116,6 +129,7 @@ export function NurseryDashboard() {
               </AnimatePresence>
             </div>
 
+            {/* Character mascots */}
             <div className="hidden md:flex items-center gap-4">
               <AnimatedCharacter name="Milo" emoji="🐱" size="lg" />
               <AnimatedCharacter name="Bella" emoji="🐰" size="lg" />
@@ -123,6 +137,7 @@ export function NurseryDashboard() {
           </div>
         </motion.div>
 
+        {/* Stats cards row: stars, progress, level, badges */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
           variants={containerVariants}
@@ -170,6 +185,7 @@ export function NurseryDashboard() {
           </motion.div>
         </motion.div>
 
+        {/* Overall progress bar */}
         <div className="mb-6">
           <ProgressBar
             value={completedActivities}
@@ -181,6 +197,7 @@ export function NurseryDashboard() {
           />
         </div>
 
+        {/* Quick access navigation grid */}
         <motion.div className="mb-8" variants={containerVariants} initial="hidden" animate="visible">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-800 font-fredoka">Quick Access</h2>
@@ -206,6 +223,7 @@ export function NurseryDashboard() {
           </div>
         </motion.div>
 
+        {/* Learning modules section showing progress per module */}
         <motion.div className="mb-8" variants={containerVariants} initial="hidden" animate="visible">
           <h2 className="text-xl font-bold text-gray-800 font-fredoka mb-4">Learning Modules</h2>
 
@@ -241,6 +259,7 @@ export function NurseryDashboard() {
                         )}
                       </div>
                     </div>
+                    {/* Completion sparkle indicator */}
                     {allDone && (
                       <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
                         <Sparkles className="w-3 h-3 text-white" />
@@ -254,7 +273,9 @@ export function NurseryDashboard() {
           </div>
         </motion.div>
 
+        {/* Achievements and fun games side-by-side */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Recent achievements badges */}
           <motion.div
             className="bg-white rounded-2xl p-5 shadow-md"
             initial={{ opacity: 0, x: -20 }}
@@ -278,6 +299,7 @@ export function NurseryDashboard() {
             </motion.button>
           </motion.div>
 
+          {/* Fun games quick-launch area */}
           <motion.div
             className="bg-white rounded-2xl p-5 shadow-md"
             initial={{ opacity: 0, x: 20 }}
@@ -288,6 +310,7 @@ export function NurseryDashboard() {
               Fun Games
             </h2>
             <p className="text-sm text-gray-500 mb-4">Play and learn with fun games!</p>
+            {/* Game emoji buttons */}
             <div className="flex flex-wrap gap-2">
               {['🧩', '🧠', '🔤', '🔢', '🎨', '🐾'].map((emoji, i) => (
                 <motion.button
@@ -312,6 +335,7 @@ export function NurseryDashboard() {
           </motion.div>
         </div>
 
+        {/* Call-to-action footer with mascots */}
         <motion.div
           className="bg-gradient-to-r from-kid-yellow to-kid-orange rounded-2xl p-6 text-center shadow-lg"
           initial={{ opacity: 0, y: 20 }}

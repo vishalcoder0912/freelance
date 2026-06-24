@@ -1,3 +1,4 @@
+// File: EventManagement — Calendar of school events with cards showing date, time, location, description, type badge, and edit/delete actions.
 import { motion } from 'framer-motion'
 import { Calendar, Plus, MapPin, Clock, Users, Edit3, Trash2, Sparkles } from 'lucide-react'
 import { StatsCard } from '../components/StatsCard'
@@ -25,10 +26,12 @@ const typeColors = {
 }
 
 export default function EventManagement() {
+  // Format the current month and year for display
   const currentMonth = new Date().toLocaleString('default', { month: 'long', year: 'numeric' })
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8">
+      {/* Header with Create Event button */}
       <motion.div variants={container} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -45,6 +48,7 @@ export default function EventManagement() {
         </motion.button>
       </motion.div>
 
+      {/* Summary stats: total events, this month, upcoming, important */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <StatsCard title="Total Events" value={events.length.toString()} icon={<Calendar className="w-4 h-4" />} color="pink" />
         <StatsCard title="This Month" value="4" icon={<Calendar className="w-4 h-4" />} color="blue" />

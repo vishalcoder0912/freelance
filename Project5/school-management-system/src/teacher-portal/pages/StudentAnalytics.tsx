@@ -1,3 +1,4 @@
+// File: StudentAnalytics — Class-level analytics with subject averages, performance distribution bars, and top-performing student rankings.
 import { motion } from 'framer-motion'
 import { BarChart3, TrendingUp, Users, Award, Download } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -46,10 +47,12 @@ const topStudents = [
 ]
 
 export default function StudentAnalytics() {
+  // Maximum count used for scaling the distribution bars
   const maxDistCount = Math.max(...performanceDistribution.map(d => d.count))
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with Export Report button */}
       <motion.div variants={card} className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -66,6 +69,7 @@ export default function StudentAnalytics() {
         </motion.button>
       </motion.div>
 
+      {/* Key metrics row: class average, highest score, above/below average counts, total students */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
         <motion.div variants={card} className="bg-white rounded-2xl p-4 shadow-md border border-gray-100 text-center">
           <TrendingUp className="w-5 h-5 text-kid-blue mx-auto mb-1" />

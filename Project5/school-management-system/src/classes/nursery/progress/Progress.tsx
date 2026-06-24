@@ -1,3 +1,5 @@
+// Progress - Learning progress tracker for nursery
+// Shows stats cards, overall progress bar, level progress, module breakdown, and badges
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ProgressBar } from '../../../shared/components/ProgressBar'
@@ -5,6 +7,7 @@ import { AchievementBadge } from '../../../shared/components/AchievementBadge'
 import { nurseryModules, calculateLevel } from '../../../shared/learning-engine/LearningEngine'
 import { ArrowLeft, Star, Trophy, TrendingUp } from 'lucide-react'
 
+// Badge definitions for progress display
 const progressBadges = [
   { id: 'welcome', title: 'Welcome', emoji: '👋', description: 'Started learning!', unlocked: true },
   { id: 'abc-star', title: 'ABC Star', emoji: '⭐', description: 'Complete all alphabets', unlocked: false },
@@ -20,11 +23,13 @@ const progressBadges = [
 export function Progress() {
   const navigate = useNavigate()
 
+  // Aggregate stats from nursery learning modules
   const totalActivities = nurseryModules.reduce((sum, m) => sum + m.activities.length, 0)
   const completedActivities = nurseryModules.reduce((sum, m) => sum + m.activities.filter(a => a.completed).length, 0)
   const totalStars = nurseryModules.reduce((sum, m) => sum + m.activities.reduce((s, a) => s + a.stars, 0), 0)
   const level = calculateLevel(totalStars)
 
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
@@ -45,6 +50,7 @@ export function Progress() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
+        {/* Back navigation */}
         <button
           onClick={() => navigate('/nursery')}
           className="flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-4 font-semibold"
@@ -53,6 +59,7 @@ export function Progress() {
           Back to Dashboard
         </button>
 
+        {/* Progress card */}
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-kid-blue to-kid-purple p-6 text-center">
             <h1 className="text-3xl font-bold font-fredoka text-white">📊 My Progress</h1>
@@ -60,6 +67,7 @@ export function Progress() {
           </div>
 
           <div className="p-6 space-y-6">
+            {/* Stats cards: stars, activities, level */}
             <motion.div
               className="grid grid-cols-1 sm:grid-cols-3 gap-4"
               variants={containerVariants}
@@ -85,6 +93,7 @@ export function Progress() {
               </motion.div>
             </motion.div>
 
+            {/* Overall progress bar */}
             <div>
               <h2 className="text-lg font-bold font-fredoka text-gray-800 mb-3">Overall Progress</h2>
               <ProgressBar
@@ -96,6 +105,7 @@ export function Progress() {
               />
             </div>
 
+            {/* Level-specific progress */}
             <div>
               <h2 className="text-lg font-bold font-fredoka text-gray-800 mb-3">Level Progress</h2>
               <div className="flex items-center gap-2 mb-2">
@@ -116,6 +126,7 @@ export function Progress() {
               )}
             </div>
 
+            {/* Per-module progress breakdown */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -161,6 +172,7 @@ export function Progress() {
               </div>
             </motion.div>
 
+            {/* Badges list */}
             <motion.div
               variants={containerVariants}
               initial="hidden"

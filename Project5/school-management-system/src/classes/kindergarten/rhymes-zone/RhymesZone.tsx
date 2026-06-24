@@ -1,8 +1,11 @@
+// RhymesZone - Interactive nursery rhymes module for kindergarten
+// Features 10 classic rhymes with a line-by-line sing-along player
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AnimatedCharacter } from '../../../shared/components/AnimatedCharacter'
 import { ArrowLeft, Music, Play, Pause, Volume2, ChevronRight, ChevronLeft } from 'lucide-react'
 
+// Collection of nursery rhymes with lyrics, emoji theme, and characters
 const rhymes = [
   {
     id: 'twinkle',
@@ -156,6 +159,7 @@ const rhymes = [
   },
 ]
 
+// Rhyme selection card with gradient background and animated emoji
 function RhymeCard({ rhyme, onClick, index }: { rhyme: typeof rhymes[0]; onClick: () => void; index: number }) {
   return (
     <motion.button
@@ -190,6 +194,7 @@ export function RhymesZone() {
   const [playing, setPlaying] = useState(false)
   const [currentLine, setCurrentLine] = useState(0)
 
+  // Play/pause toggle for auto-advancing through lyrics
   const handlePlayPause = () => {
     if (!playing) {
       setPlaying(true)
@@ -213,6 +218,7 @@ export function RhymesZone() {
     }
   }
 
+  // Auto-advance timer for play mode - advances to next line every 2 seconds
   if (selectedRhyme && playing) {
     const timer = setTimeout(() => {
       if (currentLine < selectedRhyme.lyrics.length - 1) {
@@ -227,6 +233,7 @@ export function RhymesZone() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-indigo-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             {selectedRhyme && (
@@ -245,6 +252,7 @@ export function RhymesZone() {
         </motion.div>
 
         <AnimatePresence mode="wait">
+          {/* Rhyme selection grid */}
           {!selectedRhyme ? (
             <motion.div
               key="menu"
@@ -266,6 +274,7 @@ export function RhymesZone() {
               </div>
             </motion.div>
           ) : (
+            // Rhyme player view with line-by-line display and playback controls
             <motion.div
               key="player"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -273,6 +282,7 @@ export function RhymesZone() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="max-w-2xl mx-auto"
             >
+              {/* Rhyme display card with animated characters */}
               <div className={`bg-gradient-to-br ${selectedRhyme.color} rounded-3xl p-8 text-white text-center shadow-xl mb-6`}>
                 <div className="flex justify-center gap-2 mb-4">
                   {selectedRhyme.characters.map((c, i) => (
@@ -289,6 +299,7 @@ export function RhymesZone() {
 
                 <h2 className="text-2xl font-bold font-fredoka mb-4">{selectedRhyme.title}</h2>
 
+                {/* Current line display */}
                 <motion.div
                   key={currentLine}
                   className="bg-white/20 rounded-xl p-4 min-h-[80px] flex items-center justify-center"
@@ -298,6 +309,7 @@ export function RhymesZone() {
                   <p className="text-lg font-medium italic">&ldquo;{selectedRhyme.lyrics[currentLine]}&rdquo;</p>
                 </motion.div>
 
+                {/* Playback controls: previous, play/pause, next */}
                 <div className="flex items-center justify-center gap-4 mt-6">
                   <motion.button
                     onClick={handlePrevLine}
@@ -333,6 +345,7 @@ export function RhymesZone() {
                   </motion.button>
                 </div>
 
+                {/* Line progress indicators */}
                 <div className="flex justify-center gap-1 mt-4">
                   {selectedRhyme.lyrics.map((_, i) => (
                     <div
@@ -343,6 +356,7 @@ export function RhymesZone() {
                 </div>
               </div>
 
+              {/* Full lyrics display with current line highlighted */}
               <div className="bg-white rounded-2xl p-4 shadow-md">
                 <h3 className="font-bold text-gray-700 mb-3 flex items-center gap-2">
                   <Volume2 className="w-4 h-4 text-kid-purple" />

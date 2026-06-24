@@ -1,3 +1,4 @@
+// File: ActivityMonitoring — Tracks daily activities (academic/play/creative), weekly distribution chart, and screen time usage.
 import { motion } from 'framer-motion'
 import { Activity, Clock, BookOpen, Gamepad2, Award, Eye } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -40,6 +41,7 @@ const maxMinutes = Math.max(...weeklySummary.map(d => d.academic + d.play + d.cr
 export default function ActivityMonitoring() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Page header */}
       <motion.div variants={card} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
           <Activity className="w-7 h-7 text-kid-green" /> Activity Monitoring
@@ -47,6 +49,7 @@ export default function ActivityMonitoring() {
         <p className="text-gray-500 font-nunito">Track Emma's daily school activities</p>
       </motion.div>
 
+      {/* Summary stat cards: today's classes, play time, creative time, activities done */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <motion.div variants={card} className="bg-white rounded-2xl p-4 shadow-md border border-gray-100 text-center">
           <BookOpen className="w-5 h-5 text-kid-blue mx-auto mb-1" />
@@ -70,6 +73,7 @@ export default function ActivityMonitoring() {
         </motion.div>
       </div>
 
+      {/* Two-column: today's activity list (left) and weekly distribution stacked bars (right) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <motion.div variants={card} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-3">Today's Activities</h2>

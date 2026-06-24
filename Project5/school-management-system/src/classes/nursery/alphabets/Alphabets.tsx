@@ -1,6 +1,9 @@
+// Alphabets - A-Z letter learning for nursery
+// Displays a grid of alphabet cards with emojis; tapping opens a detail modal with word association
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Alphabet data with letter, word association, emoji, and gradient color
 const alphabetData = [
   { letter: 'A', word: 'Apple', emoji: '🍎', color: 'from-red-400 to-red-500' },
   { letter: 'B', word: 'Ball', emoji: '⚽', color: 'from-blue-400 to-blue-500' },
@@ -35,6 +38,7 @@ export function Alphabets() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 p-4 md:p-6">
+      {/* Page header */}
       <motion.div
         className="text-center mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -46,6 +50,7 @@ export function Alphabets() {
         <p className="text-gray-500 mt-2">Tap any letter to learn more!</p>
       </motion.div>
 
+      {/* Alphabet grid with staggered entrance animation */}
       <motion.div
         className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 max-w-5xl mx-auto"
         initial="hidden"
@@ -67,6 +72,7 @@ export function Alphabets() {
         ))}
       </motion.div>
 
+      {/* Letter detail modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -84,6 +90,7 @@ export function Alphabets() {
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Bouncing emoji */}
               <motion.div
                 className="text-8xl mb-4"
                 animate={{ y: [0, -10, 0] }}
@@ -91,6 +98,7 @@ export function Alphabets() {
               >
                 {selected.emoji}
               </motion.div>
+              {/* Letter circle badge */}
               <div className="w-20 h-20 bg-gradient-to-br from-kid-orange to-kid-pink rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-4xl font-bold font-fredoka text-white">{selected.letter}</span>
               </div>

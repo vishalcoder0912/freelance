@@ -1,3 +1,4 @@
+// File: PuzzleBuilder — Sequential puzzle game: click pieces in the correct order to reveal the hidden emoji.
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

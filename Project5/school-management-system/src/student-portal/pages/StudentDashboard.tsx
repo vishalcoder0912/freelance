@@ -156,6 +156,7 @@ export default function StudentDashboard() {
           </div>
         </motion.div>
 
+        {/* Quick Access class cards — color-coded buttons to navigate to different class levels */}
         <motion.div variants={item}>
           <h2 className="font-fredoka text-gray-700 mb-3 text-lg flex items-center gap-2"><Gamepad2 className="w-4 h-4 text-kid-orange" /> Quick Access</h2>
           <div className="grid grid-cols-2 gap-3">
@@ -174,6 +175,7 @@ export default function StudentDashboard() {
         </motion.div>
       </div>
 
+      {/* Homework Due Soon list — shows all pending homework items with due dates */}
       <motion.div variants={item} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
         <h2 className="font-fredoka text-gray-700 mb-3 flex items-center gap-2"><Star className="w-4 h-4 text-kid-orange" /> Homework Due Soon</h2>
         <div className="space-y-2">

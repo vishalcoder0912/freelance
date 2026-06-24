@@ -1,3 +1,4 @@
+// File: TeacherDashboard — Teacher overview showing class stats, today's schedule, recent assignment submissions, and quick actions.
 import { motion } from 'framer-motion'
 import { Users, BookOpen, ClipboardCheck, Clock, FileEdit, HelpCircle, Bell } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -43,11 +44,13 @@ const quickActions = [
 export default function TeacherDashboard() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Greeting header with class info */}
       <motion.div variants={item} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800">Good Morning, Ms. Sarah! 👋</h1>
         <p className="text-gray-500 font-nunito">Kindergarten - Section A</p>
       </motion.div>
 
+      {/* Class stats row: total students, present today, assignments due, pending reviews */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {classStats.map((stat, i) => (
           <motion.div
@@ -64,6 +67,7 @@ export default function TeacherDashboard() {
         ))}
       </div>
 
+      {/* Main content: schedule, assignments, and quick actions */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <motion.div variants={item} className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
@@ -84,6 +88,7 @@ export default function TeacherDashboard() {
             </div>
           </div>
 
+          {/* Recent Assignments — shows submission progress per assignment */}
           <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
             <h2 className="font-fredoka text-gray-700 mb-3 flex items-center gap-2"><BookOpen className="w-4 h-4 text-kid-orange" /> Recent Assignments</h2>
             <div className="space-y-3">
@@ -106,6 +111,7 @@ export default function TeacherDashboard() {
           </div>
         </motion.div>
 
+        {/* Quick Actions panel — buttons for common tasks: create assignment, quiz, attendance, notice */}
         <motion.div variants={item} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-3">Quick Actions</h2>
           <div className="grid grid-cols-2 gap-3">

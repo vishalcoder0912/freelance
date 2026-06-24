@@ -1,3 +1,5 @@
+// LkgDashboard - Main landing page for LKG class
+// Shows greeting, stats cards, progress bar, quick access grid, learning modules, achievements, and mini games
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +10,7 @@ import { AchievementBadge } from '../../../shared/components/AchievementBadge'
 import { lkgModules, calculateLevel } from '../../../shared/learning-engine/LearningEngine'
 import { Sparkles, Star, TrendingUp, Trophy, Activity, Sun, ArrowRight, Gamepad2 } from 'lucide-react'
 
+// Greeting messages based on time of day
 const greetings = ['Good Morning!', 'Good Afternoon!', 'Good Evening!']
 const quotes = [
   'Learning is fun! Let\'s explore!',
@@ -17,6 +20,7 @@ const quotes = [
   'Let\'s learn something new today!',
 ]
 
+// Quick-access navigation cards
 const quickActions = [
   { title: 'Phonics', icon: '🔤', path: '/lkg/phonics', color: 'blue' },
   { title: 'Reading', icon: '📖', path: '/lkg/reading-zone', color: 'green' },
@@ -28,6 +32,7 @@ const quickActions = [
   { title: 'Quiz', icon: '📝', path: '/lkg/assessments', color: 'yellow' },
 ]
 
+// Floating decorative background elements
 const floatingElements = ['🌸', '⭐', '🌈', '🦋', '✨', '💫', '🎈', '🌟', '🍎', '📚']
 
 export function LkgDashboard() {
@@ -37,17 +42,20 @@ export function LkgDashboard() {
   const quote = quotes[Math.floor(Math.random() * quotes.length)]
   const [showQuote, setShowQuote] = useState(true)
 
+  // Progress stats derived from LKG learning modules
   const totalActivities = lkgModules.reduce((sum, m) => sum + m.activities.length, 0)
   const completedActivities = lkgModules.reduce((sum, m) => sum + m.activities.filter(a => a.completed).length, 0)
   const totalStars = lkgModules.reduce((sum, m) => sum + m.activities.reduce((s, a) => s + a.stars, 0), 0)
   const level = calculateLevel(totalStars)
 
+  // Recent badges relevant for LKG
   const recentBadges = [
     { id: 'welcome', title: 'Welcome', emoji: '👋', description: 'Started LKG!', unlocked: true },
     { id: 'quick-learner', title: 'Quick Learner', emoji: '⚡', description: 'Complete 5 activities', unlocked: completedActivities >= 5 },
     { id: 'star-collector', title: 'Star Collector', emoji: '⭐', description: 'Collect 10 stars', unlocked: totalStars >= 10 },
   ]
 
+  // Animation variants for staggered children
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
@@ -60,6 +68,7 @@ export function LkgDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 overflow-hidden">
+      {/* Floating background decorations */}
       {floatingElements.map((el, i) => (
         <motion.div
           key={i}
@@ -73,6 +82,7 @@ export function LkgDashboard() {
       ))}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Greeting header hero card */}
         <motion.div
           className="bg-gradient-to-r from-kid-green via-kid-teal to-kid-blue rounded-3xl p-6 md:p-8 text-white shadow-xl mb-6 relative overflow-hidden"
           initial={{ opacity: 0, y: -20 }}
@@ -95,6 +105,7 @@ export function LkgDashboard() {
               <h1 className="text-3xl md:text-4xl font-bold font-fredoka">LKG Class</h1>
               <p className="text-white/80 text-lg">Let's learn and grow together!</p>
 
+              {/* Dismissible motivational quote */}
               <AnimatePresence mode="wait">
                 {showQuote && (
                   <motion.div
@@ -112,6 +123,7 @@ export function LkgDashboard() {
               </AnimatePresence>
             </div>
 
+            {/* Character mascots */}
             <div className="hidden md:flex items-center gap-4">
               <AnimatedCharacter name="Tina" emoji="🐱" size="lg" />
               <AnimatedCharacter name="Max" emoji="🐶" size="lg" />
@@ -119,6 +131,7 @@ export function LkgDashboard() {
           </div>
         </motion.div>
 
+        {/* Stats cards row: stars, progress, level, badges */}
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"
           variants={containerVariants}
@@ -163,6 +176,7 @@ export function LkgDashboard() {
           </motion.div>
         </motion.div>
 
+        {/* Overall progress bar */}
         <div className="mb-6">
           <ProgressBar
             value={completedActivities}
@@ -174,6 +188,7 @@ export function LkgDashboard() {
           />
         </div>
 
+        {/* Quick access navigation grid */}
         <motion.div className="mb-8" variants={containerVariants} initial="hidden" animate="visible">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-800 font-fredoka">Quick Access</h2>
@@ -198,6 +213,7 @@ export function LkgDashboard() {
           </div>
         </motion.div>
 
+        {/* Learning modules section */}
         <motion.div className="mb-8" variants={containerVariants} initial="hidden" animate="visible">
           <h2 className="text-xl font-bold text-gray-800 font-fredoka mb-4">Learning Modules</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -232,6 +248,7 @@ export function LkgDashboard() {
                         )}
                       </div>
                     </div>
+                    {/* Completion sparkle indicator */}
                     {allDone && (
                       <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
                         <Sparkles className="w-3 h-3 text-white" />
@@ -245,6 +262,7 @@ export function LkgDashboard() {
           </div>
         </motion.div>
 
+        {/* Achievements and mini games side-by-side */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <motion.div
             className="bg-white rounded-2xl p-5 shadow-md"
@@ -303,6 +321,7 @@ export function LkgDashboard() {
           </motion.div>
         </div>
 
+        {/* Call-to-action footer with mascots */}
         <motion.div
           className="bg-gradient-to-r from-kid-green to-kid-teal rounded-2xl p-6 text-center shadow-lg"
           initial={{ opacity: 0, y: 20 }}

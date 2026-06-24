@@ -1,3 +1,4 @@
+// File: CountingGame — See a set of objects (apples), count them, and select the correct number from options.
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

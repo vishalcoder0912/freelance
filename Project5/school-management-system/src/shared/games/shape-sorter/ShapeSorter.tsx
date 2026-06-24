@@ -1,3 +1,4 @@
+// File: ShapeSorter — See a shape (circle, square, triangle, etc.) and pick the matching shape from four options.
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

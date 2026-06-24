@@ -1,3 +1,4 @@
+// File: StatsCard — Reusable gradient stat card with icon, value, title, optional trend badge, and click handler.
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 

@@ -1,6 +1,10 @@
+// TransportLearning - Vehicle exploration for nursery
+// Grid of vehicles grouped by category (Road, Rail, Air, Water, Space) with filter buttons
+// Tapping opens a detail modal with category info and fun movement description
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Vehicle data with emoji, category, and styling classes
 const vehicles = [
   { name: 'Car', emoji: '🚗', category: 'Road', bg: 'from-blue-100 to-blue-200', border: 'border-blue-300' },
   { name: 'Bus', emoji: '🚌', category: 'Road', bg: 'from-yellow-100 to-yellow-200', border: 'border-yellow-300' },
@@ -19,6 +23,7 @@ const vehicles = [
   { name: 'Fire Truck', emoji: '🚒', category: 'Road', bg: 'from-red-100 to-orange-200', border: 'border-orange-300' },
 ]
 
+// Color mapping for category badges
 const categoryColors: Record<string, string> = {
   Road: 'bg-blue-500',
   Rail: 'bg-red-500',
@@ -36,6 +41,7 @@ export function TransportLearning() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-blue-50 to-indigo-50 p-4 md:p-6">
+      {/* Page header */}
       <motion.div
         className="text-center mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -47,6 +53,7 @@ export function TransportLearning() {
         <p className="text-gray-500 mt-2">Explore different vehicles and how they move!</p>
       </motion.div>
 
+      {/* Category filter buttons */}
       <div className="flex flex-wrap justify-center gap-2 mb-6">
         <motion.button
           onClick={() => setFilter(null)}
@@ -69,6 +76,7 @@ export function TransportLearning() {
         ))}
       </div>
 
+      {/* Filtered vehicle grid */}
       <motion.div
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-5xl mx-auto"
         initial="hidden"
@@ -94,6 +102,7 @@ export function TransportLearning() {
         ))}
       </motion.div>
 
+      {/* Vehicle detail modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -111,6 +120,7 @@ export function TransportLearning() {
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Animated emoji sliding side to side */}
               <motion.div
                 className="text-8xl mb-4"
                 animate={{ x: [0, 20, 0] }}
@@ -119,6 +129,7 @@ export function TransportLearning() {
                 {selected.emoji}
               </motion.div>
               <h2 className="text-3xl font-bold font-fredoka text-gray-800">{selected.name}</h2>
+              {/* Category badge */}
               <span className={`inline-block mt-3 px-4 py-1 rounded-full text-sm font-bold text-white ${categoryColors[selected.category]}`}>
                 {selected.category}
               </span>

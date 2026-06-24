@@ -1,3 +1,4 @@
+// File: AnimalSounds — Listen to an animal sound and pick the matching animal from four image options.
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

@@ -1,3 +1,4 @@
+// File: PhonicsGame — Hear a letter sound (phonics) and pick the matching word/picture from four options.
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

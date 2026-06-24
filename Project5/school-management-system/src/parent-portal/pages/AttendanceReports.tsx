@@ -1,3 +1,4 @@
+// File: AttendanceReports — Shows monthly attendance stats with present/absent/late breakdowns and subject-wise attendance bars.
 import { motion } from 'framer-motion'
 import { CalendarDays, CheckCircle2, XCircle, Clock, TrendingUp } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -30,6 +31,7 @@ const subjects = [
 ]
 
 export default function AttendanceReports() {
+  // Aggregate attendance totals across all months
   const totalPresent = monthlyData.reduce((a, b) => a + b.present, 0)
   const totalAbsent = monthlyData.reduce((a, b) => a + b.absent, 0)
   const totalLate = monthlyData.reduce((a, b) => a + b.late, 0)
@@ -38,6 +40,7 @@ export default function AttendanceReports() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Page header */}
       <motion.div variants={card} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
           <CalendarDays className="w-7 h-7 text-kid-blue" /> Attendance Reports
@@ -45,6 +48,7 @@ export default function AttendanceReports() {
         <p className="text-gray-500 font-nunito">Academic Year 2024-2025</p>
       </motion.div>
 
+      {/* Summary stat cards: total present, absent, late, and overall percentage */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <motion.div variants={card} className="bg-white rounded-2xl p-4 shadow-md border border-gray-100 text-center">
           <CheckCircle2 className="w-6 h-6 text-kid-green mx-auto mb-1" />
@@ -68,6 +72,7 @@ export default function AttendanceReports() {
         </motion.div>
       </div>
 
+      {/* Two-column layout: monthly breakdown and subject-wise attendance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <motion.div variants={card} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-4">Monthly Attendance</h2>
@@ -115,6 +120,7 @@ export default function AttendanceReports() {
           </div>
         </motion.div>
 
+        {/* Subject-wise Attendance — shows attendance counts per subject with progress bars */}
         <motion.div variants={card} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-4">Subject-wise Attendance</h2>
           <div className="space-y-4">

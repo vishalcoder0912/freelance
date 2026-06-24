@@ -1,9 +1,12 @@
+// Puzzles - Jigsaw puzzle game for nursery
+// Wraps the shared PuzzleBuilder component with a new-puzzle button and reward screen
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { PuzzleBuilder } from '../../../shared/games/puzzle-builder/PuzzleBuilder'
 import { RewardScreen } from '../../../shared/components/RewardScreen'
 
 export function Puzzles() {
+  // gameKey forces PuzzleBuilder to remount for a fresh puzzle
   const [gameKey, setGameKey] = useState(0)
   const [showReward, setShowReward] = useState(false)
 
@@ -17,6 +20,7 @@ export function Puzzles() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 p-4 md:p-6">
+      {/* Page header */}
       <motion.div
         className="text-center mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -28,6 +32,7 @@ export function Puzzles() {
         <p className="text-gray-500 mt-2">Solve the puzzles and reveal the picture!</p>
       </motion.div>
 
+      {/* Puzzle wrapper card */}
       <motion.div
         className="max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-4"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -35,6 +40,7 @@ export function Puzzles() {
       >
         <PuzzleBuilder key={gameKey} onComplete={handleComplete} />
 
+        {/* New puzzle button */}
         <div className="text-center mt-4 pt-4 border-t border-gray-100">
           <motion.button
             onClick={handleNewGame}
@@ -47,6 +53,7 @@ export function Puzzles() {
         </div>
       </motion.div>
 
+      {/* Reward overlay on completion */}
       <RewardScreen
         show={showReward}
         message="Puzzle Master!"

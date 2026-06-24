@@ -1,3 +1,4 @@
+// File: MemoryCard — Classic memory matching game: flip cards to find pairs of matching emojis with move tracking.
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

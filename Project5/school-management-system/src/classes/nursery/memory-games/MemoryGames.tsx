@@ -1,9 +1,12 @@
+// MemoryGames - Card matching game for nursery
+// Wraps the shared MemoryCard game component with a new-game button and reward screen
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { MemoryCard } from '../../../shared/games/memory-card/MemoryCard'
 import { RewardScreen } from '../../../shared/components/RewardScreen'
 
 export function MemoryGames() {
+  // gameKey forces MemoryCard to remount for a fresh game
   const [gameKey, setGameKey] = useState(0)
   const [showReward, setShowReward] = useState(false)
 
@@ -17,6 +20,7 @@ export function MemoryGames() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50 p-4 md:p-6">
+      {/* Page header */}
       <motion.div
         className="text-center mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -28,6 +32,7 @@ export function MemoryGames() {
         <p className="text-gray-500 mt-2">Flip the cards and find matching pairs!</p>
       </motion.div>
 
+      {/* Game wrapper card */}
       <motion.div
         className="max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-4"
         initial={{ opacity: 0, scale: 0.9 }}
@@ -35,6 +40,7 @@ export function MemoryGames() {
       >
         <MemoryCard key={gameKey} onComplete={handleComplete} />
 
+        {/* New game button */}
         <div className="text-center mt-4 pt-4 border-t border-gray-100">
           <motion.button
             onClick={handleNewGame}
@@ -47,6 +53,7 @@ export function MemoryGames() {
         </div>
       </motion.div>
 
+      {/* Reward overlay on completion */}
       <RewardScreen
         show={showReward}
         message="Memory Master!"

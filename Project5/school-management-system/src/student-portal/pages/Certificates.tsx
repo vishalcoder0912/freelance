@@ -1,3 +1,4 @@
+// File: Certificates — Displays earned achievement certificates with download and share actions.
 import { motion } from 'framer-motion'
 import { Award, Download, Share2, Sparkles } from 'lucide-react'
 
@@ -23,6 +24,7 @@ const certificates = [
 export default function Certificates() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with total earned count */}
       <motion.div variants={card} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
           <Award className="w-7 h-7 text-kid-yellow" /> My Certificates
@@ -31,6 +33,7 @@ export default function Certificates() {
         <p className="text-gray-500 font-nunito">{certificates.length} certificates earned</p>
       </motion.div>
 
+      {/* Certificate cards grid — each has a colored header with animated icon, description, award date, Download and Share buttons */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {certificates.map((cert) => (
           <motion.div

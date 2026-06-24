@@ -1,3 +1,4 @@
+// File: StaffManagement — Admin staff directory with cards showing role, department, status, and email/call actions.
 import { motion } from 'framer-motion'
 import { GraduationCap, Search, Plus, Mail, Phone, MoreVertical } from 'lucide-react'
 import { StatsCard } from '../components/StatsCard'
@@ -23,6 +24,7 @@ const staffMembers = [
 export default function StaffManagement() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8">
+      {/* Header with Add Staff button */}
       <motion.div variants={container} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -39,6 +41,7 @@ export default function StaffManagement() {
         </motion.button>
       </motion.div>
 
+      {/* Stats: teachers, admin staff, support staff, active today */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
         <StatsCard title="Teachers" value="32" icon={<GraduationCap className="w-4 h-4" />} color="blue" />
         <StatsCard title="Admin Staff" value="8" icon={<GraduationCap className="w-4 h-4" />} color="purple" />

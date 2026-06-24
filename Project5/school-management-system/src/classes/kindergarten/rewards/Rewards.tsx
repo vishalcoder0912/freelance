@@ -1,3 +1,5 @@
+// Rewards - Achievement and rewards overview for kindergarten
+// Shows earned badges, upcoming rewards, level progress, and next goal
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { RewardSystem } from '../../../shared/games/reward-system/RewardSystem'
@@ -7,6 +9,7 @@ import { AchievementBadge } from '../../../shared/components/AchievementBadge'
 import { kindergartenModules, calculateLevel } from '../../../shared/learning-engine/LearningEngine'
 import { Trophy, Star, Award, Sparkles, Gift, Target, TrendingUp } from 'lucide-react'
 
+// All available badges with unlock status
 const allBadges = [
   { id: 'first-step', title: 'First Step', emoji: '👶', description: 'Complete your first activity', unlocked: true },
   { id: 'abc-star', title: 'ABC Star', emoji: '🔤', description: 'Complete Alphabet World', unlocked: true },
@@ -25,6 +28,7 @@ const allBadges = [
   { id: 'super-fan', title: 'Super Fan', emoji: '🌟', description: 'Complete all activities', unlocked: false },
 ]
 
+// Milestone rewards based on star count
 const upcomingRewards = [
   { stars: 5, title: 'Bronze Badge', emoji: '🥉', unlocked: true },
   { stars: 15, title: 'Star Badge', emoji: '⭐', unlocked: true },
@@ -49,6 +53,7 @@ export function Rewards() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-gray-800 font-fredoka">Rewards</h1>
@@ -57,7 +62,9 @@ export function Rewards() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left column: achievements header and badge list */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Stats card with stars, badges, and completion count */}
             <motion.div
               className="bg-gradient-to-r from-kid-yellow via-kid-orange to-kid-pink rounded-2xl p-6 text-white shadow-lg"
               initial={{ opacity: 0, y: -10 }}
@@ -95,6 +102,7 @@ export function Rewards() {
               </div>
             </motion.div>
 
+            {/* Full badges list */}
             <motion.div
               className="bg-white rounded-2xl p-5 shadow-md"
               initial={{ opacity: 0, y: 10 }}
@@ -113,7 +121,9 @@ export function Rewards() {
             </motion.div>
           </div>
 
+          {/* Right column: upcoming rewards, next goal, and level progress */}
           <div className="space-y-6">
+            {/* Upcoming rewards list */}
             <motion.div
               className="bg-white rounded-2xl p-5 shadow-md"
               initial={{ opacity: 0, x: 20 }}
@@ -154,6 +164,7 @@ export function Rewards() {
               </div>
             </motion.div>
 
+            {/* Next badge goal */}
             <motion.div
               className="bg-white rounded-2xl p-5 shadow-md"
               initial={{ opacity: 0, x: 20 }}
@@ -183,6 +194,7 @@ export function Rewards() {
               )}
             </motion.div>
 
+            {/* Level progress card */}
             <motion.div
               className="bg-gradient-to-br from-kid-purple to-kid-pink rounded-2xl p-5 text-white shadow-md"
               initial={{ opacity: 0, x: 20 }}

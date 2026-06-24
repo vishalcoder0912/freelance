@@ -1,3 +1,4 @@
+// File: FeeTracking — Displays fee summary, payment progress bar, and payment history with status indicators for parents.
 import { motion } from 'framer-motion'
 import { CreditCard, CheckCircle, Clock, AlertCircle, Download, Printer } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -42,10 +43,12 @@ const statusIcons = {
 }
 
 export default function FeeTracking() {
+  // Percentage of total fee that has been paid
   const paidPercent = Math.round((feeSummary.paid / feeSummary.totalFee) * 100)
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with print and download actions */}
       <motion.div variants={card} className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -59,6 +62,7 @@ export default function FeeTracking() {
         </div>
       </motion.div>
 
+      {/* Summary cards: total fee, paid amount, balance due */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <motion.div variants={card} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <p className="text-sm text-gray-500 font-semibold">Total Fee</p>

@@ -1,3 +1,5 @@
+// ColorLearning - Interactive color recognition module for kindergarten
+// Features color matching game and color explorer with real-world object examples
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ColorMatch } from '../../../shared/games/color-match/ColorMatch'
@@ -5,6 +7,7 @@ import { GameCard } from '../../../shared/components/GameCard'
 import { AnimatedCharacter } from '../../../shared/components/AnimatedCharacter'
 import { ArrowLeft, Palette, PaintBucket } from 'lucide-react'
 
+// Color data with hex values, emojis, and styling classes
 const colors = [
   { name: 'Red', hex: '#FF6B6B', emoji: '🔴', bg: 'bg-red-100', text: 'text-red-600' },
   { name: 'Blue', hex: '#4A90D9', emoji: '🔵', bg: 'bg-blue-100', text: 'text-blue-600' },
@@ -18,6 +21,7 @@ const colors = [
   { name: 'White', hex: '#F5F5F5', emoji: '⚪', bg: 'bg-gray-50', text: 'text-gray-500' },
 ]
 
+// Real-world objects associated with each color
 const colorObjects: Record<string, string[]> = {
   Red: ['🍎', '🚗', '❤️', '🌹', '🍓'],
   Blue: ['🌊', '💧', '🦋', '👖', '🚙'],
@@ -33,6 +37,7 @@ const colorObjects: Record<string, string[]> = {
 
 type View = 'menu' | 'game' | 'explore'
 
+// Color swatch card with visual color preview
 function ColorSwatch({ color, onClick }: { color: typeof colors[0]; onClick: () => void }) {
   return (
     <motion.button
@@ -56,6 +61,7 @@ export function ColorLearning() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-red-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header with back button and title */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             {view !== 'menu' && (
@@ -74,6 +80,7 @@ export function ColorLearning() {
         </motion.div>
 
         <AnimatePresence mode="wait">
+          {/* Main menu: game selection and color grid */}
           {view === 'menu' && (
             <motion.div
               key="menu"
@@ -98,6 +105,7 @@ export function ColorLearning() {
                 />
               </div>
 
+              {/* All colors grid */}
               <div className="bg-white rounded-2xl p-4 shadow-md">
                 <h2 className="text-lg font-bold text-gray-800 font-fredoka mb-4 flex items-center gap-2">
                   <Palette className="w-5 h-5 text-kid-pink" />
@@ -112,6 +120,7 @@ export function ColorLearning() {
             </motion.div>
           )}
 
+          {/* Color match game */}
           {view === 'game' && (
             <motion.div
               key="game"
@@ -125,6 +134,7 @@ export function ColorLearning() {
             </motion.div>
           )}
 
+          {/* Color explorer: shows color swatch, name, hex and related objects */}
           {view === 'explore' && selectedColor && (
             <motion.div
               key="explore"
@@ -145,6 +155,7 @@ export function ColorLearning() {
               <p className="text-2xl font-bold font-fredoka text-gray-800 mb-2">{selectedColor.name}</p>
               <p className="text-sm text-gray-400 mb-4">{selectedColor.hex}</p>
 
+              {/* Real-world objects of this color */}
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl p-4">
                 <h3 className="font-bold text-gray-700 mb-3 flex items-center justify-center gap-2">
                   <PaintBucket className="w-4 h-4 text-kid-orange" />
@@ -165,6 +176,7 @@ export function ColorLearning() {
                 </div>
               </div>
 
+              {/* Color swatch selector */}
               <div className="flex gap-2 justify-center mt-6 flex-wrap">
                 {colors.map(c => (
                   <motion.button

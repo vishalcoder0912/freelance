@@ -1,3 +1,4 @@
+// File: Assignments — Manages assignments with cards showing title, subject, description, due date, submission progress, and edit/delete actions.
 import { motion } from 'framer-motion'
 import { BookOpen, Plus, Calendar, FileText, Trash2, Edit3 } from 'lucide-react'
 
@@ -23,6 +24,7 @@ const assignments = [
 export default function Assignments() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with Create Assignment button */}
       <motion.div variants={card} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -39,6 +41,7 @@ export default function Assignments() {
         </motion.button>
       </motion.div>
 
+      {/* Assignment cards grid — displays title, description, due date, points, submission progress bar, and edit/delete buttons */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {assignments.map((as) => {
           const submitPercent = Math.round((as.submittedCount / as.totalStudents) * 100)

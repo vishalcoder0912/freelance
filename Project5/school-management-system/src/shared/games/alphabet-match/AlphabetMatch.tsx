@@ -1,3 +1,4 @@
+// File: AlphabetMatch — Interactive quiz where kids match a displayed letter (A-Z) with its correct visual among four options.
 import { useState, useEffect, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

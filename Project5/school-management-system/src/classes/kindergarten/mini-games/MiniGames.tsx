@@ -1,3 +1,5 @@
+// MiniGames - Game selection hub for kindergarten
+// Launches alphabet match, counting, color match, shape sorter, animal sounds, and rewards
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { GameCard } from '../../../shared/components/GameCard'
@@ -99,6 +101,7 @@ export function MiniGames() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header with total stars display */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             {selectedGame && (
@@ -124,6 +127,7 @@ export function MiniGames() {
 
         <AnimatePresence mode="wait">
           {!selectedGame ? (
+            // Game selection grid
             <motion.div
               key="menu"
               initial={{ opacity: 0, y: 20 }}
@@ -165,6 +169,7 @@ export function MiniGames() {
               </div>
             </motion.div>
           ) : (
+            // Active game view
             <motion.div
               key={selectedGame.id}
               initial={{ opacity: 0, scale: 0.95 }}

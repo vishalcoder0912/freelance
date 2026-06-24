@@ -1,3 +1,4 @@
+// File: Attendance — Interactive attendance marking page with per-student toggle (present/absent/late), quick-mark all, summary counts, and save.
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ClipboardCheck, Calendar, CheckCircle, XCircle, Clock, Save } from 'lucide-react'
@@ -25,18 +26,21 @@ const students = [
 type AttendanceStatus = 'present' | 'absent' | 'late'
 
 export default function Attendance() {
+  // Attendance state: student ID -> attendance status; subject selector; saved confirmation flag
   const [attendance, setAttendance] = useState<Record<number, AttendanceStatus>>({})
   const [subject, setSubject] = useState('Mathematics')
   const [saved, setSaved] = useState(false)
 
   const subjects = ['Mathematics', 'English', 'Science', 'Hindi', 'Art', 'Music']
 
+  // Mark all students with a single status
   const markAll = (status: AttendanceStatus) => {
     const newAttendance: Record<number, AttendanceStatus> = {}
     students.forEach(s => { newAttendance[s.id] = status })
     setAttendance(newAttendance)
   }
 
+  // Cycle status: present -> absent -> late -> present on each tap
   const toggleStatus = (id: number) => {
     setAttendance(prev => {
       const current = prev[id]
@@ -45,11 +49,13 @@ export default function Attendance() {
     })
   }
 
+  // Simulate save action with temporary confirmation feedback
   const handleSave = () => {
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
 
+  // Compute summary counts from current attendance state
   const counts = {
     present: Object.values(attendance).filter(s => s === 'present').length,
     absent: Object.values(attendance).filter(s => s === 'absent').length,
@@ -60,6 +66,7 @@ export default function Attendance() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with subject selector and current date */}
       <motion.div variants={container} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">

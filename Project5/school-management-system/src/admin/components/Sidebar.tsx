@@ -1,3 +1,4 @@
+// File: Sidebar — Collapsible admin navigation sidebar with links to Dashboard, Students, Staff, Fees, Transport, and Events.
 import { NavLink } from 'react-router-dom'
 import {
   LayoutDashboard, Users, GraduationCap, CreditCard, Bus, Calendar, ChevronLeft, Menu, LogOut, School,
@@ -20,8 +21,10 @@ interface Props {
 export function Sidebar({ onClose }: Props) {
   const [collapsed, setCollapsed] = useState(false)
 
+  // Sidebar content rendered both in desktop aside and mobile overlay
   const sidebarContent = (
     <div className="flex flex-col h-full">
+      {/* Brand header with collapse toggle */}
       <div className="flex items-center justify-between p-4 border-b border-gray-100">
         <div className="flex items-center gap-2">
           <School className="w-7 h-7 text-kid-blue" />
@@ -35,6 +38,7 @@ export function Sidebar({ onClose }: Props) {
         </button>
       </div>
 
+      {/* Navigation links — highlight active route with gradient background */}
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
         {navItems.map((item) => (
           <NavLink
@@ -55,6 +59,7 @@ export function Sidebar({ onClose }: Props) {
         ))}
       </nav>
 
+      {/* Sign out button at the bottom */}
       <div className="p-3 border-t border-gray-100">
         <button
           className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-gray-500 hover:bg-red-50 hover:text-kid-red transition-all ${collapsed ? 'justify-center' : ''}`}

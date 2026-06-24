@@ -1,3 +1,4 @@
+// File: ParentDashboard — Overview for parents showing child's performance, attendance, fee status, recent activities, and upcoming events.
 import { motion } from 'framer-motion'
 import { TrendingUp, CreditCard, Calendar, MessageSquare, Bell, User, BarChart3, Activity, ArrowRight } from 'lucide-react'
 import { ProgressBar } from '../../shared/components/ProgressBar'
@@ -39,12 +40,14 @@ const events = [
 ]
 
 export default function ParentDashboard() {
+  // Calculate attendance percentage across all recorded months
   const totalPresent = attendanceData.reduce((a, b) => a + b.present, 0)
   const totalDays = attendanceData.reduce((a, b) => a + b.total, 0)
   const attendancePercent = Math.round((totalPresent / totalDays) * 100)
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with welcome message and Contact Teacher button */}
       <motion.div variants={item} className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800">Parent Dashboard</h1>
@@ -59,6 +62,7 @@ export default function ParentDashboard() {
         </motion.button>
       </motion.div>
 
+      {/* Metric cards row: average score, fee status, attendance rate, recent activities count */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         <motion.div variants={item} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <div className="flex items-center justify-between mb-2">
@@ -94,6 +98,7 @@ export default function ParentDashboard() {
         </motion.div>
       </div>
 
+      {/* Performance, activities, and events sections */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         <motion.div variants={item} className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
@@ -111,6 +116,7 @@ export default function ParentDashboard() {
             </div>
           </div>
 
+          {/* Recent Activities feed — shows child's latest actions with timestamps */}
           <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
             <h2 className="font-fredoka text-gray-700 mb-3 flex items-center gap-2"><Activity className="w-4 h-4 text-kid-purple" /> Recent Activities</h2>
             <div className="space-y-2">
@@ -127,6 +133,7 @@ export default function ParentDashboard() {
           </div>
         </motion.div>
 
+        {/* Events & Notifications sidebar — important dates color-coded by type */}
         <motion.div variants={item} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-3 flex items-center gap-2"><Bell className="w-4 h-4 text-kid-orange" /> Events & Notifications</h2>
           <div className="space-y-3">
@@ -153,6 +160,7 @@ export default function ParentDashboard() {
         </motion.div>
       </div>
 
+      {/* Child's Info section — displays name, class teacher, and section details */}
       <motion.div variants={item} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
         <h2 className="font-fredoka text-gray-700 mb-3 flex items-center gap-2"><User className="w-4 h-4 text-kid-teal" /> Child's Info</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

@@ -191,6 +191,7 @@ export function KindergartenDashboard() {
           </motion.div>
         </motion.div>
 
+        {/* Overall progress bar */}
         <div className="mb-6">
           <ProgressBar
             value={completedActivities}
@@ -202,6 +203,7 @@ export function KindergartenDashboard() {
           />
         </div>
 
+        {/* Quick-access grid linking to main learning modules */}
         <motion.div
           className="mb-8"
           variants={containerVariants}
@@ -232,6 +234,7 @@ export function KindergartenDashboard() {
           </div>
         </motion.div>
 
+        {/* Learning modules grid showing progress per module */}
         <motion.div
           className="mb-8"
           variants={containerVariants}
@@ -285,6 +288,7 @@ export function KindergartenDashboard() {
           </div>
         </motion.div>
 
+        {/* Achievements and mini games side-by-side section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <motion.div
             className="bg-white rounded-2xl p-5 shadow-md"
@@ -343,6 +347,7 @@ export function KindergartenDashboard() {
           </motion.div>
         </div>
 
+        {/* Call-to-action footer with animated characters encouraging exploration */}
         <motion.div
           className="bg-gradient-to-r from-kid-yellow to-kid-orange rounded-2xl p-6 text-center shadow-lg"
           initial={{ opacity: 0, y: 20 }}

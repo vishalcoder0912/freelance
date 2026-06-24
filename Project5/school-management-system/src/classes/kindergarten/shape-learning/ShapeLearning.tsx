@@ -1,3 +1,5 @@
+// ShapeLearning - Interactive shape recognition module for kindergarten
+// Features shape sorter game and shape explorer with real-world examples
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ShapeSorter } from '../../../shared/games/shape-sorter/ShapeSorter'
@@ -5,6 +7,7 @@ import { GameCard } from '../../../shared/components/GameCard'
 import { AnimatedCharacter } from '../../../shared/components/AnimatedCharacter'
 import { ArrowLeft, Shapes, Search } from 'lucide-react'
 
+// Shape definitions with icons, colors, and descriptions
 const shapes = [
   { name: 'Circle', icon: '⬤', color: '#FF6B6B', bg: 'bg-red-50', description: 'Round like a ball!' },
   { name: 'Square', icon: '■', color: '#4A90D9', bg: 'bg-blue-50', description: 'Four equal sides!' },
@@ -16,6 +19,7 @@ const shapes = [
   { name: 'Rectangle', icon: '▬', color: '#009688', bg: 'bg-teal-50', description: 'Long and flat!' },
 ]
 
+// Real-world objects matching each shape
 const shapeObjects: Record<string, string[]> = {
   Circle: ['⚽', '🔴', '🌞', '🍩', '🎯'],
   Square: ['📦', '🧊', '⬜', '🎲', '🪟'],
@@ -29,6 +33,7 @@ const shapeObjects: Record<string, string[]> = {
 
 type View = 'menu' | 'game' | 'explore'
 
+// Shape card with animated icon
 function ShapeCard({ shape, onClick }: { shape: typeof shapes[0]; onClick: () => void }) {
   return (
     <motion.button
@@ -59,6 +64,7 @@ export function ShapeLearning() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             {view !== 'menu' && (
@@ -77,6 +83,7 @@ export function ShapeLearning() {
         </motion.div>
 
         <AnimatePresence mode="wait">
+          {/* Main menu: game selection and shape grid */}
           {view === 'menu' && (
             <motion.div
               key="menu"
@@ -115,6 +122,7 @@ export function ShapeLearning() {
             </motion.div>
           )}
 
+          {/* Shape sorter game */}
           {view === 'game' && (
             <motion.div
               key="game"
@@ -128,6 +136,7 @@ export function ShapeLearning() {
             </motion.div>
           )}
 
+          {/* Shape explorer: shows shape, description, and real-world examples */}
           {view === 'explore' && selectedShape && (
             <motion.div
               key="explore"
@@ -150,6 +159,7 @@ export function ShapeLearning() {
               <p className="text-2xl font-bold font-fredoka text-gray-800 mb-2">{selectedShape.name}</p>
               <p className="text-gray-500 mb-3">{selectedShape.description}</p>
 
+              {/* Real-world objects matching this shape */}
               <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl p-4">
                 <h3 className="font-bold text-gray-700 mb-3 flex items-center justify-center gap-2">
                   <Search className="w-4 h-4 text-kid-orange" />
@@ -170,6 +180,7 @@ export function ShapeLearning() {
                 </div>
               </div>
 
+              {/* Shape selector */}
               <div className="flex gap-2 justify-center mt-6 flex-wrap">
                 {shapes.map(s => (
                   <motion.button

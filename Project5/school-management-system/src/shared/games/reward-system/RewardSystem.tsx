@@ -1,3 +1,4 @@
+// File: RewardSystem — Gamified progress tracker showing level, star count, achievement badges, and next reward milestone.
 import { motion } from 'framer-motion'
 import { AchievementBadge } from '../../components/AchievementBadge'
 

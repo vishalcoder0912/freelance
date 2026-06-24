@@ -1,3 +1,5 @@
+// File: LearningEngine — Core data models and curriculum definitions for all class levels (kindergarten, nursery, LKG, UKG).
+// Provides types for activities, modules, progress tracking, and level calculation based on star count.
 export type ClassLevel = 'kindergarten' | 'nursery' | 'lkg' | 'ukg'
 
 export interface Activity {

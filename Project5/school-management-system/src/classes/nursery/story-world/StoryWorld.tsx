@@ -1,6 +1,9 @@
+// StoryWorld - Story reading for nursery
+// Grid of story cards with emoji and description; tapping opens a detail view with full story and moral
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Story data collection with title, emoji, description, full text, color, and moral
 const stories = [
   {
     id: 1,
@@ -64,6 +67,7 @@ export function StoryWorld() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 p-4 md:p-6">
+      {/* Page header */}
       <motion.div
         className="text-center mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -75,6 +79,7 @@ export function StoryWorld() {
         <p className="text-gray-500 mt-2">Magical stories for little learners!</p>
       </motion.div>
 
+      {/* Story card grid */}
       <motion.div
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto"
         initial="hidden"
@@ -104,6 +109,7 @@ export function StoryWorld() {
         ))}
       </motion.div>
 
+      {/* Story detail modal */}
       <AnimatePresence>
         {selectedStory && (
           <motion.div
@@ -122,6 +128,7 @@ export function StoryWorld() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="text-center">
+                {/* Bouncing story emoji */}
                 <motion.div
                   className="text-7xl mb-4 inline-block"
                   animate={{ y: [0, -8, 0] }}
@@ -133,6 +140,7 @@ export function StoryWorld() {
               </div>
 
               {!showFull ? (
+                // Story description and read button
                 <div className="mt-6 text-center">
                   <p className="text-gray-600">{selectedStory.description}</p>
                   <motion.button
@@ -145,6 +153,7 @@ export function StoryWorld() {
                   </motion.button>
                 </div>
               ) : (
+                // Full story view with moral
                 <motion.div
                   className="mt-6"
                   initial={{ opacity: 0 }}
@@ -163,6 +172,7 @@ export function StoryWorld() {
                 </motion.div>
               )}
 
+              {/* Modal navigation buttons */}
               <div className="flex gap-3 mt-6 justify-center">
                 {showFull && (
                   <motion.button

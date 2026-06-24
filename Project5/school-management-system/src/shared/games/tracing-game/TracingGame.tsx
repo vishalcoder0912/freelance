@@ -1,3 +1,4 @@
+// File: TracingGame — Letter tracing practice: kids see a letter with a visual hint, then tap "I traced it!" to progress.
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

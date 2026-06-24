@@ -1,6 +1,9 @@
+// FruitsLearning - Fruit identification for nursery
+// Grid of fruit cards with emoji and color; tapping opens a detail modal with color and fun fact
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
+// Fruit data with emoji, color name, and gradient/border classes
 const fruits = [
   { name: 'Apple', emoji: '🍎', color: 'Red', bg: 'from-red-100 to-red-200', border: 'border-red-300', textColor: 'text-red-600' },
   { name: 'Banana', emoji: '🍌', color: 'Yellow', bg: 'from-yellow-100 to-yellow-200', border: 'border-yellow-300', textColor: 'text-yellow-600' },
@@ -24,6 +27,7 @@ export function FruitsLearning() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 p-4 md:p-6">
+      {/* Page header */}
       <motion.div
         className="text-center mb-8"
         initial={{ opacity: 0, y: -20 }}
@@ -35,6 +39,7 @@ export function FruitsLearning() {
         <p className="text-gray-500 mt-2">Learn about different fruits!</p>
       </motion.div>
 
+      {/* Fruit grid with staggered entrance */}
       <motion.div
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-5xl mx-auto"
         initial="hidden"
@@ -56,6 +61,7 @@ export function FruitsLearning() {
         ))}
       </motion.div>
 
+      {/* Fruit detail modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -73,6 +79,7 @@ export function FruitsLearning() {
               transition={{ type: 'spring', stiffness: 200, damping: 15 }}
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Bouncing fruit emoji */}
               <motion.div
                 className="text-8xl mb-4"
                 animate={{ y: [0, -10, 0] }}
@@ -81,6 +88,7 @@ export function FruitsLearning() {
                 {selected.emoji}
               </motion.div>
               <h2 className="text-3xl font-bold font-fredoka text-gray-800">{selected.name}</h2>
+              {/* Color badge */}
               <div className={`inline-block mt-3 px-4 py-1 rounded-full bg-gradient-to-r ${selected.bg} ${selected.textColor} font-bold text-sm`}>
                 Color: {selected.color}
               </div>

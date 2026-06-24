@@ -1,9 +1,12 @@
+// Rewards - Achievement overview for nursery
+// Shows badges, total stars, and level using the shared RewardSystem component
 import { motion } from 'framer-motion'
 import { RewardSystem } from '../../../shared/games/reward-system/RewardSystem'
 import { nurseryModules, calculateLevel } from '../../../shared/learning-engine/LearningEngine'
 import { ArrowLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
+// Nursery-specific badges
 const nurseryBadges = [
   { id: 'first-letter', title: 'First Letter', emoji: '🔤', description: 'Learn your first letter', unlocked: true },
   { id: 'abc-star', title: 'ABC Star', emoji: '⭐', description: 'Complete all alphabets', unlocked: false },
@@ -28,6 +31,7 @@ export function Rewards() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
+        {/* Back navigation */}
         <button
           onClick={() => navigate('/nursery')}
           className="flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-4 font-semibold"
@@ -36,6 +40,7 @@ export function Rewards() {
           Back to Dashboard
         </button>
 
+        {/* Rewards card */}
         <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-kid-yellow to-kid-orange p-6 text-center">
             <h1 className="text-3xl font-bold font-fredoka text-white">🏆 Rewards</h1>

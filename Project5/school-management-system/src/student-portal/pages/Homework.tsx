@@ -1,3 +1,4 @@
+// File: Homework — Displays all homework tasks grouped by status (completed/pending/overdue) with subject icons and due dates.
 import { motion } from 'framer-motion'
 import { CheckCircle, Clock, AlertCircle, BookOpen } from 'lucide-react'
 
@@ -20,6 +21,7 @@ const homeworkData = [
   { id: 6, subject: 'Music', task: 'Learn nursery rhyme', due: '2025-06-29', status: 'overdue', description: 'Practice Twinkle Twinkle', icon: '🎵' },
 ]
 
+// Status-based styling config mapping status to colors, backgrounds, and icons
 const statusConfig = {
   completed: { color: 'text-kid-green', bg: 'from-green-50 to-emerald-50', border: 'border-green-200', icon: CheckCircle },
   pending: { color: 'text-kid-orange', bg: 'from-orange-50 to-yellow-50', border: 'border-orange-200', icon: Clock },
@@ -29,6 +31,7 @@ const statusConfig = {
 export default function Homework() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Page header with remaining task count */}
       <motion.div variants={card} className="mb-6">
         <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
           <BookOpen className="w-7 h-7 text-kid-blue" /> My Homework
@@ -36,6 +39,7 @@ export default function Homework() {
         <p className="text-gray-500 font-nunito">{homeworkData.filter(h => h.status === 'pending').length} tasks remaining</p>
       </motion.div>
 
+      {/* Homework task cards grid — each card shows subject, task, description, status, and due date */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {homeworkData.map((hw) => {
           const config = statusConfig[hw.status as keyof typeof statusConfig]

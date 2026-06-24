@@ -1,3 +1,4 @@
+// File: OnlineClasses — Lists upcoming, live, and completed online classes with join buttons and notification badge.
 import { motion } from 'framer-motion'
 import { Video, Clock, Calendar, ArrowRight, Bell } from 'lucide-react'
 
@@ -101,6 +102,7 @@ const statusBadge = {
 export default function OnlineClasses() {
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with live class count and notifications button */}
       <motion.div variants={card} className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -117,6 +119,7 @@ export default function OnlineClasses() {
         </motion.button>
       </motion.div>
 
+      {/* Class cards grid — shows subject, topic, teacher, date/time, status badge, and contextual action (Join/Recording/Disabled) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {onlineClasses.map((cls) => (
           <motion.div

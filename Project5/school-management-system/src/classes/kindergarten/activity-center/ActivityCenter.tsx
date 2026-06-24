@@ -1,3 +1,5 @@
+// ActivityCenter - Central hub for browsing all kindergarten activities
+// Supports filtering by type (game/lesson/quiz/drawing/story/assessment), search, and grid/list view
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -31,6 +33,7 @@ export function ActivityCenter() {
   const [search, setSearch] = useState('')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
 
+  // Flatten all modules into a single activity list
   const allActivities = kindergartenModules.flatMap((module) =>
     module.activities.map((activity) => ({
       ...activity,
@@ -41,6 +44,7 @@ export function ActivityCenter() {
     }))
   )
 
+  // Filter activities by type and search term
   const filteredActivities = allActivities.filter((activity) => {
     if (filter !== 'all' && activity.type !== filter) return false
     if (search && !activity.title.toLowerCase().includes(search.toLowerCase()) && !activity.description.toLowerCase().includes(search.toLowerCase())) return false
@@ -63,6 +67,7 @@ export function ActivityCenter() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold text-gray-800 font-fredoka">Activity Center</h1>
@@ -70,6 +75,7 @@ export function ActivityCenter() {
           <AnimatedCharacter name="Activities" emoji="🎮" size="sm" />
         </motion.div>
 
+        {/* Progress summary card */}
         <motion.div
           className="bg-gradient-to-r from-kid-teal to-kid-blue rounded-2xl p-5 text-white shadow-lg mb-6"
           initial={{ opacity: 0, y: -10 }}
@@ -90,6 +96,7 @@ export function ActivityCenter() {
           </div>
         </motion.div>
 
+        {/* Filter bar: search, type filter, and view toggle */}
         <div className="flex flex-wrap items-center gap-3 mb-6">
           <div className="relative flex-1 min-w-[200px] max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -120,6 +127,7 @@ export function ActivityCenter() {
             ))}
           </div>
 
+          {/* Grid/list view toggle */}
           <div className="flex items-center bg-white rounded-xl shadow-sm p-1 ml-auto">
             <motion.button
               onClick={() => setViewMode('grid')}
@@ -138,6 +146,7 @@ export function ActivityCenter() {
           </div>
         </div>
 
+        {/* Activity grid/list view */}
         <AnimatePresence mode="wait">
           {filteredActivities.length === 0 ? (
             <motion.div
@@ -151,6 +160,7 @@ export function ActivityCenter() {
               <p className="text-gray-400 text-sm">Try a different filter or search term</p>
             </motion.div>
           ) : viewMode === 'grid' ? (
+            // Grid view: shows activities as cards
             <motion.div
               key="grid"
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
@@ -178,6 +188,7 @@ export function ActivityCenter() {
               ))}
             </motion.div>
           ) : (
+            // List view: shows activities in a vertical list
             <motion.div
               key="list"
               initial={{ opacity: 0 }}

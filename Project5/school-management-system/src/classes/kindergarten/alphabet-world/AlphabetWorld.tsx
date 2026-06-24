@@ -1,3 +1,5 @@
+// AlphabetWorld - Interactive alphabet learning module for kindergarten
+// Features ABC match game, letter explorer with phonics, and letter tracing
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { AlphabetMatch } from '../../../shared/games/alphabet-match/AlphabetMatch'
@@ -6,8 +8,10 @@ import { AnimatedCharacter } from '../../../shared/components/AnimatedCharacter'
 import { ProgressBar } from '../../../shared/components/ProgressBar'
 import { ArrowLeft, BookOpen, Pencil, Volume2, Info } from 'lucide-react'
 
+// All 26 letters of the alphabet
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
+// Phonics data: word example, emoji, and phonetic sound for each letter
 const letterPhonics: Record<string, { word: string; emoji: string; sound: string }> = {
   A: { word: 'Apple', emoji: '🍎', sound: 'Ah' },
   B: { word: 'Ball', emoji: '⚽', sound: 'Buh' },
@@ -39,6 +43,7 @@ const letterPhonics: Record<string, { word: string; emoji: string; sound: string
 
 type View = 'menu' | 'game' | 'explore' | 'trace'
 
+// SVG path data for tracing each letter
 const tracingPaths: Record<string, string[]> = {
   A: ['M 10 80 L 50 20 L 90 80', 'M 25 60 L 75 60'],
   B: ['M 20 20 L 20 80', 'M 20 20 Q 60 20 60 50 Q 60 80 20 80'],
@@ -68,6 +73,7 @@ const tracingPaths: Record<string, string[]> = {
   Z: ['M 15 20 L 85 20 L 15 80 L 85 80'],
 }
 
+// Individual letter card displaying the letter, emoji and associated word
 function LetterCard({ letter, onClick }: { letter: string; onClick: () => void }) {
   const info = letterPhonics[letter]
   return (
@@ -99,6 +105,7 @@ export function AlphabetWorld() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-cyan-50 to-indigo-50">
       <div className="max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Header with back navigation and title */}
         <motion.div className="flex items-center justify-between mb-6" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center gap-3">
             {view !== 'menu' && (
@@ -119,6 +126,7 @@ export function AlphabetWorld() {
         </motion.div>
 
         <AnimatePresence mode="wait">
+          {/* Main menu: game selection cards and full letter grid */}
           {view === 'menu' && (
             <motion.div
               key="menu"
@@ -126,6 +134,7 @@ export function AlphabetWorld() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
+              {/* Game mode selection cards */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <GameCard
                   title="ABC Match"
@@ -150,6 +159,7 @@ export function AlphabetWorld() {
                 />
               </div>
 
+              {/* Full alphabet grid */}
               <div className="bg-white rounded-2xl p-4 shadow-md">
                 <h2 className="text-lg font-bold text-gray-800 font-fredoka mb-4 flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-kid-blue" />
@@ -164,6 +174,7 @@ export function AlphabetWorld() {
             </motion.div>
           )}
 
+          {/* ABC Match game view */}
           {view === 'game' && (
             <motion.div
               key="game"
@@ -177,6 +188,7 @@ export function AlphabetWorld() {
             </motion.div>
           )}
 
+          {/* Letter explorer: shows phonics info for selected letter */}
           {view === 'explore' && (
             <motion.div
               key="explore"
@@ -190,10 +202,12 @@ export function AlphabetWorld() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                 >
+                  {/* Animated emoji representation */}
                   <div className="flex items-center justify-center gap-4 mb-6">
                     <AnimatedCharacter name={letterPhonics[selectedLetter].word} emoji={letterPhonics[selectedLetter].emoji} size="lg" />
                   </div>
 
+                  {/* Large animated letter display */}
                   <motion.div
                     className="text-8xl font-bold font-fredoka mb-4"
                     style={{ color: `hsl(${(selectedLetter.charCodeAt(0) - 65) * 14}, 70%, 50%)` }}
@@ -203,6 +217,7 @@ export function AlphabetWorld() {
                     {selectedLetter}
                   </motion.div>
 
+                  {/* Phonetic info cards: sound, word, and emoji */}
                   <div className="space-y-3 max-w-md mx-auto">
                     <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 flex items-center gap-3">
                       <Volume2 className="w-5 h-5 text-kid-blue" />
@@ -218,6 +233,7 @@ export function AlphabetWorld() {
                     </div>
                   </div>
 
+                  {/* Quick letter switcher */}
                   <div className="flex gap-3 justify-center mt-6">
                     {letters.map(l => (
                       <motion.button
@@ -236,6 +252,7 @@ export function AlphabetWorld() {
             </motion.div>
           )}
 
+          {/* Letter tracing view with SVG stroke animations */}
           {view === 'trace' && (
             <motion.div
               key="trace"
@@ -250,6 +267,7 @@ export function AlphabetWorld() {
               </h2>
               <p className="text-center text-gray-500 mb-6">Trace the letter with your finger or mouse!</p>
 
+              {/* Letter selector for tracing */}
               <div className="flex flex-wrap gap-2 justify-center mb-6">
                 {letters.map(l => (
                   <motion.button
@@ -264,6 +282,7 @@ export function AlphabetWorld() {
                 ))}
               </div>
 
+              {/* SVG-based tracing canvas */}
               {selectedLetter && (
                 <div className="max-w-md mx-auto">
                   <div className="bg-gray-50 rounded-2xl p-6 border-2 border-dashed border-gray-300">
@@ -302,6 +321,7 @@ export function AlphabetWorld() {
                 </div>
               )}
 
+              {/* Practice writing grid */}
               <div className="mt-6">
                 <h3 className="font-bold text-gray-700 mb-3 text-center">Practice Writing</h3>
                 <div className="bg-gray-50 rounded-xl p-4">

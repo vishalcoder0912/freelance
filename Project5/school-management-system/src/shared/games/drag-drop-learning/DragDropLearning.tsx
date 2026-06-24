@@ -1,3 +1,4 @@
+// File: DragDropLearning — Drag items (fruits/animals) onto matching category drop zones to complete the puzzle.
 import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { RewardScreen } from '../../components/RewardScreen'

@@ -1,3 +1,4 @@
+// File: QuizBuilder — Interactive quiz creation tool with dynamic question/option management, preview, saved quizzes list, and summary sidebar.
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { HelpCircle, Plus, Trash2, Save, Eye } from 'lucide-react'
@@ -20,6 +21,7 @@ interface Question {
 }
 
 export default function QuizBuilder() {
+  // Form state: quiz title, subject, and dynamic questions array
   const [quizTitle, setQuizTitle] = useState<string>('Weekly Math Quiz')
   const [subject, setSubject] = useState<string>('Mathematics')
   const [questions, setQuestions] = useState<Question[]>([
@@ -28,19 +30,23 @@ export default function QuizBuilder() {
     { id: 3, question: 'What shape has 4 equal sides?', options: ['Rectangle', 'Triangle', 'Square', 'Circle'], correctAnswer: 2 },
   ])
 
+  // Add a blank question with 4 empty options
   const addQuestion = () => {
     const newId = Math.max(...questions.map((q: Question) => q.id), 0) + 1
     setQuestions([...questions, { id: newId, question: '', options: ['', '', '', ''], correctAnswer: 0 }])
   }
 
+  // Remove a question by ID
   const removeQuestion = (id: number) => {
     setQuestions(questions.filter((q: Question) => q.id !== id))
   }
 
+  // Update a question field (question text or correct answer index)
   const updateQuestion = (id: number, field: keyof Question, value: string | number) => {
     setQuestions(questions.map((q: Question) => q.id === id ? { ...q, [field]: value } : q))
   }
 
+  // Update a specific option text within a question
   const updateOption = (qId: number, optIdx: number, value: string) => {
     setQuestions(questions.map((q: Question) => q.id === qId ? { ...q, options: q.options.map((o: string, i: number) => i === optIdx ? value : o) } : q))
   }
@@ -53,6 +59,7 @@ export default function QuizBuilder() {
 
   return (
     <motion.div variants={container} initial="hidden" animate="show" className="min-h-screen p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Header with Preview button */}
       <motion.div variants={card} className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-2xl md:text-3xl font-fredoka text-gray-800 flex items-center gap-2">
@@ -69,8 +76,10 @@ export default function QuizBuilder() {
         </motion.button>
       </motion.div>
 
+      {/* Main editor area (left) and sidebar with summary/saved quizzes (right) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <motion.div variants={card} className="lg:col-span-2 space-y-4">
+          {/* Quiz title and subject inputs */}
           <div className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
             <div className="flex flex-col sm:flex-row gap-3 mb-4">
               <div className="flex-1">
@@ -98,7 +107,8 @@ export default function QuizBuilder() {
             </div>
           </div>
 
-              {questions.map((q: Question, idx: number) => (
+          {/* Dynamic question cards — each has question text, 4 clickable options with correct answer selection */}
+          {questions.map((q: Question, idx: number) => (
             <motion.div
               key={q.id}
               variants={card}
