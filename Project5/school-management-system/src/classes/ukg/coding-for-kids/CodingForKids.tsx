@@ -1,3 +1,5 @@
+// CodingForKids - Directional coding puzzle game for UKG
+// Teaches basic programming logic: build command sequences (up/down/left/right) to navigate a robot to a target on a grid
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
@@ -14,6 +16,7 @@ interface Puzzle {
   title: string
 }
 
+// Puzzle definitions with grid, start/end positions, and expected solution
 const puzzles: Puzzle[] = [
   {
     title: 'Reach the Star!',
@@ -65,6 +68,7 @@ const puzzles: Puzzle[] = [
   },
 ]
 
+// Arrow icons for each direction
 const directionIcons: Record<Direction, React.ReactNode> = {
   up: <ChevronUp className="w-5 h-5" />,
   down: <ChevronDown className="w-5 h-5" />,
@@ -88,21 +92,25 @@ export function CodingForKids() {
   const puzzle = puzzles[currentPuzzle]
   const gridSize = puzzle.grid.length
 
+  // Add a direction command to the sequence
   const addCommand = (dir: Direction) => {
     if (executing) return
     setCommands(prev => [...prev, dir])
   }
 
+  // Remove the last command
   const removeLastCommand = () => {
     if (executing) return
     setCommands(prev => prev.slice(0, -1))
   }
 
+  // Clear all commands
   const clearCommands = () => {
     if (executing) return
     setCommands([])
   }
 
+  // Execute command sequence with step-by-step animation
   const executeCommands = async () => {
     if (commands.length === 0 || executing) return
     setExecuting(true)
@@ -119,6 +127,7 @@ export function CodingForKids() {
       else if (cmd === 'left') newPos[1] = Math.max(0, newPos[1] - 1)
       else if (cmd === 'right') newPos[1] = Math.min(gridSize - 1, newPos[1] + 1)
 
+      // Stop if robot hits a blocked cell
       if (puzzle.grid[newPos[0]]?.[newPos[1]] === 1) {
         setStepIndex(-1)
         setExecuting(false)
@@ -131,6 +140,7 @@ export function CodingForKids() {
       await new Promise(r => setTimeout(r, 500))
     }
 
+    // Check if robot reached the target
     if (pos[0] === puzzle.end[0] && pos[1] === puzzle.end[1]) {
       setTimeout(() => {
         if (currentPuzzle < puzzles.length - 1) {
@@ -152,6 +162,7 @@ export function CodingForKids() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/ukg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -160,6 +171,7 @@ export function CodingForKids() {
           <ArrowLeft className="w-5 h-5" /> Back to UKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-purple to-kid-indigo rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -172,22 +184,26 @@ export function CodingForKids() {
           <p className="text-white/80 text-sm">Use directional commands to solve puzzles!</p>
         </motion.div>
 
+        {/* Puzzle card */}
         <motion.div
           className="bg-white rounded-3xl p-6 shadow-lg mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
+          {/* Puzzle header */}
           <div className="flex justify-between items-center mb-4">
             <span className="text-sm font-bold text-gray-500">Puzzle {currentPuzzle + 1}/{puzzles.length}</span>
             <h3 className="font-bold text-gray-800 font-fredoka">{puzzle.title}</h3>
           </div>
 
+          {/* Puzzle progress dots */}
           <div className="flex justify-center gap-1 mb-4">
             {puzzles.map((_, i) => (
               <div key={i} className={`w-2.5 h-2.5 rounded-full ${i <= currentPuzzle ? 'bg-kid-purple' : 'bg-gray-200'}`} />
             ))}
           </div>
 
+          {/* Grid visualization: start, end, obstacles, and player position */}
           <div className="grid gap-1 max-w-[240px] mx-auto mb-6" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
             {Array.from({ length: gridSize * gridSize }).map((_, idx) => {
               const row = Math.floor(idx / gridSize)
@@ -210,6 +226,7 @@ export function CodingForKids() {
             })}
           </div>
 
+          {/* Command sequence display */}
           <div className="mb-4">
             <p className="text-sm font-bold text-gray-700 mb-2">Your Commands ({commands.length}):</p>
             <div className="flex gap-1 flex-wrap min-h-[40px] bg-gray-50 rounded-xl p-2">
@@ -231,6 +248,7 @@ export function CodingForKids() {
             </div>
           </div>
 
+          {/* Direction command buttons */}
           <div className="flex justify-center gap-2 mb-4">
             {(['up', 'down', 'left', 'right'] as Direction[]).map((dir) => (
               <motion.button
@@ -246,6 +264,7 @@ export function CodingForKids() {
             ))}
           </div>
 
+          {/* Action buttons: Undo, Clear, Run */}
           <div className="flex justify-center gap-3 mb-4">
             <motion.button
               onClick={removeLastCommand}
@@ -276,6 +295,7 @@ export function CodingForKids() {
             </motion.button>
           </div>
 
+          {/* Error message when robot doesn't reach target */}
           {position[0] !== puzzle.start[0] || position[1] !== puzzle.start[1] ? (
             !executing && (position[0] !== puzzle.end[0] || position[1] !== puzzle.end[1]) && (
               <p className="text-center text-sm text-red-500 font-bold">Not quite! Try again!</p>
@@ -283,6 +303,7 @@ export function CodingForKids() {
           ) : null}
         </motion.div>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-4 bg-gradient-to-r from-kid-purple to-kid-indigo rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}
