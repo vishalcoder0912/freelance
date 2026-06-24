@@ -112,6 +112,7 @@ export default function StudentDashboard() {
           </div>
         </motion.div>
 
+        {/* Today's schedule sidebar — lists Monday's subjects with order badges */}
         <motion.div variants={item} className="bg-white rounded-2xl p-5 shadow-md border border-gray-100">
           <h2 className="font-fredoka text-gray-700 mb-3 flex items-center gap-2"><BookOpen className="w-4 h-4 text-kid-blue" /> Today's Schedule</h2>
           <div className="space-y-2">
@@ -131,6 +132,7 @@ export default function StudentDashboard() {
         </motion.div>
       </div>
 
+      {/* Learning Activities progress cards — shows per-subject completion bars */}
       <motion.div variants={item} className="mb-6">
         <h2 className="font-fredoka text-gray-700 mb-3 text-lg">Learning Activities</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -144,6 +146,7 @@ export default function StudentDashboard() {
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Achievement Badges grid — lists unlocked/locked badges earned through activities */}
         <motion.div variants={item}>
           <h2 className="font-fredoka text-gray-700 mb-3 text-lg flex items-center gap-2"><Trophy className="w-4 h-4 text-kid-yellow" /> Achievement Badges</h2>
           <div className="grid grid-cols-2 gap-3">

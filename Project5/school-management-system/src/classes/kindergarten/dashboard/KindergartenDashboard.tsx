@@ -94,6 +94,7 @@ export function KindergartenDashboard() {
       ))}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-6 pb-24">
+        {/* Greeting header with animated characters and random motivational quote */}
         <motion.div
           className="bg-gradient-to-r from-kid-blue via-kid-purple to-kid-pink rounded-3xl p-6 md:p-8 text-white shadow-xl mb-6 relative overflow-hidden"
           initial={{ opacity: 0, y: -20 }}
@@ -142,6 +143,7 @@ export function KindergartenDashboard() {
           </div>
         </motion.div>
 
+        {/* Stats cards showing total stars, progress, level and badges */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
           variants={containerVariants}
