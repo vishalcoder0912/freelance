@@ -1,3 +1,4 @@
+/** Profile - User avatar, stats summary, and account menu (edit, settings, logout). */
 import { motion } from 'framer-motion'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
@@ -7,6 +8,7 @@ export function Profile() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
+  /** Clear auth state and redirect to login page. */
   const handleLogout = () => {
     logout()
     navigate('/login')
@@ -14,6 +16,7 @@ export function Profile() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      {/* ---------- Avatar and user info ---------- */}
       <motion.div className="text-center mb-8" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="w-24 h-24 rounded-full bg-gradient-to-r from-kid-blue to-kid-purple mx-auto flex items-center justify-center text-4xl mb-4 shadow-lg">
           {user?.name?.charAt(0) || '👤'}
@@ -23,6 +26,7 @@ export function Profile() {
         {user?.classLevel && <p className="text-sm text-kid-blue font-bold capitalize">{user.classLevel}</p>}
       </motion.div>
 
+      {/* ---------- Stats cards ---------- */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
           { icon: <Award className="w-5 h-5" />, label: 'Badges', value: '8', color: 'from-yellow-400 to-orange-500' },
@@ -40,6 +44,7 @@ export function Profile() {
         ))}
       </div>
 
+      {/* ---------- Account action menu ---------- */}
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         {[
           { icon: <User className="w-5 h-5" />, label: 'Edit Profile', onClick: () => {} },
@@ -59,6 +64,7 @@ export function Profile() {
   )
 }
 
+/** Inline SVG star icon used in the stats card. */
 function Star({ className }: { className?: string }) {
   return <svg className={className} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" /></svg>
 }

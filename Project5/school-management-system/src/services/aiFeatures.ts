@@ -1,3 +1,14 @@
+/*
+ * aiFeatures.ts - AI-powered content generation service.
+ * Provides mock functions for generating stories, quizzes, homework,
+ * parent reports, and activity recommendations. These simulate AI
+ * output for the school management system's gamified learning features.
+ */
+
+/**
+ * Generates a short story based on a topic and the child's age.
+ * Stories are age-appropriate, adapting vocabulary for older kids.
+ */
 export function generateStory(topic: string, age: number): string {
   const stories: Record<string, string> = {
     'friendship': `Once upon a time, in a colorful garden, a little ${age > 4 ? 'rabbit' : 'bunny'} named Hopper wanted to make friends. Hopper met a shy butterfly, a busy bee, and a gentle ladybug. They all became best friends and played together every day under the rainbow. The end.`,
@@ -9,6 +20,10 @@ export function generateStory(topic: string, age: number): string {
   return stories[topic] || stories['friendship']
 }
 
+/**
+ * Generates a set of quiz questions for a given topic.
+ * Each question includes 4 options and a zero-based answer index.
+ */
 export function generateQuiz(topic: string, _age: number) {
   const quizzes: Record<string, { question: string; options: string[]; answer: number }[]> = {
     'alphabets': [
@@ -35,6 +50,10 @@ export function generateQuiz(topic: string, _age: number) {
   return quizzes[topic] || quizzes['alphabets']
 }
 
+/**
+ * Generates a list of homework tasks based on grade level and subject.
+ * Returns a fallback task list if the grade/subject combo is unknown.
+ */
 export function generateHomework(grade: string, subject: string) {
   const tasks: Record<string, string[]> = {
     'kindergarten': {
@@ -51,12 +70,19 @@ export function generateHomework(grade: string, subject: string) {
   return tasks[grade] || ['Complete today\'s lesson review']
 }
 
+/**
+ * Generates a mock parent report with strengths, improvements, and
+ * a teacher note based on the child's average weekly score.
+ */
 export function generateParentReport(childName: string, weekScore: number, totalWeeks: number) {
   const avgScore = weekScore / totalWeeks
+
+  // Determine strengths bracket based on performance
   const strengths = avgScore > 80 ? ['Excellent in academics', 'Great participation', 'Strong curiosity'] :
     avgScore > 60 ? ['Good progress', 'Shows interest in learning', 'Completes assignments'] :
     ['Needs encouragement', 'Developing at own pace', 'Shows potential in creative areas']
 
+  // Determine improvement areas based on performance
   const improvements = avgScore < 70 ? ['Focus on daily practice', 'More reading time', 'Regular revision'] :
     ['Continue the good work', 'Explore advanced topics', 'Practice writing skills']
 
@@ -73,6 +99,10 @@ export function generateParentReport(childName: string, weekScore: number, total
   }
 }
 
+/**
+ * Recommends up to 3 activities based on the child's age,
+ * excluding any already completed. Results are randomized.
+ */
 export function generateActivityRecommendation(age: number, completedActivities: string[]) {
   const allActivities = [
     { title: 'Alphabet Matching', age: '3-4', category: 'literacy', emoji: '🔤' },
@@ -87,6 +117,7 @@ export function generateActivityRecommendation(age: number, completedActivities:
     { title: 'Science Exploration', age: '5-6', category: 'science', emoji: '🔬' },
   ]
 
+  // Exclude completed items, then shuffle and pick 3
   return allActivities
     .filter(a => !completedActivities.includes(a.title))
     .sort(() => Math.random() - 0.5)

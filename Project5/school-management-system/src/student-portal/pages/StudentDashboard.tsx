@@ -1,3 +1,4 @@
+// StudentDashboard: Kid-friendly overview showing attendance, homework, achievements, schedule, learning activities, and quick-access class links.
 import { motion } from 'framer-motion'
 import { BookOpen, Calendar, Clock, Trophy, ArrowRight, Sparkles, GraduationCap, Gamepad2, Star } from 'lucide-react'
 import { AnimatedCharacter } from '../../shared/components/AnimatedCharacter'

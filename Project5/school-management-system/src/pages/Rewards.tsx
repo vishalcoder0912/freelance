@@ -1,5 +1,7 @@
+/** Rewards - Displays the student's earned badges, star count, and level. */
 import { RewardSystem } from '../shared/games/reward-system/RewardSystem'
 
+/* ---------- Sample badge data ---------- */
 const sampleBadges = [
   { id: '1', title: 'First Steps', emoji: '👣', description: 'Completed your first lesson', unlocked: true },
   { id: '2', title: 'Alphabet Star', emoji: '⭐', description: 'Mastered all letters', unlocked: true },
@@ -14,10 +16,12 @@ const sampleBadges = [
 export function Rewards() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      {/* ---------- Page heading ---------- */}
       <div className="text-center mb-8">
         <h1 className="text-4xl font-fredoka text-gray-800">🏆 Your Rewards</h1>
         <p className="text-gray-500">Keep learning to unlock more achievements!</p>
       </div>
+      {/* ---------- Badge grid / reward system UI ---------- */}
       <RewardSystem badges={sampleBadges} totalStars={42} level={2} />
     </div>
   )

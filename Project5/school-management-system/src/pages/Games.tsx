@@ -27,12 +27,14 @@ const games = [
 ]
 
 export function Games() {
+  /* Currently active game id — null shows the selection grid. */
   const [activeGame, setActiveGame] = useState<string | null>(null)
 
   const ActiveComponent = games.find(g => g.id === activeGame)?.component
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      {/* ---------- Page heading ---------- */}
       <motion.div className="text-center mb-8" initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-4xl font-fredoka text-gray-800">🎮 Learning Games</h1>
         <p className="text-gray-500">Play and learn at the same time!</p>
@@ -40,6 +42,7 @@ export function Games() {
 
       <AnimatePresence mode="wait">
         {activeGame && ActiveComponent ? (
+          /* ---------- Active game view ---------- */
           <motion.div key="game" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}>
             <button onClick={() => setActiveGame(null)}
               className="mb-4 text-gray-600 hover:text-gray-800 font-bold flex items-center gap-2">
@@ -50,6 +53,7 @@ export function Games() {
             </div>
           </motion.div>
         ) : (
+          /* ---------- Game selection grid ---------- */
           <motion.div key="grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             {games.map((game) => (
