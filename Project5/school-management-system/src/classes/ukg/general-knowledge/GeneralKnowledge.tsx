@@ -1,8 +1,11 @@
+// GeneralKnowledge - Fun facts and GK quiz for UKG
+// Dual mode: browse fun facts with like/heart interaction, or take a general knowledge quiz
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Sparkles, Lightbulb, ChevronRight, Star } from 'lucide-react'
 
+// Fun facts collection
 const funFacts = [
   { fact: 'Honey never spoils. Archaeologists found 3000-year-old honey in Egyptian tombs!', emoji: '🍯' },
   { fact: 'A group of flamingos is called a "flamboyance"!', emoji: '🦩' },
@@ -16,6 +19,7 @@ const funFacts = [
   { fact: 'The Moon is moving away from Earth each year!', emoji: '🌙' },
 ]
 
+// GK quiz questions
 const quizQuestions = [
   { q: 'What is the largest animal in the world?', options: ['Elephant', 'Blue Whale', 'Giraffe', 'Shark'], correct: 1 },
   { q: 'Which planet is known as the Red Planet?', options: ['Venus', 'Jupiter', 'Mars', 'Saturn'], correct: 2 },
@@ -40,6 +44,7 @@ export function GeneralKnowledge() {
   const fact = funFacts[currentFact]
   const question = quizQuestions[currentQuiz]
 
+  // Handle quiz answer with auto-advance
   const handleAnswer = (idx: number) => {
     if (selected !== null) return
     setSelected(idx)
@@ -59,6 +64,7 @@ export function GeneralKnowledge() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-amber-50 p-4">
       <div className="max-w-lg mx-auto">
+        {/* Back navigation */}
         <motion.button
           onClick={() => navigate('/ukg')}
           className="mb-4 flex items-center gap-2 text-gray-600 font-semibold"
@@ -67,6 +73,7 @@ export function GeneralKnowledge() {
           <ArrowLeft className="w-5 h-5" /> Back to UKG
         </motion.button>
 
+        {/* Header card */}
         <motion.div
           className="bg-gradient-to-r from-kid-orange to-kid-yellow rounded-3xl p-5 text-white text-center shadow-lg mb-6"
           initial={{ opacity: 0, y: -20 }}
@@ -79,6 +86,7 @@ export function GeneralKnowledge() {
           <p className="text-white/80 text-sm">Discover fun facts and test your knowledge!</p>
         </motion.div>
 
+        {/* Mode toggle: Fun Facts / GK Quiz */}
         <div className="flex gap-2 mb-6">
           <motion.button
             onClick={() => { setMode('facts'); setCurrentFact(0) }}
@@ -100,6 +108,7 @@ export function GeneralKnowledge() {
 
         <AnimatePresence mode="wait">
           {mode === 'facts' ? (
+            // Fun facts browsing mode
             <motion.div
               key="facts"
               initial={{ opacity: 0, x: -20 }}
@@ -112,12 +121,14 @@ export function GeneralKnowledge() {
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
               >
+                {/* Progress dots */}
                 <div className="flex justify-center gap-1 mb-4">
                   {funFacts.map((_, i) => (
                     <div key={i} className={`w-2.5 h-2.5 rounded-full ${i <= currentFact ? 'bg-kid-orange' : 'bg-gray-200'}`} />
                   ))}
                 </div>
 
+                {/* Wobbling emoji */}
                 <motion.span
                   className="text-6xl block mb-4"
                   animate={{ rotate: [0, -5, 5, 0] }}
@@ -126,6 +137,7 @@ export function GeneralKnowledge() {
                   {fact.emoji}
                 </motion.span>
 
+                {/* Fact card */}
                 <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-5 mb-4">
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <Lightbulb className="w-5 h-5 text-kid-orange" />
@@ -134,6 +146,7 @@ export function GeneralKnowledge() {
                   <p className="text-lg font-medium text-gray-700">{fact.fact}</p>
                 </div>
 
+                {/* Navigation and like button */}
                 <div className="flex items-center justify-center gap-3">
                   <motion.button
                     onClick={() => currentFact > 0 && setCurrentFact(i => i - 1)}
@@ -143,10 +156,9 @@ export function GeneralKnowledge() {
                   >
                     ← Previous
                   </motion.button>
+                  {/* Heart/like toggle */}
                   <motion.button
-                    onClick={() => {
-                      setLikedFacts(prev => new Set([...prev, currentFact]))
-                    }}
+                    onClick={() => { setLikedFacts(prev => new Set([...prev, currentFact])) }}
                     className="text-2xl"
                     whileHover={{ scale: 1.2 }}
                     whileTap={{ scale: 0.9 }}
@@ -165,12 +177,14 @@ export function GeneralKnowledge() {
               </motion.div>
             </motion.div>
           ) : quizDone ? (
+            // Quiz results screen
             <motion.div
               key="result"
               className="bg-white rounded-3xl p-6 shadow-lg text-center"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
             >
+              {/* Pulsing result emoji */}
               <motion.span
                 className="text-7xl block mb-4"
                 animate={{ scale: [1, 1.1, 1] }}
@@ -181,6 +195,7 @@ export function GeneralKnowledge() {
               <h2 className="text-2xl font-bold text-gray-800 font-fredoka mb-2">
                 {score >= 6 ? 'Amazing Knowledge!' : 'Keep Learning!'}
               </h2>
+              {/* Score display */}
               <div className="flex justify-center items-center gap-2 mb-4">
                 <Star className="w-6 h-6 fill-kid-yellow text-kid-yellow" />
                 <span className="text-4xl font-bold text-gray-800">{score}</span>
@@ -196,6 +211,7 @@ export function GeneralKnowledge() {
               </motion.button>
             </motion.div>
           ) : (
+            // Quiz question mode
             <motion.div
               key="quiz"
               initial={{ opacity: 0, x: 20 }}
@@ -208,19 +224,22 @@ export function GeneralKnowledge() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
               >
+                {/* Progress header */}
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-sm font-bold text-gray-500">Question {currentQuiz + 1}/{quizQuestions.length}</span>
                   <span className="text-sm font-bold text-gray-500">Score: {score}</span>
                 </div>
-
+                {/* Progress dots */}
                 <div className="flex gap-1 justify-center mb-4">
                   {quizQuestions.map((_, i) => (
                     <div key={i} className={`w-2.5 h-2.5 rounded-full ${i < currentQuiz ? 'bg-kid-green' : i === currentQuiz ? 'bg-kid-orange' : 'bg-gray-200'}`} />
                   ))}
                 </div>
 
+                {/* Question */}
                 <p className="text-lg font-bold text-gray-800 mb-6 text-center">{question.q}</p>
 
+                {/* Answer options */}
                 <div className="space-y-3">
                   {question.options.map((option, idx) => (
                     <motion.button
@@ -251,6 +270,7 @@ export function GeneralKnowledge() {
           )}
         </AnimatePresence>
 
+        {/* Motivational footer */}
         <motion.div
           className="mt-6 bg-gradient-to-r from-kid-orange to-kid-yellow rounded-2xl p-4 text-center shadow-lg"
           initial={{ opacity: 0 }}
